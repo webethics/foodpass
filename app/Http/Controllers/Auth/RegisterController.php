@@ -116,6 +116,9 @@ class RegisterController extends Controller
             'first_name'     => [
                 'required',
             ],
+			'email' => [
+				'required','unique:users'
+			],
 			'last_name'     => [
                 'required',
             ],
@@ -128,23 +131,14 @@ class RegisterController extends Controller
 			'email*' => [
 				'unique:users'
 			],
-            // 'mobile_number'   => [
-            //    'required','numeric','regex:/[0-9]{9}/','unique:users',
-            // ],
-			
-			'address'   => [
+            'mobile_number'   => [
+				'required','numeric','regex:/[0-9]{9}/',
+             ],
+			'terms_and_condtions'   => [
                'required',
             ],
-			'date_of_birth'   => [
-               'required',
-            ], 
-			
-			'gender'   => [
-               'required',
-            ],
-			
 		]; 
-		
+		return Validator::make($data,$return );
     } 
 
     /**
@@ -159,19 +153,12 @@ class RegisterController extends Controller
 		$dat =  User::create([
             'first_name' => $data['first_name'],
             'last_name' => $data['last_name'],
-            // 'mobile_number' => $data['mobile_number'],
+            'mobile_number' => $data['mobile_number'],
             'email' => $data['email'],
             'password' => Hash::make($data['login_password']),
-			'date_of_birth' => $data['date_of_birth'],
-			'address' => $data['address'],
-			'age' => $data['age'],
-			/*'price' => $data['actual_price'],*/
-			
-			'locking_period_start'  => $lockingPeriodStart,
-            'locking_period_end' => $lockingPeriodEnd,
 			'role_id' => 2,
 			'status' => 1,
-			'gender' => $data['gender'],
+			
 			
 		]);
 		

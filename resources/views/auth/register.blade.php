@@ -88,6 +88,13 @@
 										</div>
 										<div class="col-md-6">
 											<label class="has-float-label form-group mb-3">
+												<input name="mobile_number" id="mobile_number"  type="text" value="{{ old('mobile_number')}}" class="form-control">
+												<span>Mobile <span style="color:red;">*</span></span>
+												<div class="error_margin"><span class="error mobile_number_error" >  {{ $errors->first('mobile_number')  }} </span></div>
+											</label>
+										</div>
+										<!--div class="col-md-6">
+											<label class="has-float-label form-group mb-3">
 												<select name="gender" id="gender" class="form-control">
 													<option value="">Select Gender</option>
 													<option value="male" @if (old('gender') == "male") {{ 'selected' }} @endif >Male</option>
@@ -96,7 +103,7 @@
 												<span>{{ trans('global.gender') }}<span style="color:red;">*</span></span>
 												<div class="error_margin"><span class="error gender_error" >  {{ $errors->first('gender')  }} </span></div>
 											</label>
-										</div>
+										</div-->
 									</div>
 									<!-- <div class="form-row">
 										<div class="col-md-6">
@@ -127,7 +134,7 @@
 										</div>
 									</div> -->
 									
-									<div class="form-row">
+									<!--div class="form-row">
 										<div class="col-md-6 ">
 												
 											 <div class="form-group mb-4">
@@ -151,9 +158,9 @@
 											</label>
 										</div>
 										
-									</div>	
+									</div-->	
 								
-									<div class="form-row">
+									<!--div class="form-row">
 										<div class="col-md-12">
 											<label class="has-float-label form-group mb-3">
 												<textarea name="address" id="address" class="form-control">{{ old('address')}}</textarea>
@@ -162,7 +169,7 @@
 											</label>
 										</div>
 											
-									</div>	
+									</div-->	
 										
 									<div class="form-row">
 										<div class="col-md-12 ">

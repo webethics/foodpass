@@ -30,10 +30,7 @@
 	</div>
 	@if(current_user_role_id()!=1)
 	
-	<div class="form-group row">
-		<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.address')}}</label>
-		<label class="col-lg-9 col-xl-10 col-form-label" id="show_address">{{$user->address}}</label>
-	</div>
+	
 	@endif
 </div>	
 @if(current_user_role_id()==1)
@@ -88,19 +85,7 @@
 		</div>
 	</div>
 	
-	@if(current_user_role_id()!=1)
 	
-	<div class="form-group row">
-		<label class="col-lg-3 col-xl-2 col-form-label">{{trans('global.address')}}<em>*</em></label>
-		<div class="col-lg-9 col-xl-10">
-			<div class="d-flex control-group">
-				<input type="text" name="address" id="address" value="{{$user->address}}" class="form-control" placeholder="{{trans('global.address')}}">
-			</div>
-			<div class="address_error errors"></div>
-		</div>								
-	</div>	
-					
-	@endif
 	@if(!$temp_details || $temp_details->status == 1)
 		<input type="hidden" name="submit_button" id="submit_button" value="0">
 	@else
