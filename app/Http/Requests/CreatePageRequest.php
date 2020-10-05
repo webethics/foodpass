@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
-class CreateCustomerRequest extends FormRequest
+class CreatePageRequest extends FormRequest
 {
    /*  public function authorize()
     {
@@ -15,28 +15,14 @@ class CreateCustomerRequest extends FormRequest
  */
     public function rules(Request $request)
     {
-		$request->aadhar_number = str_replace('-','',$request->aadhar_number);
 		
         return [
-            'first_name'     => [
+            'title'     => [
                 'required',
             ],
-			 'last_name'     => [
+			 'content'     => [
                 'required',
-            ],
-			'password'     => [
-                'required', 'regex:/^.*(?=.{3,})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!$#%@]).*$/',
-            ],
-			'email*' => [
-				'required','email','unique:users'
-			],
-            // 'mobile_number'   => [
-            //    'required','unique:users','numeric','regex:/[0-9]{9}/',
-            // ], 
-			
-			'role_id'   => [
-               'required',
-            ], 
+            ]
 			
         ];
     }

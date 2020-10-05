@@ -36,6 +36,11 @@ class PermissionCategoryTableSeeder extends Seeder
 			'id'         => 6,
             'name'      => 'Account',
             'slug'      => 'account',
+		], 
+		[
+			'id'         => 7,
+            'name'      => 'CMS Pages',
+            'slug'      => 'cmspages',
 		]
 		];
 

@@ -46,13 +46,13 @@
 		</div>	
 		
 		
-		<div class="form-group form-row-parent">
+		<!--<div class="form-group form-row-parent">
 		<label class="col-form-label">{{ trans('global.address') }}<em>*</em></label>
 		<div class="d-flex control-group">
 		<input type="address" name="address" value="" class="form-control" placeholder="{{ trans('global.address') }}">								
 		</div>	
 			<div class="address_error errors"></div>			
-		</div>	
+		</div>	 -->
 	
 
 		<!-- <div class="form-group form-row-parent">
@@ -70,9 +70,9 @@
 							
 				<option value=" ">Select Role</option>
 				@foreach($roles as $key=>$role)
-				@if($role->id!=1)
+				
 				<option value="{{$role->id}}">{{$role->title}}</option>
-				@endif
+				
 				@endforeach
 			</select>
 		</div>

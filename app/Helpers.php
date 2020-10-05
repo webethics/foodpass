@@ -82,7 +82,7 @@ function redirect_route_name(){
 	   // IF DATA_ADMIN/DATA_ANALYST/CUSTOMER_USER/CUSTOMER_ADMIN 
 	   
 	   if($role_id['SUPER_ADMIN']== current_user_role_id()){
-		  return 'account'; 
+		  return 'dashboard'; 
 	   }
 	   else if($role_id['NORMAL_USER']== current_user_role_id()){
 			return 'account';					
@@ -130,7 +130,7 @@ function access_denied_user($permission_slug,$already_check = 0){
 	$current_user_role_id = $user->role_id;
 	
 	$permission_list_for_role = RolesPermission::where('role_id',$current_user_role_id)->get();
-	
+//	pr($permission_list_for_role->toArray());
 	
 	$permission_array = array();
 	foreach($permission_list_for_role as $permission){

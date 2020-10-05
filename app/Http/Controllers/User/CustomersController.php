@@ -213,7 +213,7 @@ class CustomersController extends Controller
 			// $data['mobile_number'] = $request->mobile_number;
 			$hashed = Hash::make($request->password);
 			$data['password'] = $hashed;
-			$data['address'] = $request->address;			
+			/* $data['address'] = $request->address;	 */		
 			$data['role_id'] = $request->role_id;
 			$dat = User::create($data);
 
@@ -258,7 +258,9 @@ class CustomersController extends Controller
 	public function customer_create()
     {
 		access_denied_user('customer_create');
-		$roles = Role::WhereNotIn('id',[1,3])->get();
+		//$roles = Role::WhereNotIn('id',[1,3])->get();
+		$roles = Role::get();
+		//pr($roles);
 		$view = view("modal.customerCreate",compact('roles'))->render();
 		$success = true;
 

@@ -30,7 +30,7 @@ class RolesController extends Controller
 	public function roles()
     {
 		access_denied_user('roles_listing');
-		$roles = Role::whereNotIn('id',[3,4,5])->get();
+		$roles = Role::get();
         return view('roles.roles',compact('roles'));	
 	}
 	

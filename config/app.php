@@ -177,8 +177,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 		Collective\Html\HtmlServiceProvider::class,
 		Intervention\Image\ImageServiceProvider::class,
-		SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class
-
+	
     ],
 
     /*
@@ -234,7 +233,7 @@ return [
 
       'Html' => Collective\Html\HtmlFacade::class,
 	  'Image' => Intervention\Image\Facades\Image::class,
-	  'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class
+
 
     ],
 

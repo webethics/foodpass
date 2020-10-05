@@ -114,6 +114,19 @@ Route::group(['prefix' => '','as' => 'user.' ,'namespace' => 'User','middleware'
 	Route::post('role/delete_role/{request_id}',array('uses'=>'RolesController@role_delete')); //Edit User
 	Route::post('/create-role-permissions/',array('uses'=>'RolesController@role_permission_create')); //Edit User
 	Route::post('/update-role-permissions/',array('uses'=>'RolesController@role_permission_update')); //Edit User
+	
+	
+	//cms pages
+	Route::get('cms-pages',array('uses'=>'CmsController@index'));
+	Route::get('cms-pages/edit/{request_id}', 'CmsController@cms_page_edit'); //Edit request
+	Route::get('cms-pages/create/',array('uses'=>'CmsController@cms_page_create')); //Edit User
+	Route::post('cms-pages/delete_page/{request_id}',array('uses'=>'CmsController@page_delete')); //Edit User
+	Route::post('cms-page-new',array('uses'=>'CmsController@cms_page_new')); //Edit User
+	Route::post('cms-page-update',array('uses'=>'CmsController@cms_page_update')); //Edit User
+	
+	
+	
+	
 });
 
 Route::post('user/cityDropdown', 'User\UsersController@cityDropdown');

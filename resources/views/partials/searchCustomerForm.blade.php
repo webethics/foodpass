@@ -60,7 +60,7 @@
 							<input type="text" name="mobile_number" id="mobile_number" class="form-control" placeholder="Search by Mobile Number">
 						</div>
 						 -->
-						<div class="form-group col-lg-6">
+						<!--<div class="form-group col-lg-6">
 							<select  id="gender"  class="form-control select2-single"  name="gender"  data-width="100%">
 										
 								<option value=" ">{{trans('global.filter_by_gender')}}</option>
@@ -83,8 +83,8 @@
 									<option value="{{$i}}">{{$i}}</option>
 								@endfor
 							</select>
-						</div>
-						
+						</div> 
+						-->
 					</div>	
 				</div>
 			</div>
