@@ -37,6 +37,7 @@ class LoginController extends Controller
      */
     public function __construct()
     {
+		
 		$this->middleware('guest')->except('logout');
 	 //  $this->middleware('auth');
 	
@@ -47,118 +48,61 @@ class LoginController extends Controller
 	public function login(Request $request)
     {   
 		
+	
         $input = $request->all();
-		$field = filter_var($request->input('login'), FILTER_VALIDATE_EMAIL) ? 'email' : 'mobile_number';
 		
-		if($field == 'email'){
-			$rules = array('login' => 'required',
+		$rules = array('email' => 'required|email|exists:users,email',
 				   'password' => 'required',
 				   );
-		}
-		if($field == 'mobile_number'){
-			$rules = array('login' => 'required',
-				   'password' => 'required',
-				   );
-		}
-		
 
 		$validator = Validator::make($request->input(), $rules);
 		if ($validator->fails())
 		{
+			//EVENT FAILED
 			return redirect('login')->withErrors($validator)->withInput($request->except('password'));
 		}else
 		{
 			
-			if(Auth::attempt(array($field=> $request->input('login'), 'password' => $input['password'])))
+			if(auth()->attempt(array('email' => $input['email'], 'password' => $input['password'])))
 			{ 
+	
+	
 		        //IF STATUS IS NOT ACTIVE 
 				if(Auth::check() && Auth::user()->verify_token !=NULL){
 					//EVENT FAILED
+					//create_failed_attemp_log($input['email'],$input['password']);
 					Auth::logout();
-					return redirect('/login')->with('error', 'Your account is not verified.Please check your email and verify your account.');
+					return redirect('/login')->with('error', 'Please be sure to check your junk mail as well - sometimes it ends up there sadly!');
 				}else if(Auth::check() && Auth::user()->status == 0){ 
 					//IF STATUS IS NOT ACTIVE 
 					//EVENT FAILED
+					//create_failed_attemp_log($input['email'],$input['password']);
 					Auth::logout();
 					return redirect('/login')->with('error', 'Your account is deactivated.');
+				
+				}else if(Auth::check() && Auth::user()->role_id == 1){ 
+					//IF STATUS IS NOT ACTIVE 
+					//EVENT FAILED
+					//create_failed_attemp_log($input['email'],$input['password']);
+					Auth::logout();
+					return redirect('/login')->with('error', 'Please enter correct credentials.');
 				}
 				
-				if(Auth::check() && Auth::user()->status == 1){
-					$user = Auth::user();
-					$role_id =  $user->role_id;
-					//$role_id = Config::get('constant.role_id');
-					/*flag variables*/
-					$is_admin = 0;
-
-					if(!empty($role_id)){
-						$fetchUserRole = Role::where('id',$role_id)->first();
-						/*If data present*/
-						if(!is_null($fetchUserRole) && ($fetchUserRole->count())>0){
-							$user_role = $fetchUserRole->slug;
-							if($user_role == 'super-admin'){
-								// set session value
-								Session::put('is_admin_login', '1');
-								Session::put('admin_user_id', $user->id);
-								Session::put('user_id','');
-							}else{
-								Session::put('is_admin_login', '0');
-								Session::put('admin_user_id','');
-								Session::put('user_id',$user->id);
-							}
-						}
-		
-					}
-					
-				}else{
-					
-					return redirect()->route('login');
-				}
 				
-			  /* USE/ANALYST/USER-ADMIN LOGIN SETTING ADMIN ENABLE DOUBLE AUTHENTICATION  */ 
-			  $setting = Setting::where('user_id',1)->get();
-			  //pr($setting);
-			  // IF DOUBLE AUTHENTICATION IS ON 
-			  if($setting[0]->double_authentication){
-				  /* Send OTP to User in email or phone */
-				    $otp  = getToken(7); 
-				    $usertData = User::where('id',$user->id);
-					$data =array();
-					$data['otp'] =$otp; 
-					$usertData->update($data);
-					$to  = $user->email; 
-					//EMAIL REGISTER EMAIL TEMPLATE 
-					$result = EmailTemplate::where('template_name','one_time_otp')->get();
-					$subject = $result[0]->subject;
-					$message_body = $result[0]->content;
-					$uname = $user->first_name .' '.$user->last_name;
-					$logo = url('/img/logo.png');
-					
-					$list = Array
-					  ( 
-						 '[NAME]' => $uname,
-						 '[OTP]' => $otp,
-						 '[LOGO]' => $logo,
-					  );
-
-					$find = array_keys($list);
-					$replace = array_values($list);
-					$message = str_ireplace($find, $replace, $message_body);
-	
-					$mail = send_email($to, $subject, $message); 
-				
-				 /*   */
-				 return redirect('send-otp')
-				->with('message','Please check email or phone for OTP.');
-				  
-			  }else{		
-					
-					// IF DOUBLE AUTHENTICATION IS OFF : ANALYST/ADMIN/USER/USER_ADMIN 
-					 return redirect(redirect_route_name());
+			  $user = auth()->user();
+			  $role_id =  $user->role_id;
+			  Session::put('is_admin_login', '');
+			  if( $request->session()->get('user-profile')){
+				  if(strpos($request->session()->get('user-profile'), '/u') !== false)
+				   return redirect( $request->session()->get('user_profile'));
+			  }else{
+				return redirect('user-profile');
 			  }
+			
 			}
 			else{
 				//EVENT FAILED
-				
+				//create_failed_attemp_log($input['email'],$input['password']);
 				return redirect()->route('login')
 					->with('error','You have entered wrong details.');
 			}

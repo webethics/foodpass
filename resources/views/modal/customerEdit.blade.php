@@ -36,22 +36,7 @@
 		</div>								
 		</div>	
 	
-		<div class="form-group form-row-parent">
-		<label class="col-form-label">{{ trans('global.address') }}<em>*</em></label>
-		<div class="d-flex control-group">
-		<input type="address" name="address" value="{{$user->address}}" class="form-control" placeholder="{{ trans('global.address') }}">								
-		</div>	
-			<div class="address_error errors"></div>			
-		</div>	
-	
-
-		<!-- <div class="form-group form-row-parent">
-		<label class="col-form-label">{{ trans('global.phone_number') }}<em>*</em></label>
-		<div class="d-flex control-group">
-		<input type="text" name="mobile_number" value="{{$user->mobile_number}}" class="form-control" placeholder="{{$user->mobile_number}}">							
-		</div>
-		 <div class="mobile_number_error errors"></div>	
-		</div>	 -->
+		
 		
 		
 		<div class="form-row mt-4">

@@ -10,7 +10,7 @@ class RolesTableSeeder extends Seeder
         $roles = [[
             'id'         => 1,
             'title'      => 'Super Admin',
-            'slug'      => 'super_admin',
+            'slug'      => 'super-admin',
             'created_at' => '2019-04-15 19:13:32',
             'updated_at' => '2019-04-15 19:13:32',
             'deleted_at' => null,

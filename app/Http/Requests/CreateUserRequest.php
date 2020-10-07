@@ -15,30 +15,25 @@ class createUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'owner_name'     => [
+             'first_name'     => [
                 'required',
             ],
-			 'refered_by'     => [
+			'last_name'     => [
                 'required',
-            ],
-			'login_password'    => [
-				'required', 'regex:/^.*(?=.{3,})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!$#%@]).*$/', 'min:6'
-			],
-			'login_password_confirmation'    => [
-                'required','same:login_password',
-            ],
+            ], 
 			'email*' => [
 				'required','email','unique:users'
 			],
-            'mobile_number'   => [
-               'required','numeric','regex:/[0-9]{9}/',
-            ], 
-			'address'   => [
-               'required',
-            ], 
-			'business_url'   => [
-               'required',
-            ], 
+			
+			'password' => ['required', 'regex:/^.*(?=.{3,})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!$#%@]).*$/', 'min:6',
+			],
+
+			'password_confirmation'   => [
+                'required','same:password',
+            ] ,
+			'terms_condition'   => [
+                'required',
+            ] 
 			
         ];
     }

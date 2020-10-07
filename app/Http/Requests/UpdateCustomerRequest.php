@@ -25,12 +25,7 @@ class UpdateCustomerRequest extends FormRequest
 			// 'mobile_number'    => [
 			// 	'required',
 			// ],
-			'address'   => [
-               'required',
-            ],
-			'address'   => [
-               'required',
-            ] 
+			
 			
         ];
     }

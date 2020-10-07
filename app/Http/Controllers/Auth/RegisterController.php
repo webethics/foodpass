@@ -85,10 +85,89 @@ class RegisterController extends Controller
 	}
 	
 	
+	 protected function register(CreateUserRequest $request)
+    {
+		
+		    $token = getToken();
+		    User::create([
+			   // 'name' => $data['name'],
+				'first_name' => $request->first_name,
+				'last_name' => $request->last_name,
+				'email' => $request->email,
+				'role_id' => 2,
+				'status' => 1,
+				'password' => Hash::make($request->password),
+				'verify_token' => $token,
+			]); 
+		
+		  //SEND EMAIL TO REGISTER USER.
+			$uname = $request->first_name .' '.$request->last_name;
+			//$token = getToken();
+			$logo = url('/frontend/images/logo.png');
+			$link= url('verify/account/'.$token);
+			$to = $request->email;
+			//EMAIL REGISTER EMAIL TEMPLATE 
+			$result = EmailTemplate::where('id',1)->get();
+			$subject = $result[0]->subject;
+      		$message_body = $result[0]->content;
+      		
+      		$list = Array
+              ( 
+                 '[NAME]' => $uname,
+				 //'[USERNAME]' => $request->email,
+				// '[PASSWORD]' => $request->password,
+                 '[LINK]' => $link,
+                 '[LOGO]' => $logo,
+              );
+
+      		$find = array_keys($list);
+      		$replace = array_values($list);
+      	    $message = str_ireplace($find, $replace, $message_body);
+			
+			//$mail = send_email($to, $subject, $message, $from, $fromname);
+			
+			//$mail = send_email($to, $subject, $message);
+			
+			return redirect('/confirmation');
+			
+			
+	}
+	
+	//VERIFY ACCOUNT  
+	public function verifyAccount($token)
+    {
+		
+		$result = User::where('verify_token', '=' ,$token)->get();
+		$notwork =false; 
+		if(count($result)>0){
+	    $userUpdate = User::where('email',$result[0]->email);
+		$data['verify_token'] =NULL;					
+		$data['status'] =1;					
+		$userUpdate->update($data);	
+		//$url_post = url('password/reset_new_user_password');
+		//$notwork =true;  
+		//Session::flash('success', 'Your Account has been verified.');
+	  //  return redirect('login');
+		return redirect()->route('login')
+					->with('success','Your Account has been verified.');
+			//return view('auth.passwords.reset',compact('token','notwork','url_post'));	
+		}else{
+			 return redirect('login')->with('error','Your link is not correct.');	;
+		}
+		
+		
+        	
+    }
+	
+	//VERIFY ACCOUNT  
+	public function Registeration_confirmation()
+    {	
+		return view('auth.verify');
+    }
 	
 	
 	
-	public function register(Request $request)
+	/* public function register(Request $request)
 	{
 		
 		$this->validator($request->all())->validate();
@@ -99,7 +178,7 @@ class RegisterController extends Controller
 
 		return $this->registered($request, $user)
 							?: redirect($this->redirectPath());
-	 } 
+	 }  */
 	 
 
     /**

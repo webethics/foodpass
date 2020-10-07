@@ -82,7 +82,7 @@
 								if(data.msg !='Error'){
 									var mockFile = { name: data.name, size: data.size};
 									thisDropzone.options.addedfile.call(thisDropzone, mockFile);
-									thisDropzone.options.thumbnail.call(thisDropzone, mockFile, base_url+settings.dropzoneURL+data.name);
+									thisDropzone.options.thumbnail.call(thisDropzone, mockFile, site_url+settings.dropzoneURL+data.name);
 									mockFile.previewElement.classList.add('dz-success');
 									mockFile.previewElement.classList.add('dz-complete');
 								}
@@ -113,11 +113,11 @@
 							this.removeFile(file);
 							var mockFile = { name: responseText.name, size: file.size};
 							this.options.addedfile.call(this, mockFile);
-							this.options.thumbnail.call(this, mockFile, base_url+settings.dropzoneURL+responseText.name);
+							this.options.thumbnail.call(this, mockFile, site_url+settings.dropzoneURL+responseText.name);
 							mockFile.previewElement.classList.add('dz-success');
 							mockFile.previewElement.classList.add('dz-complete');
 							console.log($(settings.logo))
-							$(settings.logo).css('background-image', 'url(' + base_url+settings.dropzoneURL+responseText.name + ')');
+							$(settings.logo).css('background-image', 'url(' + site_url+settings.dropzoneURL+responseText.name + ')');
 							
 						});
 						this.on('removedfile', function (file) {

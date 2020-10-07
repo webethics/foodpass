@@ -18,6 +18,14 @@ use App\Models\Plan;
 use Carbon\Carbon;
 
 
+function banner_photo($user_id){
+	
+	      $user_data = User::where('id',$user_id)->get();
+		  $banner_image =   url('/uploads/users').'/'. $user_data[0]->id .'/'. $user_data[0]->banner_photo;
+		  return $banner_image ;
+
+}
+
 //use Config;
 // Return User Role ID 
 function current_user_role_id(){
@@ -76,26 +84,20 @@ function redirect_route_name(){
 	  $role_id = Config::get('constant.role_id');
 	  $user_id =user_id();
 	  $user_data = user_data_by_id($user_id);
-		
+			
 	  if(is_null($user_data->otp)){
 		  
 	   // IF DATA_ADMIN/DATA_ANALYST/CUSTOMER_USER/CUSTOMER_ADMIN 
 	   
 	   if($role_id['SUPER_ADMIN']== current_user_role_id()){
-		  return 'dashboard'; 
+		  return 'admin/dashboard'; 
 	   }
 	   else if($role_id['NORMAL_USER']== current_user_role_id()){
-			return 'account';					
+		 	return 'edit-profile';				
 	   } else if($role_id['INDIA_HEAD']== current_user_role_id()){
-			return 'account';					
-	   }else if($role_id['DISTRICT_HEAD']== current_user_role_id()){
-			return 'account'; 
-
-	   }
-	   else if($role_id['STATE_HEAD']== current_user_role_id()){
-			return 'account'; 
-	   }else if(current_user_role_id() > 5){
-		   return 'account'; 
+		 	return 'edit-profile';					
+	   }else if(current_user_role_id() > 2){
+		  return 'edit-profile';	
 	   }
 	   	  
 	   }else{
@@ -104,7 +106,17 @@ function redirect_route_name(){
 	  }  
 }
 
+function profile_photo($user_id){
+	   
+	  $user_data = User::where('id',$user_id)->get();
+
+	  $profile_photo =  url('/uploads/users').'/'. $user_data[0]->id .'/'. $user_data[0]->profile_photo;
+	  return $profile_photo ;
+
+}
+
 function check_role_access($permission_slug){
+	
 	$user = \Auth::user();
 	$current_user_role_id = $user->role_id;
 	
@@ -288,7 +300,7 @@ function showSiteTitle($title){
 
 			return url('uploads/logo/'.$setting->site_logo);
 		}else{
-			return url('/img/logo.png');
+			return url('/img/logo.svg');
 		}
 	}
 }

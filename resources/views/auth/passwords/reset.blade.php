@@ -1,54 +1,72 @@
-@extends('layouts.app')
+@extends('frontend.layouts.master')
 @section('content')
- <div class="row h-100">
-                <div class="col-12 col-md-8 col-lg-6 mx-auto my-auto">
-                    <div class="card auth-card">
-                        <div class="form-side">
-                           <span class="logo_image d-block mb-3"><img src="{{asset('img/bigfoot.jpeg')}}"></span>
+<div class="login-wraper">
+   <div class="container">
+      <div class="row">
+         <div class="login-cont">
+            <div class="col-md-6 col-sm-6 hidden-xs">
+               <div class="login-banner"> <img class="img-responsive center-block" src="{{ url('frontend/images/login-page.jpg')}}" alt="logo"> </div>
+            </div>
+            <div class="col-md-5 col-sm-6">
+               <div class="login-text">
+                  <div class="panel-register"> 
+                     <a class="logo" href="{{url('/')}}"><img class="img-responsive" src="<?php echo showSiteTitle("logo") ?>"></a>
+                     <h6 class="mb-4">Forget Password </h6>
+                       @include('flash-message')
 					 @if($notwork)
-                    <form method="POST" action="{{ $url_post }}">
-                        {{ csrf_field() }}
-                        <h6 class="mb-4">
-                                    {{ trans('global.reset_password') }}
-                              </h6>
-						@include('flash-message')		
-                        <div>
-                            <input name="token" value="{{ $token }}" type="hidden">
-                           
-                            <div class="form-group has-feedback">
-                                <input type="password" name="password" class="form-control"  placeholder="{{ trans('global.login_password') }}">
+                      <form method="POST" action="{{ $url_post }}">
+							 {{ csrf_field() }}
+						<input name="token" value="{{ $token }}" type="hidden">	 
+                        <div class="form-group">
+                            <input type="password" name="password" class="form-control"  placeholder="Enter Password">
                                 @if($errors->has('password'))
-                                    <em class="invalid-feedback" style="display:block">
+                                    <div class="error_margin"><span class="error">
                                         {{ $errors->first('password') }}
-                                    </em>
+                                    </span>
+                                    </div>
                                 @endif
-                            </div>
-                            <div class="form-group has-feedback">
-                                <input type="password" name="password_confirmation" class="form-control" placeholder="{{ trans('global.login_password_confirmation') }}">
+                         <!-- <div class="error_margin"><span class="error" >  {{ $errors->first('email')  }} </span></div>-->
+                        </div>
+                        <div class="form-group">
+                          <input type="password" name="password_confirmation" class="form-control"placeholder="Confirm Password">
                                 @if($errors->has('password_confirmation'))
-                                    <em class="invalid-feedback" style="display:block">
-                                        {{ $errors->first('password_confirmation') }}
-                                    </em>
+                                    <div class="error_margin"><span class="error">
+                                        {{ $errors->first('password_confirmation') }} </span>
+                                    </div>
                                 @endif
-                            </div>
                         </div>
-                        <div class="row">
-                            <div class="col-12 text-right">
-                                <button type="submit" class="btn btn-primary btn-lg btn-shadow uppercase_button">
-                                    {{ trans('global.reset_password') }}
+                
+                        <div class="form-group">
+                           <div class="captcha_wrapper"></div>
+                           <div class="error_place error_place_for_captcha"></div>
+                        </div>
+                        <div class="form-group btns-group">
+                           <button type="submit" class="btn btn-default btn-lg btn-login">
+                                   Reset Password 
                                 </button>
-                            </div>
                         </div>
-                    </form>
+                        
+
+                        
+                     </form>
 					@else
 						 <h1>
                            
-                                <div class="" style="font-size:14px">This link is not working any more.Please click <strong><a href="{{url('/password/reset')}}" >Here</a></strong> to reset password </div>
+                                <div class="" style="font-size:14px">This link is not working any more.Please click <strong><a data-toggle="modal" href="#" data-target="#forget_modal" class="forget_password">Here</a></strong> to reset password </div>
                            
                         </h1>
-					@endif
+					@endif 
+                  </div>
                </div>
-                    </div>
-                </div>
             </div>
-@endsection
+         </div>
+      </div>
+   </div>
+    @include('frontend.partials.about_goal_section_login')  
+   </div>
+ @include('frontend.common.modal')
+  @include('frontend.common.footer')
+@section('userJs')
+<script src="{{ url('frontend/js/module/user.js')}}"></script>	
+@stop
+@stop

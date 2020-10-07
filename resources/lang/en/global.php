@@ -386,7 +386,7 @@ return [
     'deselect_all'                         => 'Deselect all',
     'team-management'                      => 'Teams',
     'team-management-singular'             => 'Team',
-    'site_title'                           => 'Bread and Beauty - Bigfoot',
+    'site_title'                           => 'Webethics Laravel',
     'userManagement'                       => [
         'title'          => 'User Management',
         'title_singular' => 'User Management',
