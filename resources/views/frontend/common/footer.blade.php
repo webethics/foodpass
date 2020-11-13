@@ -1,46 +1,56 @@
-<div class="footer_wrapper">
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-4 col-xs-12">
-        <div class="copyright social-icon">
-          <ul>
-            <li><a href="https://www.facebook.com/webethics" target="_blank"><i class="fa fa-facebook"></i></a></li>
-            {{-- <li><a href="" target="_blank"><i class="fa fa-twitter"></i></a></li> --}}
-            <li><a href="https://www.instagram.com/webethics/" target="_blank"><i class="fa fa-instagram"></i></a></li>
-          </ul>
-        </div>
-      </div>
-	  @php $activeFaq='';  $activeTerms='';  $activePrivacy=''; $activeContact=''; @endphp
-	  @if(collect(request()->segments())->last()=='faq')   
-	   @php $activeFaq='active' @endphp
-	  @endif
-	  
-	  @if(collect(request()->segments())->last()=='terms')   
-	   @php $activeTerms='active' @endphp
-	  @endif 
-	  
-	  @if(collect(request()->segments())->last()=='privacy')   
-	   @php $activePrivacy='active' @endphp
-	  @endif 
-	  
-	  @if(collect(request()->segments())->last()=='contact-us')   
-	   @php $activeContact='active' @endphp
-	  @endif
-      <!--div class="col-sm-4 col-xs-12">
-        <div class="footer_nav">
-          <ul>
-            <li class="{{$activeFaq}}"><a href="{{url('faq')}}">FAQ</a></li>
-            <li class="{{$activeTerms}}"><a href="{{url('terms')}}">Terms</a></li>
-            <li class="{{$activePrivacy}}" ><a href="{{url('privacy')}}">Privacy</a></li>
-            <li class="{{$activeContact}}"><a href="{{url('contact-us')}}">Contact</a></li>
-          </ul>
-        </div>
-      </div--->
-      <div class="col-sm-4 col-xs-12">
-        <div class="copyright">
-          <p>Copyright © 2020 WEBETHICS. All Right Reserve. </p>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+<footer class="site-footer">
+         <div class="container">
+            <div class="footercontsec">
+               <div class="row footerrow">
+                  <div class="col-md-5 footerinfo">
+                     <div class="col-md-12 footerlogo p-0">
+                        <img class="img-fluid" src="{{asset('frontend/images/footerlogo.png')}}">
+                     </div>
+                     <p>FOODPASS takes advantage of the newest <br/>technologies to deliver restaurant content straight</p>
+                  </div>
+                  <div class="col-md-7 footerlinks">
+                     <div class="footerlink_widget">
+                        <div class="footerlink_area">
+                           <h4>Menu</h4>
+                           <ul class="footerlink_list">
+                              <li><a href="/">Home </a></li>
+                              <li><a href="{{url('/how-it-works')}}">How it Works</a></li>
+                              <li><a href="{{url('/about-us')}}">About Us</a></li>
+                              <li><a href="#">Restaurants</a></li>
+                           </ul>
+                        </div>
+                     </div>
+                     <div class="footerlink_widget">
+                        <div class="footerlink_area">
+                           <h4>Contact</h4>
+                           <ul class="footerlink_list">
+                              <li><a href="tel:+1 631 123 5481"><img src="{{asset('frontend/images/call.png')}}" />+1 631 123 5481 </a></li>
+                              <li><a href="mailto:foodpass@mail.com"><img src="{{asset('frontend/images/mail.png')}}" />foodpass@mail.com</a></li>
+                           </ul>
+                        </div>
+                     </div>
+                     <div class="footerlink_widget">
+                        <div class="footerlink_area">
+                           <h4>Social</h4>
+                           <ul class="footersocial_icons">
+                              <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                              <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                              <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+                           </ul>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="footercopyright">
+            <div class="container">
+               <div class="row">
+                  <div class="col-md-12 footercopyright_left text-center">
+                     <p>Copyright © FASTFOOD 2020 All Rights Reserved</p>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </footer>
+	  @include('frontend.common.signin_modal')

@@ -78,8 +78,8 @@ class UsersController extends Controller
 	
 	public function landing_page()
     {
-    	
-       return view('frontend.creaters.landing.landing');
+       // return view('frontend.creaters.landing.landing');
+       return view('frontend.pages.home.landing');
     }
     
 	//VERIFY ACCOUNT  
@@ -232,7 +232,7 @@ class UsersController extends Controller
     {
 		 \Auth::logout();
 		 Session::put('is_admin_login', '');
-		 return redirect('login');
+		 return redirect('/');
 		
     }
 	function password_generate($chars) 

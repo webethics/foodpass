@@ -1,6 +1,26 @@
 <?php
 
 Route::get('/', 'User\UsersController@landing_page');
+Route::get('/faq', 'User\HomeController@faq');
+Route::get('/contact-us', 'User\HomeController@contact_us');
+Route::get('/about-us', 'User\HomeController@about_us');
+Route::get('/how-it-works', 'User\HomeController@how_it_works');
+Route::get('/affiliate', 'User\HomeController@affiliate');
+Route::get('/subscription', 'User\HomeController@subscription');
+Route::get('/store', 'User\HomeController@store');
+Route::get('/contact-us', 'User\HomeController@contact');
+Route::get('/coupons2', 'User\HomeController@coupons2');
+Route::get('/booking', 'User\HomeController@booking');
+Route::get('/makecoupon', 'User\HomeController@makecoupon');
+Route::get('/addcoupon', 'User\HomeController@addcoupon');
+
+Route::get('/my-coupon', 'User\HomeController@my_coupon');
+Route::get('/alert', 'User\HomeController@alert');
+Route::get('/menukaart', 'User\HomeController@menukaart');
+Route::get('/coupons', 'User\HomeController@coupons');
+Route::get('/info', 'User\HomeController@info');
+Route::get('/edit_profile_2', 'User\HomeController@edit_profile2');
+Route::get('/alerts', 'User\HomeController@alerts');
 
 Auth::routes(['login' => true]);
 Auth::routes(['register' => true]);
@@ -23,7 +43,9 @@ Route::group(['prefix' => '','as' => 'user.' ,'namespace' => 'User','middleware'
 	Route::get('twitter/callback', 'SocialAuthTwitterController@callback');
 	
 	
-	
+	Route::get('/profile', 'HomeController@profile');
+	Route::get('/store-profile', 'HomeController@store_profile');
+
 	Route::get('user-profile', 'UsersController@editProfile'); 
 	Route::get('edit-profile', 'UsersController@editProfile'); 
 	Route::get('logout', 'UsersController@logout');

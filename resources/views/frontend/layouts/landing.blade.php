@@ -23,6 +23,13 @@
 	<script src="{{ asset('js/vendor/jquery-3.5.1.min.js') }}"></script>
     <script src="{{ asset('js/vendor/bootstrap.bundle.min.js') }}"></script>
 	<script src="{{ asset('js/vendor/PageScroll2id.min.js') }}"></script>
+	
+	<script src="{{ url('frontend/js/vendor/notifications.js')}}"></script>
+	<script src="{{ url('frontend/js/module/login.js')}}"></script>	 
+	<script src="{{ url('frontend/js/dore.script.js')}}"></script>	
+	<script src="{{ url('frontend/js/custom.js')}}"></script>	
+		
+		
 	@yield('extraJsCss')
 </body>
 

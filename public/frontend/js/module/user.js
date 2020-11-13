@@ -105,53 +105,6 @@ $(document).on('click','.contact_us', function(e) {
 
 
 /*==============================================
-	UPDATE PAYPAL SETTING
-============================================*/
- $(document).on('click','.update_paypal', function(e) {
-    e.preventDefault(); 
-	//var user_id = $('#user_id').val();
-	$('.paypal_loader').css('display','inline-block');
-	var csrf_token = $('input[name="_token"]').val();
-	var paypal_id = $('#paypal_id').val();
-    $.ajax({
-        type: "POST",
-		dataType: 'json',
-         url: base_url+'/update_paypal_setting',
-        data: {_token:csrf_token,paypal_id:paypal_id},
-        success: function(data) {
-			$('.error').html('');
-			$('.paypal_loader').css('display','none');
-			 if(data.success){
-				notification('Success','Setting Updated Successfully','top-right','success',2000);
-			}else{
-				notification('Error','Username not available.','top-right','error',2000);
-			}	 
-        },
-		error :function( data ) {
-         if( data.status === 422 ) {
-			$('.paypal_loader').css('display','none');
-			$('.error').html('');
-			//notification('Error','Please fill all the fields.','top-right','error',4000);
-            var errors = $.parseJSON(data.responseText);
-            $.each(errors, function (key, value) {
-                if($.isPlainObject(value)) {
-                    $.each(value, function (key, value) {                       
-                        //console.log(key+ " " +value);	
-					  var key = key.replace('.','_');
-					  $('.'+key+'_error').show().append(value);
-                    });
-                }
-            }); 
-          }
-		}
-
-    });
-});	
-
-
-
-	
-/*==============================================
 	CHANGE USER PASSWORD  
 ============================================*/
  $(document).on('click','.update_password', function(e) {
@@ -221,8 +174,8 @@ function validate(file) {
     enableExif: true,
     enableOrientation: true,    
     viewport: { // Default { width: 100, height: 100, type: 'square' } 
-        width: 100,
-        height: 100,
+        width: 160,
+        height: 160,
         type: 'circle' //square
     },
     boundary: {

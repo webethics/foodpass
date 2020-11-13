@@ -3,56 +3,41 @@
     //list($controller, $method) = explode('@', $currentAction); 
    // $controller = preg_replace('/.*\\\/', '', $controller);  
     ?>
-     <nav class="navbar navbar-default navbar-fixed-top">
-		  <div class="container" id="app1">
-			
-			<div class="navbar-header">		  
-			  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-				<span class="sr-only">Toggle navigation</span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			  </button>
-			  <a class="navbar-brand" href="{{url('/')}}"><img class="img-responsive" src="<?php echo showSiteTitle("logo") ?>"></a>
-			</div>
-			
-			 @if(auth::user())
-			 @if(auth::user()->id !='' && (auth::user()->role_id==2)) 
-			<div id="navbar" class="navbar-collapse collapse">
-			  <ul class="nav navbar-nav navbar-right">
-				<li class="nav-item nav-profile dropdown">
-		    	 <a class="nav-link dropdown-toggle" id="profileDropdown" href="{{url('/user-profile')}}" >
-				  @php
-					$profile_photo =  profile_photo(auth::user()->id);;
-				 @endphp
-					<div class="nav-profile-img">
-					  @if(auth::user()->profile_photo==NULL)
-					  <span class="avtar"> {{ ucwords(substr(auth::user()->first_name,0,1)) }} </span>
-				      @else
-					    <!--img src="{{url('/frontend/images/face1.jpg')}}" alt="image"-->  
-					    <img src="{{timthumb($profile_photo,100,100)}}" alt="image">  
-				      @endif
-					 
-					  <!--span class="availability-status online"></span--> 
-					</div>
-					<div class="nav-profile-text">
-					  <p class="mb-1 text-black">{{ucwords(auth::user()->first_name) }} </p>
-					</div>
-				  </a>
-				</li>
-				<!--   MESSAGE BOX --->
-				
-				<li class="dropdown nav-myaccount">
-				  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="fa fa-user" aria-hidden="true"></i> My Account <span class="caret"></span></a>
-				  <ul class="dropdown-menu">
-				    <li><a href="{{('/edit-profile')}}">Edit Profile</a></li>
-					<li><a href="{{('/logout')}}">Logout</a></li>
-				  </ul>
-				</li>
-				
-			  </ul>
-			</div><!--/.nav-collapse -->
-			@endif
-			@endif
-		  </div>
-		</nav>
+     <nav class="navbar navbar-expand-lg navigationbar" id="navigationbar">
+         <div class="container p-0">
+            <a class="navbar-brand" href="/"><img src="{{asset('frontend/images/logo.png')}}" class="img-fluid" /></a>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+               <ul class="navbar-nav ml-auto">
+                  <li class="nav-item active">
+                     <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link" href="{{url('/about-us')}}">About Us</a>
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link" href="{{url('/how-it-works')}}">How It Works</a>
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link" href="{{url('/faq')}}">FAQ</a>
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link" href="{{url('/contact-us')}}">Contact</a>
+                  </li>
+               </ul>
+            </div>
+            <div class="userprofile_img">
+               <div class="notoficationicon">
+                  <a href="#"><img src="{{asset('frontend/images/bell.svg')}}" /><span>4</span></a>
+               </div>
+			   
+			    @if(!Auth::user())
+					<a href="#" data-toggle="modal" data-target="#formmodal"><img src="{{asset('frontend/images/usericon.png')}}" /></a>
+			   @else
+					<a href="{{('/logout')}}" class="btn btn-danger" style="margin-left:20px">{{trans('common.logout')}} </a>   
+				 @endif
+               <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+               <span class="navbar-toggler-icon"></span>
+               </button>
+            </div>
+         </div>
+      </nav>

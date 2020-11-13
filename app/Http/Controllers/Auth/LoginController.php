@@ -7,11 +7,13 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Config;
+use App\Http\Requests\Frontend\LoginRequest;
 use App\Models\Setting;
 use App\Models\User;
 use App\Models\EmailTemplate;
 use Auth;
 use Session;
+use Response;
 use App\Models\Role;
 use App\Models\AuditLog;
 class LoginController extends Controller
@@ -45,7 +47,7 @@ class LoginController extends Controller
 	
 	
 	
-	public function login(Request $request)
+	public function login(LoginRequest $request)
     {   
 		
 	
@@ -89,15 +91,54 @@ class LoginController extends Controller
 				}
 				
 				
-			  $user = auth()->user();
+			  /* $user = auth()->user();
+			  
 			  $role_id =  $user->role_id;
 			  Session::put('is_admin_login', '');
-			  if( $request->session()->get('user-profile')){
-				  if(strpos($request->session()->get('user-profile'), '/u') !== false)
-				   return redirect( $request->session()->get('user_profile'));
+			  if( $request->session()->get('profile')){
+				  if(strpos($request->session()->get('profile'), '/u') !== false)
+				   return redirect( $request->session()->get('profile'));
 			  }else{
-				return redirect('user-profile');
-			  }
+				return redirect('profile');
+			  } */
+			  
+			  if(Auth::check() && Auth::user()->role_id == 2){ 
+					  $user = auth()->user();
+					  $role_id =  $user->role_id;
+					  Session::put('is_admin_login', '');
+					   Session::put('admin_user_id', '');
+					  if( $request->session()->get('profile')){
+						  if(strpos($request->session()->get('profile'), '/u') !== false)
+						   return redirect( $request->session()->get('profile'));
+					  }else{
+						  return Response::json(array(
+							  'success'=>true,
+							  'url'=>'profile',
+							  'message'=> ''
+							 ), 200);
+						//return redirect('user-profile');
+					  }
+				}else if(Auth::check() && Auth::user()->role_id == 3){ 
+					  $user = auth()->user();
+					  $role_id =  $user->role_id;
+					  Session::put('is_admin_login', '');
+					   Session::put('admin_user_id', '');
+					  if( $request->session()->get('store-profile')){
+						  if(strpos($request->session()->get('store-profile'), '/u') !== false)
+						   return redirect( $request->session()->get('store-profile'));
+					  }else{
+						  return Response::json(array(
+							  'success'=>true,
+							  'url'=>'store-profile',
+							  'message'=> ''
+							 ), 200);
+						//return redirect('user-profile');
+					  }
+				}else{
+					Auth::logout();
+				}
+				
+				
 			
 			}
 			else{

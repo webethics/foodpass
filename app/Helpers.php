@@ -89,15 +89,13 @@ function redirect_route_name(){
 		  
 	   // IF DATA_ADMIN/DATA_ANALYST/CUSTOMER_USER/CUSTOMER_ADMIN 
 	   
-	   if($role_id['SUPER_ADMIN']== current_user_role_id()){
+	   if(1 == current_user_role_id()){
 		  return 'admin/dashboard'; 
 	   }
-	   else if($role_id['NORMAL_USER']== current_user_role_id()){
-		 	return 'edit-profile';				
-	   } else if($role_id['INDIA_HEAD']== current_user_role_id()){
-		 	return 'edit-profile';					
-	   }else if(current_user_role_id() > 2){
-		  return 'edit-profile';	
+	   else if(2 == current_user_role_id()){
+		 	return 'profile';				
+	   } else if(3 == current_user_role_id()){
+		 	return 'store-profile';					
 	   }
 	   	  
 	   }else{
