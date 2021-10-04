@@ -12,6 +12,8 @@ use Illuminate\Http\Request;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\EmailTemplate;
+use App\Models\Kitchens;
+use App\Models\Coupons;
 use League\Csv\Writer;	
 use Auth;
 use Config;
@@ -184,10 +186,11 @@ class CustomersController extends Controller
     {
 		access_denied_user('customer_edit');
         $user = User::where('id',$user_id)->get();
+        $Kitchens = Kitchens::Where('status',1)->get();
 		$roles = Role::all();
 		if(count($user)>0){
-			$user =$user[0];
-			$view = view("modal.customerEdit",compact('user','roles'))->render();
+			$user = $user[0];
+			$view = view("modal.customerEdit",compact('user','roles','Kitchens'))->render();
 			$success = true;
 		}else{
 			$view = '';
@@ -222,18 +225,47 @@ class CustomersController extends Controller
 		return Response::json($response, 200);
 	}
 	public function update_customer(UpdateCustomerRequest $request,$customer_id){
+		
 		$data=array();
 		$result =array();
 		$requestData = User::find($customer_id);
 		$stored_data = User::where('id',$customer_id)->first();
+		$coupon_status = $request->coupon_status;
 		
 		if($request->ajax()){
 			$data =array();
 			$data['first_name']= $request->first_name;
 			$data['last_name']= $request->last_name;
+			$data['is_store_coupons_enabled_from_admin'] = $coupon_status ;
 			$data['role_id'] = $stored_data->role_id;
-			
+			$data['restaurant_kitchens'] = implode(",",$request->restaurant_kitchens);
+			$data['order_options'] = implode(",",$request->order_options);
+
+			$storeList = Coupons::where('user_id',$customer_id)->pluck('id')->toArray();
+		
+			if($request->coupon_status == 1){
+				if(!empty($storeList)){
+					$updatedStore = Coupons::whereIn('id',$storeList)->update([
+							'is_varified' => 1 ,
+							'is_store_verified' => 1,
+							'is_notify' => 1
+					]);
+				}
+			} elseif($request->coupon_status == 0){
+				if(!empty($storeList)){
+					$updatedStore = Coupons::whereIn('id',$storeList)->update([
+							'is_varified' => 0 ,
+							'is_store_verified' => 0
+					]);
+				}
+			}
+			//echo "<pre>";print_r($data);
 			$requestData->update($data);
+
+			$resultD = User::where('id',$customer_id)->first();
+			//echo "<pre>";
+			//print_r($resultD->toArray());
+			//die();
 			$result['success'] = true;
 			
 			//UPDATE PROFILE EVENT LOG END  
@@ -348,6 +380,20 @@ class CustomersController extends Controller
 		//Session::put('user_id', $result[0]->id);
 		
 		//return redirect('dashboard');
+	}
+
+	public function viewcustomers($id){
+		$user = user_data_by_id($id);
+		if(isset($user) && !empty($user)){
+			if($user->role_id == 2){
+				return view('admin.customers.customerview', compact('user'));	
+			}else{
+				return view('admin.customers.storeview', compact('user'));
+			}
+			
+		}else{
+			return redirect('/admin/dashboard')->with('error','User not found.');
+		}
 	}
 }
 ?>

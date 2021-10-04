@@ -1,3 +1,6 @@
+<?php
+	$get_subscription = subscribed_plan($customer->id);
+?>
 <tr data-customer-id="{{ $customer->id }}" class="user_row_{{$customer->id}}" >		
 	<td id="sno_{{$customer->id}}">{{(($page_number-1) * 10)+$sno}} 
 		<input type="hidden" name="page_number" value="{{$page_number}}" id="page_number_{{$customer->id}}"/>
@@ -6,6 +9,16 @@
 	<td id="registation_{{$customer->id}}">{{viewDateFormat($customer->created_at)}}</td>
 	<td id="full_name_{{$customer->id}}">{{$customer->first_name}} {{$customer->last_name}}</td>
 	<td id="email_{{$customer->id}}">{{$customer->email}}</td>
+	<?php
+	if($customer->role_id == 2){
+		$role = "User";
+	}else{
+		$role = "Restaurant";
+	}
+	?>
+	<td id="role_id_{{$customer->id}}">{{$role}}</td>
+	<td id="role_id_{{$customer->id}}">{{$get_subscription['plan']}}</td>
+	<td id="role_id_{{$customer->id}}">{{$get_subscription['expire']}}</td>
 	<!-- <td id="email_{{$customer->id}}">{{$customer->mobile_number}}</td> -->
 	<td id="status_{{$customer->id}}">
 		@php  $selected=''; @endphp
@@ -13,13 +26,26 @@
 		@php	$selected = 'checked=checked'@endphp
 		@endif	
 		<div class="custom-switch  custom-switch-primary custom-switch-small">
-			<input class="custom-switch-input switch_status" id="switch{{ $customer->id }}" type="checkbox" data-user_id="{{ $customer->id }}" {{$selected}}>
+			<input class="custom-switch-input switch_status" id="switch{{ $customer->id }}" type="checkbox" data-user_id="{{ $customer->id }}" {{$selected}} />
 			   <label class="custom-switch-btn" for="switch{{ $customer->id }}"></label>
-
-		  </div>
+		</div>
+	</td>
+	<td id="admin_verify_status_{{$customer->id}}">
+		@php  $selected=''; @endphp
+		@if($customer->admin_verify_status==1)
+		@php	$selected = 'checked=checked'@endphp
+		@endif	
+		<div class="custom-switch custom-switch-primary custom-switch-small">
+			<input class="custom-switch-input switch_status_account" id="switch_verify{{ $customer->id }}" type="checkbox" data-user_id="{{ $customer->id }}" {{$selected}}>
+			   <label class="custom-switch-btn" for="switch_verify{{ $customer->id }}"></label>
+		</div>
 	</td>
 	<td id="action_{{$customer->id}}">
 		
+		@if(check_role_access('customer_edit'))
+			<a class="action" href="{{url('admin/view-customer/'.$customer->id)}}" data-user_id="{{ $customer->id }}" title="Edit Customer"><i class="simple-icon-eye"></i> </a> 
+		@endif
+
 		@if(check_role_access('customer_edit'))
 			<a class="action editCustomer" href="javascript:void(0)" data-user_id="{{ $customer->id }}" title="Edit Customer"><i class="simple-icon-note"></i> </a> 
 		@endif

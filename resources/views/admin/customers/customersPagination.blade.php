@@ -5,8 +5,11 @@
 		<th scope="col">Registration</th>
 		<th scope="col">Name</th>
 		<th scope="col">Email</th>
-		<!-- <th scope="col">Mobile</th> -->
+		<th scope="col">Type</th>
+		<th scope="col">Subscription</th>
+		<th scope="col">Expire</th>
 		<th scope="col">Status</th>
+		<th scope="col">Account Verified</th>
 		<th scope="col">Action</th>
 		</tr>
 	</thead>

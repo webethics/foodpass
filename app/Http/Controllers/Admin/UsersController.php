@@ -369,6 +369,29 @@ class UsersController extends Controller
 		}
 		
 	}
+	
+	
+	// verify_account_status
+	public function verify_account_status(Request $request)
+	{
+		if($request->ajax()){
+			$user = User::where('id',$request->user_id);
+
+			$data =array();
+			$data['admin_verify_status'] =  $request->status;
+			$user->update($data);
+			
+			// Show message on the basis of status 
+			if($request->status==1)
+			 $enable =true ;
+			if($request->status==0)
+			 $enable =false ;
+		  
+		   $result =array('success' => $enable);	
+		   return Response::json($result, 200);
+		}
+		
+	}
 
 	//VERIFY ACCOUNT  
 	public function verifyAccount($token)

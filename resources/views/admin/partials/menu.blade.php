@@ -5,14 +5,20 @@
 		
 		 @php    
 			$roleArray = Config::get('constant.role_id');
-			$dashboardactive='';  $custactive='';	 $configactive='';  	$roleactive='';$cmsactive='';
+			$dashboardactive='';  $custactive='';	 $configactive='';  	$roleactive='';$cmsactive='';$couponsactive='';
 			
-			$emailactive ='';$site_sactive ='';$accactive  ='';
+			$emailactive ='';$site_sactive ='';$accactive  ='';$orders = '';$affilate = '';$kitchens = '';
 		 @endphp
 		 
 		 @if(collect(request()->segments())->last()=='account')
 		 @php
 	      $accactive ='active'
+	     @endphp
+		 @endif
+
+		 @if(collect(request()->segments())->last()=='kitchens')
+		 @php
+	      $kitchens ='active'
 	     @endphp
 		 @endif
 		
@@ -21,16 +27,34 @@
 	      $configactive ='active'
 	     @endphp
 		 @endif
-		  @if(collect(request()->segments())->last()=='dashboard')
+		 {{-- @if(collect(request()->segments())->last()=='dashboard')
 		 @php
 	      $dashboardactive ='active'
 	     @endphp
-		 @endif
+		 @endif--}}
 		  
-		  @if(collect(request()->segments())->last()=='customers')
-		 @php
-	      $custactive ='active'
-	     @endphp
+		 @if(collect(request()->segments())->last()=='customers' || collect(request()->segments())->last()=='dashboard')
+			@php
+				$custactive ='active'
+			@endphp
+		 @endif
+		 
+		 @if(collect(request()->segments())->last()=='coupons')
+			@php
+				$couponsactive ='active'
+			@endphp
+		 @endif
+		 
+		 @if(collect(request()->segments())->last()=='affilate')
+			@php
+				$affilate ='active'
+			@endphp
+		 @endif
+		 
+		 @if(collect(request()->segments())->last()=='orders')
+			@php
+				$orders ='active'
+			@endphp
 		 @endif
 		  
 		  @if(collect(request()->segments())->last()=='emails')
@@ -51,15 +75,15 @@
 		 @endif
 		 
 			<ul class="list-unstyled">
-				
-					@if(check_role_access('dashboard_listing'))
-					<li class="{{$dashboardactive}}">
+			
+					{{--@if(check_role_access('dashboard_listing'))
+					<!--<li class="{{$dashboardactive}}">
 						<a href="{{url('/admin/dashboard')}}">
 							<i class="simple-icon-home"></i>
 							<span>Dashbaord</span>
 						</a>
-					</li>
-					@endif
+					</li>-->
+					@endif--}}
 					@if(current_user_role_id() != 1)
 					<li class="{{$accactive}}">
 						<a href="{{url('/admin/account')}}">
@@ -76,6 +100,34 @@
 							</a>
 						</li>
 					@endif
+
+					<li class="{{$kitchens}}">
+							<a href="{{url('/admin/kitchens')}}">
+								<i class="simple-icon-fire"></i>
+								<span>kitchens</span>
+							</a>
+						</li>
+					
+						<li class="{{$couponsactive}}">
+							<a href="{{url('/admin/coupons')}}">
+								<i class="simple-icon-wallet"></i>
+								<span>Coupons</span>
+							</a>
+						</li>
+						
+						<li class="{{$orders}}">
+							<a href="{{url('/admin/orders')}}">
+								<i class="simple-icon-handbag"></i>
+								<span>orders</span>
+							</a>
+						</li>
+						
+						<li class="{{$affilate}}">
+							<a href="{{url('/admin/affilate')}}">
+								<i class="simple-icon-badge"></i>
+								<span>Affilate</span>
+							</a>
+						</li>
 					
 					@if(check_role_access('email_listing'))
 					<li class="{{$emailactive}}">
@@ -101,14 +153,15 @@
 						</a>
 					</li>
 					@endif
-					@if(check_role_access('cms_pages_listing'))
+					{{--@if(check_role_access('cms_pages_listing'))--}}
 					<li class="{{$cmsactive}}">
 						<a href="{{url('/admin/cms-pages')}}">
 							<i class="simple-icon-docs"></i>
 							<span>CMS Pages</span>
 						</a>
 					</li>
-					@endif
+					{{--@endif--}}
+					
 
 			</ul>
 		</div>

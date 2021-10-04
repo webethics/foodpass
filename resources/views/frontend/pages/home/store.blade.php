@@ -1,35 +1,42 @@
 @extends('frontend.creaters.landing.landing')
 @section('pageTitle','Store')
 @section('content')
-<main class="site-content">
          <div class="container innercontainer storecontainer mobstorecont">
+		 <div class="loader"></div>
             <div class="row">
                <div class="col leftsidebarsec desktop_sidebar">
                   <div class="sidebar_cont">
-                     <h4>Filter By</h4>
+                     <h4>Filter By <!--<button class="Apply_filter">Apply</button></h4>-->
                      <div class="sidebar_switches">
                         <ul id="switch1" class="swithes">
-                           <li class="ui-selected current"><span class="bgadded"></span><a href="#">Stores</a></li>
-                           <li><span class="bgadded"></span><a href="#">Coupons</a></li>
+                           <li data-id="1" class="ui-selected current"><span class="bgadded"></span><a href= "{{ url('store') }}" class = "cursor">Stores</a></li>
+                           <li data-id="2"><span class="bgadded"></span><a href="{{ url('coupons-store') }}" class = "cursor">Coupons</a></li>
                         </ul>
                      </div>
                      <div class="sidebar_switches">
                         <ul id="switch2" class="swithes">
-                           <li class="ui-selected current"><span class="bgadded"></span><a href="#">Delivery</a></li>
-                           <li><span class="bgadded"></span><a href="#">Pick Up</a></li>
+                           <li data-id="1" class="ui-selected current"><span class="bgadded"></span><a class="cursor">Delivery</a></li>
+                           <li data-id="2"><span class="bgadded"></span><a class="cursor">Pick Up</a></li>
                         </ul>
                      </div>
+					 <input type= "hidden" name="store_coupon" id="store_coupon" value= "1">
+					 <input type= "hidden" name="deliver_pick" id="deliver_pick" value= "">
+					 <input type= "hidden" name="sorting_key" id="sorting_key" value= "">
+					 <input type= "hidden" name="coupon_filter"  id="coupon_filter"  value= "">
+					 <input type= "hidden" name="deliver_cost" id="deliver_cost" value= <?php if(isset($_GET['delivery_Cost']) && $_GET['delivery_Cost'])echo $_GET['delivery_Cost'] ?>>
+					 <input type= "hidden" name="order_amount" id="order_amount" value= "<?php if(isset($_GET['order_amount']) && $_GET['order_amount'] == 10) echo $_GET['order_amount'];?>">
+                <input type= "hidden" name="store_min_amount" id="store_min_amount" value= "<?php if(isset($_GET['store_min_amount']) && $_GET['store_min_amount'] == 10) echo $_GET['store_min_amount'];?>">
                   </div>
                   <div class="sidebar_cont">
                      <h4>Min. Order Amount</h4>
                      <div class="sidebar_checkboxes">
                         <div class="checkblox_list">
                            <div class="custom-control custom-checkbox mb-3">
-                              <input type="checkbox" class="custom-control-input" id="customCheck" name="example1">
+                              <input type="checkbox" class="custom-control-input order_amount" id="customCheck" name="order_amount" value="10" <?php if(isset($_GET['order_amount']) && $_GET['order_amount'] == 10)echo "checked"?>>
                               <label class="custom-control-label" for="customCheck"><span>< $10.00</span></label>
                            </div>
                            <div class="custom-control custom-checkbox mb-3">
-                              <input type="checkbox" class="custom-control-input" id="customCheck1" name="example1">
+                              <input type="checkbox" class="custom-control-input order_amount" id="customCheck1" name="order_amount" value="15" <?php if(isset($_GET['order_amount']) && $_GET['order_amount'] == 15)echo "checked"?>>
                               <label class="custom-control-label" for="customCheck1"><span>< $15.00</span></label>
                            </div>
                         </div>
@@ -40,11 +47,11 @@
                      <div class="sidebar_checkboxes">
                         <div class="checkblox_list">
                            <div class="custom-control custom-checkbox mb-3">
-                              <input type="checkbox" class="custom-control-input" id="customCheck2" name="example1">
+                              <input type="checkbox" class="custom-control-input delivery_Cost" id="customCheck2" name="delivery_Cost" value="1.5" <?php if(isset($_GET['delivery_Cost']) && $_GET['delivery_Cost'] == 1.5)echo "checked"?>>
                               <label class="custom-control-label" for="customCheck2"><span>< $1.50</span></label>
                            </div>
                            <div class="custom-control custom-checkbox mb-3">
-                              <input type="checkbox" class="custom-control-input" id="customCheck3" name="example1">
+                              <input type="checkbox" class="custom-control-input delivery_Cost" id="customCheck3" name="delivery_Cost" value="2.5" <?php if(isset($_GET['delivery_Cost']) && $_GET['delivery_Cost'] == 2.5)echo "checked"?>>
                               <label class="custom-control-label" for="customCheck3"><span>< $2.50</span></label>
                            </div>
                         </div>
@@ -55,23 +62,23 @@
                      <div class="sidebar_checkboxes">
                         <div class="checkblox_list">
                            <div class="custom-control custom-checkbox mb-3">
-                              <input type="checkbox" class="custom-control-input" id="customCheck4" name="example1">
+                              <input type="checkbox" value="1" class="custom-control-input" id="customCheck4" name="coupon_filters">
                               <label class="custom-control-label" for="customCheck4"><span>Pre Order</span></label>
                            </div>
                            <div class="custom-control custom-checkbox mb-3">
-                              <input type="checkbox" class="custom-control-input" id="customCheck5" name="example1">
+                              <input type="checkbox" value="2" class="custom-control-input" id="customCheck5" name="coupon_filters">
                               <label class="custom-control-label" for="customCheck5"><span>Ontbijt & Lunch</span></label>
                            </div>
                            <div class="custom-control custom-checkbox mb-3">
-                              <input type="checkbox" class="custom-control-input" id="customCheck6" name="example1">
+                              <input type="checkbox" value="3" class="custom-control-input" id="customCheck6" name="coupon_filters">
                               <label class="custom-control-label" for="customCheck6"><span>Dinner</span></label>
                            </div>
                            <div class="custom-control custom-checkbox mb-3">
-                              <input type="checkbox" class="custom-control-input" id="customCheck7" name="example1">
+                              <input type="checkbox" value="4" class="custom-control-input" id="customCheck7" name="coupon_filters">
                               <label class="custom-control-label" for="customCheck7"><span>Late Night Snack</span></label>
                            </div>
                            <div class="custom-control custom-checkbox mb-3">
-                              <input type="checkbox" class="custom-control-input" id="customCheck8" name="example1">
+                              <input type="checkbox" value="5" class="custom-control-input" id="customCheck8" name="coupon_filters">
                               <label class="custom-control-label" for="customCheck8"><span>Special Deals</span></label>
                            </div>
                         </div>
@@ -84,28 +91,34 @@
                         <h4>Filter By <img src="{{asset('frontend/images/cancel.svg')}}" class="closebtn" /></h4>
                         <div class="sidebar_switches">
                            <ul id="switch1" class="swithes">
-                              <li class="ui-selected current"><span class="bgadded"></span><a href="#">Stores</a></li>
-                              <li><span class="bgadded"></span><a href="#">Coupons</a></li>
+                              <li data-id="1" class="ui-selected current"><span class="bgadded"></span><a href= "{{ url('store') }}" class = "cursor">Stores</a></li>
+                              <li data-id="2"><span class="bgadded"></span><a href="{{ url('coupons-store') }}" class = "cursor">Coupons</a></li>
                            </ul>
                         </div>
                         <div class="sidebar_switches">
                            <ul id="switch2" class="swithes">
-                              <li class="ui-selected current"><span class="bgadded"></span><a href="#">Delivery</a></li>
-                              <li><span class="bgadded"></span><a href="#">Pick Up</a></li>
+                              <li data-id="1" class="ui-selected current"><span class="bgadded"></span><a class="cursor">Delivery</a></li>
+                              <li data-id="2"><span class="bgadded"></span><a class="cursor">Pick Up</a></li>
                            </ul>
                         </div>
+                        <input type= "hidden" name="store_coupon" id="store_coupon" value= "1">
+                        <input type= "hidden" name="deliver_pick" id="deliver_pick" value= "">
+                        <input type= "hidden" name="sorting_key" id="sorting_key" value= "">
+                        <input type= "hidden" name="coupon_filter"  id="coupon_filter"  value= "">
+                        <input type= "hidden" name="deliver_cost" id="deliver_cost" value= <?php if(isset($_GET['delivery_Cost']) && $_GET['delivery_Cost'])echo $_GET['delivery_Cost'] ?>>
+                        <input type= "hidden" name="order_amount" id="order_amount" value= "<?php if(isset($_GET['order_amount']) && $_GET['order_amount'] == 10) echo $_GET['order_amount'];?>">
                      </div>
                      <div class="sidebar_cont">
                         <h4>Min. Order Amount</h4>
                         <div class="sidebar_checkboxes">
                            <div class="checkblox_list">
                               <div class="custom-control custom-checkbox mb-3">
-                                 <input type="checkbox" class="custom-control-input" id="mobcustomCheck" name="example1">
-                                 <label class="custom-control-label" for="mobcustomCheck"><span>€10.00 or less</span></label>
+                                 <input type="checkbox" class="custom-control-input order_amount" id="mobcustomCheck" name="order_amount" value="10"  <?php if(isset($_GET  ['order_amount']) && $_GET['order_amount'] == 10)echo "checked"?>>
+                                 <label class="custom-control-label" for="mobcustomCheck"><span>< €10.00</span></label>
                               </div>
                               <div class="custom-control custom-checkbox mb-3">
-                                 <input type="checkbox" class="custom-control-input" id="mobcustomCheck1" name="example1">
-                                 <label class="custom-control-label" for="mobcustomCheck1"><span>€15.00 or less</span></label>
+                                 <input type="checkbox" class="custom-control-input order_amount" id="mobcustomCheck1" name="order_amount" value="15" <?php if(isset($_GET['order_amount']) && $_GET['order_amount'] == 15)echo "checked"?>>
+                                 <label class="custom-control-label" for="mobcustomCheck1"><span>< €15.00</span></label>
                               </div>
                            </div>
                         </div>
@@ -115,12 +128,12 @@
                         <div class="sidebar_checkboxes">
                            <div class="checkblox_list">
                               <div class="custom-control custom-checkbox mb-3">
-                                 <input type="checkbox" class="custom-control-input" id="mobcustomCheck2" name="example1">
-                                 <label class="custom-control-label" for="mobcustomCheck2"><span>€1.50 or less</span></label>
+                                 <input type="checkbox" class="custom-control-input delivery_Cost" id="mobcustomCheck2" name="delivery_Cost" value="1.5" <?php if(isset($_GET['delivery_Cost']) && $_GET['delivery_Cost'] == 1.5)echo "checked"?>>
+                                 <label class="custom-control-label" for="mobcustomCheck2"><span>< €1.50</span></label>
                               </div>
                               <div class="custom-control custom-checkbox mb-3">
-                                 <input type="checkbox" class="custom-control-input" id="mobcustomCheck3" name="example1">
-                                 <label class="custom-control-label" for="mobcustomCheck3"><span>€2.50 or less</span></label>
+                                 <input type="checkbox" class="custom-control-input delivery_Cost" id="mobcustomCheck3" name="delivery_Cost" value="2.5" <?php if(isset($_GET['delivery_Cost']) && $_GET['delivery_Cost'] == 2.5)echo "checked"?>>
+                                 <label class="custom-control-label" for="mobcustomCheck3"><span>< €2.50</span></label>
                               </div>
                            </div>
                         </div>
@@ -130,23 +143,23 @@
                         <div class="sidebar_checkboxes">
                            <div class="checkblox_list">
                               <div class="custom-control custom-checkbox mb-3">
-                                 <input type="checkbox" class="custom-control-input" id="mobcustomCheck4" name="example1">
+                                 <input type="checkbox" value="1" class="custom-control-input" id="mobcustomCheck4" name="coupon_filters">
                                  <label class="custom-control-label" for="mobcustomCheck4"><span>Pre Order</span></label>
                               </div>
                               <div class="custom-control custom-checkbox mb-3">
-                                 <input type="checkbox" class="custom-control-input" id="mobcustomCheck5" name="example1">
+                                 <input type="checkbox" value="2" class="custom-control-input" id="mobcustomCheck5" name="coupon_filters">
                                  <label class="custom-control-label" for="mobcustomCheck5"><span>Ontbijt & Lunch</span></label>
                               </div>
                               <div class="custom-control custom-checkbox mb-3">
-                                 <input type="checkbox" class="custom-control-input" id="mobcustomCheck6" name="example1">
+                                 <input type="checkbox" value="3" class="custom-control-input" id="mobcustomCheck6" name="coupon_filters">
                                  <label class="custom-control-label" for="mobcustomCheck6"><span>Dinner</span></label>
                               </div>
                               <div class="custom-control custom-checkbox mb-3">
-                                 <input type="checkbox" class="custom-control-input" id="mobcustomCheck7" name="example1">
+                                 <input type="checkbox" value="4" class="custom-control-input" id="mobcustomCheck7" name="coupon_filters">
                                  <label class="custom-control-label" for="mobcustomCheck7"><span>Late Night Snack</span></label>
                               </div>
                               <div class="custom-control custom-checkbox mb-3">
-                                 <input type="checkbox" class="custom-control-input" id="mobcustomCheck8" name="example1">
+                                 <input type="checkbox" value="5" class="custom-control-input" id="mobcustomCheck8" name="coupon_filters">
                                  <label class="custom-control-label" for="mobcustomCheck8"><span>Special Deals</span></label>
                               </div>
                            </div>
@@ -167,7 +180,8 @@
                         <div id="mobsearchcontent">
                            <form class="searchbarform">
                               <div class="form-group">
-                                 <img src="{{asset('frontend/images/socialicon.png')}}" /><input type="text" class="form-control" placeholder="Search by restaurant name" /> 
+                                 <img src="{{asset('frontend/images/socialicon.png')}}" />
+                                 <input id="store_search" type="search" class="form-control" placeholder="Search by restaurant name" aria-label="Search"/> 
                               </div>
                            </form>
                         </div>
@@ -175,230 +189,24 @@
                   </div>
                </div>
                <div class="col rightcontentsec">
+			      <input type = "hidden" name="kitchen" id="kitchen" value="">
                   <section class="storeslider_sec innersection">
                      <div class="container">
                         <div class="storeslider center slider mt-5" id="switch3">
-                           <div class="storesliderblk ui-selectable ui-selected">
-                              <div class="storeslider_blkdiv">
-                                 <h4>Show all</h4>
-                              </div>
-                           </div>
-                           <div class="storesliderblk">
-                              <div class="storeslider_blkdiv">
-                                 <h4>Fish</h4>
-                              </div>
-                           </div>
-                           <div class="storesliderblk">
-                              <div class="storeslider_blkdiv">
-                                 <h4>Burger</h4>
-                              </div>
-                           </div>
-                           <div class="storesliderblk">
-                              <div class="storeslider_blkdiv">
-                                 <h4>Pizza</h4>
-                              </div>
-                           </div>
-                           <div class="storesliderblk">
-                              <div class="storeslider_blkdiv">
-                                 <h4>Fish</h4>
-                              </div>
-                           </div>
-                           <div class="storesliderblk">
-                              <div class="storeslider_blkdiv">
-                                 <h4>Sushi</h4>
-                              </div>
-                           </div>
-                           <div class="storesliderblk">
-                              <div class="storeslider_blkdiv">
-                                 <h4>Chicken</h4>
-                              </div>
-                           </div>
-                           <div class="storesliderblk">
-                              <div class="storeslider_blkdiv">
-                                 <h4>Fish</h4>
-                              </div>
-                           </div>
-                           <div class="storesliderblk">
-                              <div class="storeslider_blkdiv">
-                                 <h4>Sushi</h4>
-                              </div>
-                           </div>
-                           <div class="storesliderblk">
-                              <div class="storeslider_blkdiv">
-                                 <h4>Chicken</h4>
-                              </div>
-                           </div>
-                           <div class="storesliderblk">
-                              <div class="storeslider_blkdiv">
-                                 <h4>Fish</h4>
-                              </div>
-                           </div>
-                           <div class="storesliderblk">
-                              <div class="storeslider_blkdiv">
-                                 <h4>Burger</h4>
-                              </div>
-                           </div>
-                           <div class="storesliderblk">
-                              <div class="storeslider_blkdiv">
-                                 <h4>Pizza</h4>
-                              </div>
-                           </div>
-                           <div class="storesliderblk">
-                              <div class="storeslider_blkdiv">
-                                 <h4>Fish</h4>
-                              </div>
-                           </div>
-                           <div class="storesliderblk">
-                              <div class="storeslider_blkdiv">
-                                 <h4>Sushi</h4>
-                              </div>
-                           </div>
-                           <div class="storesliderblk">
-                              <div class="storeslider_blkdiv">
-                                 <h4>Chicken</h4>
-                              </div>
-                           </div>
-                           <div class="storesliderblk">
-                              <div class="storeslider_blkdiv">
-                                 <h4>Fish</h4>
-                              </div>
-                           </div>
-                           <div class="storesliderblk">
-                              <div class="storeslider_blkdiv">
-                                 <h4>Sushi</h4>
-                              </div>
-                           </div>
-                           <div class="storesliderblk">
-                              <div class="storeslider_blkdiv">
-                                 <h4>Chicken</h4>
-                              </div>
-                           </div>
-                           <div class="storesliderblk">
-                              <div class="storeslider_blkdiv">
-                                 <h4>Fish</h4>
-                              </div>
-                           </div>
-                           <div class="storesliderblk">
-                              <div class="storeslider_blkdiv">
-                                 <h4>Burger</h4>
-                              </div>
-                           </div>
-                           <div class="storesliderblk">
-                              <div class="storeslider_blkdiv">
-                                 <h4>Pizza</h4>
-                              </div>
-                           </div>
-                           <div class="storesliderblk">
-                              <div class="storeslider_blkdiv">
-                                 <h4>Fish</h4>
-                              </div>
-                           </div>
-                           <div class="storesliderblk">
-                              <div class="storeslider_blkdiv">
-                                 <h4>Sushi</h4>
-                              </div>
-                           </div>
-                           <div class="storesliderblk">
-                              <div class="storeslider_blkdiv">
-                                 <h4>Chicken</h4>
-                              </div>
-                           </div>
-                           <div class="storesliderblk">
-                              <div class="storeslider_blkdiv">
-                                 <h4>Fish</h4>
-                              </div>
-                           </div>
-                           <div class="storesliderblk">
-                              <div class="storeslider_blkdiv">
-                                 <h4>Sushi</h4>
-                              </div>
-                           </div>
-                           <div class="storesliderblk">
-                              <div class="storeslider_blkdiv">
-                                 <h4>Chicken</h4>
-                              </div>
+                     <div data-id="00000" class="storesliderblk">
+                        <div class="storeslider_blkdiv">
+                           <h4>Show all</h4>
+                        </div>
+                     </div>
+                     
+                     @foreach($Kitchens as $val)
+                        <div data-id="{{$val->id}}" class="storesliderblk">
+                           <div class="storeslider_blkdiv">
+                              <h4>{{$val->name}}</h4>
                            </div>
                         </div>
-                        <div class="morelink">
-                           <a href="#" data-toggle="modal" data-target="#kitchendal">
-                           More kitchens
-                           </a>
-                           <!-- The Modal -->
-                           <div class="modal kitchendal" id="kitchendal">
-                              <div class="modal-dialog kitchendal_div">
-                                 <div class="modal-content">
-                                    <!-- Modal Header -->
-                                    <div class="modal-header">
-                                       <h4 class="modal-title">All kitchens</h4>
-                                    </div>
-                                    <!-- Modal body -->
-                                    <div class="modal-body">
-                                       <ul>
-                                          <li>100% Halal</li>
-                                          <li>Afghan</li>
-                                          <li>American</li>
-                                          <li> Argentinian</li>
-                                          <li>Sandwiches </li>
-                                          <li>Burgers</li>
-                                          <li>Chinese</li>
-                                          <li>Drinks</li>
-                                          <li>Doner</li>
-                                          <li>Egyptian</li>
-                                          <li>Falafel</li>
-                                          <li>French</li>
-                                          <li>Gluten free</li>
-                                          <li>Greek</li>
-                                          <li>Indian</li>
-                                          <li>Indonesian</li>
-                                          <li>Italian</li>
-                                          <li>Japanese</li>
-                                          <li>Wraps
-                                       </ul>
-                                       <ul>
-                                          <li>Veal</li>
-                                          <li>Chicken</li>
-                                          <li>Korean</li>
-                                          <li>Lunch</li>
-                                          <li>Moroccan</li>
-                                          <li>Mexican</li>
-                                          <li>Desserts</li>
-                                          <li>Dutch</li>
-                                          <li>Noodles</li>
-                                          <li>Breakfast</li>
-                                          <li>pancakes</li>
-                                          <li>Pasta</li>
-                                          <li>Fries</li>
-                                          <li>Poké bowl</li>
-                                          <li>Roti</li>
-                                          <li>Beef</li>
-                                          <li>Salads</li>
-                                          <li>Schnitzel</li>
-                                          <li>Seafood</li>
-                                       </ul>
-                                       <ul>
-                                          <li>Shawarma</li>
-                                          <li>Smoothies / juices</li>
-                                          <li>Snacks</li>
-                                          <li>Soups</li>
-                                          <li>Spanish / Tapas</li>
-                                          <li>spare ribs</li>
-                                          <li>Stew</li>
-                                          <li>Steaks</li>
-                                          <li>Surinamese</li>
-                                          <li>Sushi</li>
-                                          <li>Cake</li>
-                                          <li>Tacos</li>
-                                          <li>Thai</li>
-                                          <li>Turkish pizza</li>
-                                          <li>Vegan</li>
-                                          <li>Vegetarian</li>
-                                          <li>Fish</li>
-                                          <li>Wok</li>
-                                       </ul>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
+                     @endforeach
+                     
                         </div>
                      </div>
                   </section>
@@ -406,12 +214,13 @@
                      <h2>
                         Stores
                         <span class="sortselblk">
-                           Sort By
+                           <i class="fa fa-spinner fa-spin" style="font-size:18px" id="processing_sort_icon"></i>Sort By
                            <div class="select-data sortselect">
-                              <select class="selectpicker">
-                                 <option>Name</option>
-                                 <option>Name 1</option>
-                                 <option>Name 2</option>
+                              <select class="selectpicker" id="store_sorting">
+                                 <option value="1">Name</option>
+                                 <option value="2">Delivery costs</option>
+                                 <option value="3">Order Amount</option>
+                                 <option value="4">Distance</option>
                               </select>
                            </div>
                         </span>
@@ -419,250 +228,159 @@
                      <div class="searchbar_div">
                         <form class="form-inline">
                            <div class="searchbardiv">
-                              <i class="fa fa-search"></i><input class="form-control" type="search" placeholder="Search" aria-label="Search">
+                              <i class="fa fa-search" id="search_icon"></i>
+							  <i class="fa fa-spinner fa-spin" style="font-size:18px" id="processing_icon"></i>
+							  <input class="form-control" id="store_search" type="search" placeholder="Search" aria-label="Search">
                            </div>
                         </form>
                      </div>
+
+                     
                      <div class="select-kitchens">
                         <div class="select-data sortselect">
-                           <select class="selectpicker">
-                              <option>All kitchens</option>
-                              <option>100% Halal</option>
-                              <option>Afghan</option>
-                              <option>American</option>
-                              <option>Argentinian</option>
-                              <option>Sandwiches</option>
-                              <option>Burgers</option>
-                              <option>Chinese</option>
-                              <option>Drinks</option>
-                              <option>Doner</option>
-                              <option>Egyptian</option>
+                           <select class="selectpicker kitchen_mobile_selector" id="more_kitchen_selectpicker">
+                              <option data-id="00000" value="00000" class="storesliderblk_selectpicker">All kitchens</option>
+                              @foreach($Kitchens as $val)
+                                 <option data-id="{{$val->id}}" value="{{$val->id}}" class="storesliderblk_selectpicker">{{$val->name}}</option>
+                              @endforeach
                            </select>
                         </div>
                      </div>
-                     <div class="storeblk">
-                        <div class="doticon">
-                           <i class="fa fa-share-alt"></i>
-                        </div>
-                        <div class="row">
-                           <div class="col-md-3 storeimage">
-                              <div class="storeimage_widget">
-                                 <img src="{{asset('frontend/images/store1.png')}}" />
-                                 <span class="opentag">Open</span>
-                              </div>
-                           </div>
-                           <div class="col-md-6 storeblkcont">
-                              <h3>The Flying Artichoke Restaurant<img src="{{asset('frontend/images/information.svg')}}" /></h3>
-                              <p>40 Mortensen Ave, 93905 Salinas, CA</p>
-                              <span>$20.00 Minimum Order</span>
-                           </div>
-                           <div class="col-md-3 viewcouponbtn whitebtn">
-                              <a href="#" data-toggle="collapse" data-target="#couponcollapse1" aria-expanded="false" aria-controls="couponcollapse1"><span class="viewcpnbtn">View Coupon<i class="fa fa-angle-down"></i></span><span class="hidecpnbtn">Hide Coupon<i class="fa fa-angle-up"></i></span></a>
-                           </div>
-                        </div>
-                        <div class="collapse multi-collapse" id="couponcollapse1">
-                           <div class="store_offerssec">
-                              <div class="store_offers">
-                                 <div class="row">
-                                    <div class="col-md-9 store_offercont">
+					 
+					 <div id="store_listing">
+					 @php
+						$count = 0;
+					 @endphp
+					 @if(isset($restaurant) && !empty($restaurant))
+					 
+						@foreach($restaurant as $val)
+						   @php
+						    $count++;
+							$status = App\Models\StoreTimings::checktodaystatus($val->id);
+							$profile_photo =  profile_photo($val->id);
+							$get_Coupons   = App\Models\Coupons::getcouopon($val->id);
+
+                     $kitchens = get_store_kitchen($val->id);
+						  @endphp
+						  
+						  <div class="storeblk">
+								<div class="doticon">
+								   <!--<i class="fa fa-share-alt"></i>-->
+								</div>
+								<div class="row">
+									
+								   <div class="col-md-3 storeimage">
+									  <div class="storeimage_widget">
+										 <img src="{{$profile_photo}}" />
+										 @if($status == 1)
+											<span class="opentag">Open</span>
+										 @else
+											 <span class="opentag closetag">Closed</span>
+										@endif
+									  </div>
+								   </div>
+								   <div class="col-md-6 storeblkcont">
+									@if(Auth::user())
+										<a href = "/info/{{$val->id}}">
+											<h3>{{$val->restaurant_name}}<img data-toggle="tooltip" title="Address: {{$val->address}} Phone:{{$val->mobile_number}}  Website:{{$val->website}}   " src="{{asset('frontend/images/information.svg')}}" /></h3>
+										</a>
+									@else
+										<a href="#" data-toggle="modal" data-target="#formmodal">
+											<h3>{{$val->restaurant_name}}
+												<img data-toggle="tooltip" title="Address: {{$val->address}} Phone:{{$val->mobile_number}}  Website:{{$val->website}}   " src="{{asset('frontend/images/information.svg')}}" />
+											</h3>
+										</a>
+									@endif
+										
+									  
+									  
+									  
+                             <p>{{$kitchens}}</p>
+                             	<!--@if(isset($val->store_min_amount))
+											<span class="coupn_min_order">${{$val->store_min_amount}} Minimum Order</span>
+										@else
+											<span class="coupn_min_order">${{$val->order_amount}} Minimum Order</span>
+										@endif -->
+									  @if($get_Coupons['coupon_count'] > 0 )
+                             		  	  <span class="copon_count">{{ $get_Coupons['coupon_count'] }} coupons available</span>
+									  @else
+										  <span class="copon_count">Momenteel geen beschikbare coupons.</span>
+									  @endif
+                             
+                              <span class="copon_count" style="display:none">{{ $get_Coupons['coupon_count'] }} coupons available</span>
+								   </div>
+								   @if(isset($get_Coupons['coupon']) && !empty($get_Coupons['coupon']) && $get_Coupons['coupon_count'] > 0)
+								   <div class="col-md-3 viewcouponbtn whitebtn">
+									  <a href="#" data-toggle="collapse" data-target="#couponcollapse{{$val->id}}" aria-expanded="false" aria-controls="couponcollapse{{$val->id}}"><span class="viewcpnbtn">View Coupon<i class="fa fa-angle-down"></i></span><span class="hidecpnbtn">Hide Coupon<i class="fa fa-angle-up"></i></span></a>
+								   </div>
+								   @endif
+								   
+								</div>
+								<div class="collapse multi-collapse" id="couponcollapse{{$val->id}}">
+								
+								 @if(isset($get_Coupons['coupon']) && !empty($get_Coupons['coupon']) && $get_Coupons['coupon_count'] > 0)
+									@foreach($get_Coupons['coupon'] as $coupon)
+									@php
+										$photo =  coupon_image($coupon->id);
+										$pickup_delivery = $coupon->coupon_pickup_delivery == 1 ? "Pickup" : "Deliver";
+										$expire_date = date("d M, Y",$coupon->coupon_end_time);
+                              $expire_time = date("h:i a",$coupon->coupon_end_time);
+                              $typeArr = array();
+                              $typeArr = explode(',', $coupon->coupon_display);
+                              $arrCheck = [1, 2];
+									@endphp
+								   <div class="store_offerssec">
+									  <div class="store_offers">
+										 <div class="row">
+											<div class="col-md-9 store_offercont">
+                                    @if($coupon->free_coupon_type != '')
+                                       <span class="offertag free_offer">
+                                           FREE
+                                       </span>
+                                    @endif
+                                    @if($coupon->discount_1 != '')
                                        <span class="offertag">
-                                       20%<br/><span class="lightweight">OFF</span>
+                                          {{$coupon->discount_1}}%<br/><span class="lightweight">OFF</span>
                                        </span>
-                                       <div class="store_offertext">
-                                          <p>10% discount on your meal!</p>
-                                          <span>Exp. on 31 Dec 2020 at 23:59</span>
-                                       </div>
-                                    </div>
-                                    <div class="col-md-3 viewcouponbtn">
-                                       <a href="#" data-toggle="modal" data-target="#couponmodal">Get Coupon</a>
-                                    </div>
-                                 </div>
-                              </div>
-                              <div class="store_offers">
-                                 <div class="row">
-                                    <div class="col-md-9 store_offercont">
-                                       <span class="offertag freecoupon">
-                                       Free</span>
-                                       </span>
-                                       <div class="store_offertext">
-                                          <p>10% discount on your meal!</p>
-                                          <span>Exp. on 31 Dec 2020 at 23:59</span>
-                                       </div>
-                                    </div>
-                                    <div class="col-md-3 viewcouponbtn">
-                                       <a href="#" data-toggle="modal" data-target="#couponmodal">Get Coupon</a>
-                                    </div>
-                                 </div>
-                              </div>
-                              <div class="store_offers">
-                                 <div class="row">
-                                    <div class="col-md-9 store_offercont">
-                                       <span class="offertag freecoupon">
-                                       Free</span>
-                                       <div class="store_offertext">
-                                          <p>10% discount on your meal!</p>
-                                          <span>Exp. on 31 Dec 2020 at 23:59</span>
-                                       </div>
-                                    </div>
-                                    <div class="col-md-3 viewcouponbtn">
-                                       <a href="#" data-toggle="modal" data-target="#couponmodal">Get Coupon</a>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                     <div class="storeblk">
-                        <div class="doticon">
-                           <i class="fa fa-share-alt"></i>
-                        </div>
-                        <div class="row">
-                           <div class="col-md-3 storeimage">
-                              <div class="storeimage_widget">
-                                 <img src="{{asset('frontend/images/store1.png')}}" />
-                                 <span class="opentag">Open</span>
-                              </div>
-                           </div>
-                           <div class="col-md-6 storeblkcont">
-                              <h3>The Flying Artichoke Restaurant<img src="{{asset('frontend/images/information.svg')}}" /></h3>
-                              <p>40 Mortensen Ave, 93905 Salinas, CA</p>
-                              <span>$20.00 Minimum Order</span>
-                           </div>
-                           <div class="col-md-3 viewcouponbtn">
-                              <a href="#" data-toggle="collapse" data-target="#couponcollapse2" aria-expanded="false" aria-controls="couponcollapse2"><span class="viewcpnbtn">View Coupon<i class="fa fa-angle-down"></i></span><span class="hidecpnbtn">Hide Coupon<i class="fa fa-angle-up"></i></span></a>
-                           </div>
-                        </div>
-                        <div class="collapse multi-collapse" id="couponcollapse2">
-                           <div class="store_offerssec">
-                              <div class="store_offers">
-                                 <div class="row">
-                                    <div class="col-md-9 store_offercont">
-                                       <span class="offertag">
-                                       20%<br/><span class="lightweight">OFF</span>
-                                       </span>
-                                       <div class="store_offertext">
-                                          <p>10% discount on your meal!</p>
-                                          <span>Exp. on 31 Dec 2020 at 23:59</span>
-                                       </div>
-                                    </div>
-                                    <div class="col-md-3 viewcouponbtn">
-                                       <a href="#" data-toggle="modal" data-target="#couponmodal">Get Coupon</a>
-                                    </div>
-                                 </div>
-                              </div>
-                              <div class="store_offers">
-                                 <div class="row">
-                                    <div class="col-md-9 store_offercont">
-                                       <span class="offertag freecoupon">
-                                       Free</span>
-                                       </span>
-                                       <div class="store_offertext">
-                                          <p>10% discount on your meal!</p>
-                                          <span>Exp. on 31 Dec 2020 at 23:59</span>
-                                       </div>
-                                    </div>
-                                    <div class="col-md-3 viewcouponbtn">
-                                       <a href="#" data-toggle="modal" data-target="#couponmodal">Get Coupon</a>
-                                    </div>
-                                 </div>
-                              </div>
-                              <div class="store_offers">
-                                 <div class="row">
-                                    <div class="col-md-9 store_offercont">
-                                       <span class="offertag freecoupon">
-                                       Free</span>
-                                       <div class="store_offertext">
-                                          <p>10% discount on your meal!</p>
-                                          <span>Exp. on 31 Dec 2020 at 23:59</span>
-                                       </div>
-                                    </div>
-                                    <div class="col-md-3 viewcouponbtn">
-                                       <a href="#" data-toggle="modal" data-target="#couponmodal">Get Coupon</a>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                     <div class="storeblk">
-                        <div class="doticon">
-                           <i class="fa fa-share-alt"></i>
-                        </div>
-                        <div class="row">
-                           <div class="col-md-3 storeimage">
-                              <div class="storeimage_widget">
-                                 <img src="{{asset('frontend/images/store1.png')}}" />
-                                 <span class="opentag closetag">Closed</span>
-                              </div>
-                           </div>
-                           <div class="col-md-6 storeblkcont">
-                              <h3>The Flying Artichoke Restaurant <img src="{{asset('frontend/images/information.svg')}}" /></h3>
-                              <p>40 Mortensen Ave, 93905 Salinas, CA</p>
-                              <span>$20.00 Minimum Order</span>
-                           </div>
-                           <div class="col-md-3 viewcouponbtn">
-                              <a href="#" data-toggle="collapse" data-target="#couponcollapse3" aria-expanded="false" aria-controls="couponcollapse3"><span class="viewcpnbtn">View Coupon<i class="fa fa-angle-down"></i></span><span class="hidecpnbtn">Hide Coupon<i class="fa fa-angle-up"></i></span></a>
-                           </div>
-                        </div>
-                        <div class="collapse multi-collapse" id="couponcollapse3">
-                           <div class="store_offerssec">
-                              <div class="store_offers">
-                                 <div class="row">
-                                    <div class="col-md-9 store_offercont">
-                                       <span class="offertag">
-                                       20%<br/><span class="lightweight">OFF</span>
-                                       </span>
-                                       <div class="store_offertext">
-                                          <p>10% discount on your meal!</p>
-                                          <span>Exp. on 31 Dec 2020 at 23:59</span>
-                                       </div>
-                                    </div>
-                                    <div class="col-md-3 viewcouponbtn">
-                                       <a href="#" data-toggle="modal" data-target="#couponmodal">Get Coupon</a>
-                                    </div>
-                                 </div>
-                              </div>
-                              <div class="store_offers">
-                                 <div class="row">
-                                    <div class="col-md-9 store_offercont">
-                                       <span class="offertag freecoupon">
-                                       Free</span>
-                                       </span>
-                                       <div class="store_offertext">
-                                          <p>10% discount on your meal!</p>
-                                          <span>Exp. on 31 Dec 2020 at 23:59</span>
-                                       </div>
-                                    </div>
-                                    <div class="col-md-3 viewcouponbtn">
-                                       <a href="#" data-toggle="modal" data-target="#couponmodal">Get Coupon</a>
-                                    </div>
-                                 </div>
-                              </div>
-                              <div class="store_offers">
-                                 <div class="row">
-                                    <div class="col-md-9 store_offercont">
-                                       <span class="offertag freecoupon">
-                                       Free</span>
-                                       <div class="store_offertext">
-                                          <p>10% discount on your meal!</p>
-                                          <span>Exp. on 31 Dec 2020 at 23:59</span>
-                                       </div>
-                                    </div>
-                                    <div class="col-md-3 viewcouponbtn">
-                                       <a href="#" data-toggle="modal" data-target="#couponmodal">Get Coupon</a>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
+                                    @endif
+											   <div class="store_offertext">
+												  <p>{{$coupon->product_name}}
+                                       @if(in_array("3", $typeArr))
+                                          <span class="premium_tag"><img src="{{asset('frontend/images/premium.png')}}" /></span>
+                                       @endif
+                                      </p>
+												  <span>Exp. on {{$expire_date}} at {{$expire_time}}</span>
+											   </div>
+											</div>
+											<div class="col-md-3 viewcouponbtn">
+											   @if(Auth::user())
+													<a href="#"  class = "view_coupon" data-id="{{$coupon->id}}">GET coupon</a>
+												@else
+													<a href="#" data-toggle="modal" data-target="#formmodal">GET coupon</a>
+												@endif
+											</div>
+										 </div>
+									  </div>
+									</div>
+								   @endforeach
+								   @endif
+								</div>
+							 </div>
+						@endforeach
+					@endif
+					@if($count == 0)
+						<div class="storeblk">No Records Found</div>
+					@endif	
+					</div>
                </div>
                </section>
             </div>
          </div>
          </div>
-      </main>
-	  <script src="{{ url('/frontend/js/jquery-2.2.0.min.js')}}" type="text/javascript"></script>
+	  <!--<script src="{{ url('/frontend/js/jquery-2.2.0.min.js')}}" type="text/javascript"></script>-->
+	  <script src="{{ url('frontend/js/coupon.js')}}" type="text/javascript"></script>
+	  <script src="{{ url('frontend/js/selectable.js')}}" type="text/javascript"></script>
+     <script src="{{ url('frontend/js/custom.js')}}"></script>
  <script type="text/javascript">
          $(document).on('ready', function() {
          $('.storeslider').slick({
@@ -712,8 +430,9 @@
          
          ]
          });
-         
+         $("div#switch3").css('overflow', 'unset');
          });
+         
       </script>
       <!--<script>
          // Selectable
@@ -746,25 +465,26 @@
             appendTo: ".storeslider_sec .slider",
             toggle: true
          });
-         
+		 
       </script>
       <!-- The Modal -->
       <div class="modal getcpn_modal" id="couponmodal">
-         <div class="modal-dialog">
-            <div class="modal-content">
-               <button type="button" class="close" data-dismiss="modal">&times;</button>
-               <!-- Modal body -->
-               <div class="modal-body">
-                  <img src="{{asset('frontend/images/elcarne.png')}}" />
-                  <h4>Elcarne <img src="{{asset('frontend/images/information.svg')}}" class="infoicon" /></h4>
-                  <h5>Buy 2 Burgers, get 1 free!</h5>
-                  <p>Bestel twee burgers en ontvang de derde gratis!</p>
-                  <p>Expires on 31/10/2020 at 23:59</p>
-                  <a href="#getcpnbtn1" data-toggle="modal" data-target="#couponmodal2" class="getcpnbtn">Get Coupon</a>
-               </div>
+      <div class="modal-dialog">
+         <div class="modal-content">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <!-- Modal body -->
+            <div class="modal-body">
+               <img id="coupon_view_image" src="{{asset('frontend/images/elcarne.png')}}" />
+               <h4 id="coupon_view_name">Elcarne <img src="{{asset('frontend/images/information.svg')}}" class="infoicon" /></h4>
+               <h5>Buy 2 Burgers, get 1 free!</h5>
+               <p id="coupon_view_details">Bestel twee burgers en ontvang de derde gratis!</p>
+               <p id="coupon_view_expire">Expires on 31/10/2020 at 23:59</p>
+               <a href="#" class="getcpnbtn" id="couponorder">Get Coupon</a>
+               <!--<a href="#getcpnbtn1" data-toggle="modal" data-target="#couponmodal2" class="getcpnbtn">Get Coupon</a>-->
             </div>
          </div>
       </div>
+   </div>
       <!-- The Modal -->
       <div class="modal getcpn_modal getcpn_modal2" id="couponmodal2">
          <div class="modal-dialog">
@@ -818,8 +538,8 @@
              });
          	    $('#mobfilter').click( function(e) {
                  
-                 e.preventDefault(); // stops link from making page jump to the top
-                 e.stopPropagation(); // when you click the button, it stops the page from seeing it as clicking the body too
+                 //e.preventDefault(); // stops link from making page jump to the top
+                // e.stopPropagation(); // when you click the button, it stops the page from seeing it as clicking the body too
                  $('#mobfiltercontent').toggle('fade');
                  
              });
@@ -845,6 +565,26 @@
                  $('#mobfiltercontent').hide('');
                  
              });
+
+            var screenWidth = screen.width;
+            if(screenWidth >=768 ){
+              $('select.selectpicker.kitchen_mobile_selector option[data-id="00000"]').text('Meer keukens');
+            }
+
+            /*$('section.storesection .col-md-3.viewcouponbtn.whitebtn a ').on('click', function(){
+               var min_order = $(this).parents().eq(2).find('span.coupn_min_order').is(':visible');
+               if(min_order){
+                  $(this).parents().eq(1).find('span.copon_count').css('visibility', 'visible');
+                  $(this).parents().eq(1).find('span.copon_count').show();
+                  $(this).parents().eq(1).find('span.coupn_min_order').css('visibility', 'hidden');
+                  $(this).parents().eq(1).find('span.coupn_min_order').hide();
+               }else{
+                  $(this).parents().eq(1).find('span.copon_count').css('visibility', 'hidden');
+                  $(this).parents().eq(1).find('span.copon_count').hide();
+                  $(this).parents().eq(1).find('span.coupn_min_order').css('visibility', 'visible');
+                  $(this).parents().eq(1).find('span.coupn_min_order').show();
+               }
+            }); */
              
          });
          

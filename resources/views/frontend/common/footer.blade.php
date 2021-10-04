@@ -14,9 +14,10 @@
                            <h4>Menu</h4>
                            <ul class="footerlink_list">
                               <li><a href="/">Home </a></li>
-                              <li><a href="{{url('/how-it-works')}}">How it Works</a></li>
                               <li><a href="{{url('/about-us')}}">About Us</a></li>
-                              <li><a href="#">Restaurants</a></li>
+							  <li><a href="{{url('/how-it-works')}}">How it Works</a></li>
+                              <li><a href="{{url('/privacy')}}">Privacy policy</a></li>
+                              <li><a href="{{url('/terms')}}">Terms</a></li>
                            </ul>
                         </div>
                      </div>
@@ -33,9 +34,9 @@
                         <div class="footerlink_area">
                            <h4>Social</h4>
                            <ul class="footersocial_icons">
+                              <li><a href="#"><i class="fab fa-instagram"></i></a></li>
                               <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-                              <li><a href="#"><i class="fab fa-twitter"></i></a></li>
-                              <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+                              <li><a href="#"><i class="fab fa-youtube"></i></a></li>
                            </ul>
                         </div>
                      </div>

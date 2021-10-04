@@ -3,22 +3,29 @@
 @section('content')
 
 
-	<main class="site-content mobsite-content">
          <div class="container innercontainer">
             <div class="row">
-               <div class="col leftsidebarsec profileftsidebar">
+               <div class="col leftsidebarsec profileftsidebar mobsidebar userProfile">
                   <div class="sidebar_cont profilesidebar">
                      <div class="userinfo">
                         <div class="userimage">
-                           <img src="{{asset('frontend/images/userimage1.png')}}" />
-                        </div>
-                        <h4>Selena Gomez</h4>
-                        <a href="#">+1 85658 89562</a>
-                        <a href="#">selenagomez@gmail.com</a>
+							@if(auth::user()->profile_photo==NULL)
+							   <img class="updated_profile_pic" src="{{asset('frontend/images/default_user.jpg')}}" />
+							@else
+								
+							@php
+								$photo =  profile_photo(auth::user()->id);
+							@endphp
+								<img class="updated_profile_pic" src="{{timthumb($photo,80,80)}}">
+							@endif
+						</div>
+                        <h4>{{ $user->first_name }} {{ $user->last_name }}</h4>
+                        <a href="tel:{{ $user->mobile_number }}">{{ $user->mobile_number }}</a>
+                        <a href="mailto:{{ $user->email }}">{{ $user->email }}</a>
                      </div>
                      <ul class="accordion profilelist" id="accordion">
                         <li class="nav-link dropdown-toggle couponlink active">
-                           <a href="profile.html">
+                           <a href="{{url('profile')}}">
                               <div class="link">
                                  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
                                     <defs>
@@ -32,7 +39,7 @@
                            </a>
                         </li>
                         <li class="nav-link dropdown-toggle menukartlink">
-                           <a href="my-coupon.html">
+                           <a href="{{url('my-coupon')}}">
                               <div class="link">
                                  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
                                     <defs>
@@ -46,7 +53,7 @@
                            </a>
                         </li>
                         <li class="nav-link dropdown-toggle alertlink">
-                           <a href="alerts.html">
+                           <a href="{{url('alerts')}}">
                               <div class="link">
                                  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
                                     <defs>
@@ -60,7 +67,7 @@
                            </a>
                         </li>
                         <li class="nav-link dropdown-toggle afiliatelink">
-                           <a href="affiliate.html">
+                           <a href="{{url('affiliate')}}">
                               <div class="link">
                                  <svg xmlns="http://www.w3.org/2000/svg" width="22.3" height="22.3" viewBox="0 0 22.3 22.3">
                                     <defs>
@@ -74,8 +81,22 @@
                               </div>
                            </a>
                         </li>
+						<li class="nav-link dropdown-toggle infolink">
+                           <a href="{{('/subscription')}}">
+                              <div class="link">
+                                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+                                    <defs>
+                                       <style>.a{fill:none;}</style>
+                                    </defs>
+                                    <path class="a" d="M0,0H22V22H0Z"/>
+                                    <path d="M5,20a.954.954,0,0,1-1-.9V2.9A.954.954,0,0,1,5,2H19a.954.954,0,0,1,1,.9V5.6H18V3.8H6V18.2H18V16.4h2v2.7a.954.954,0,0,1-1,.9Zm13-5.4V11.9H11V10.1h7V7.4L23,11Z" transform="translate(-2)"/>
+                                 </svg>
+                                 Become VIP
+                              </div>
+                           </a>
+                        </li>
                         <li class="nav-link dropdown-toggle infolink">
-                           <a href="#">
+                           <a href="{{('/logout')}}">
                               <div class="link">
                                  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
                                     <defs>
@@ -99,36 +120,44 @@
                            <div class="profilehdr">
                               <div class="profilelefthdr pfl_lefthdr">
                                  <div class="userimage">
-                                    <img src="{{asset('frontend/images/userimage1.png')}}">
-                                 </div>
-                                 <h3>John Doe</h3>
+									@if(auth::user()->profile_photo==NULL)
+									   <img class="updated_profile_pic" src="{{asset('frontend/images/default_user.jpg')}}" />
+									@else
+										
+									@php
+										$photo =  profile_photo(auth::user()->id);
+									@endphp
+										<img class="updated_profile_pic" src="{{timthumb($photo,80,80)}}">
+									@endif
+								</div>
+                                 <h3>{{ $user->first_name }} {{ $user->last_name }}</h3>
                               </div>
                               <div class="profilerighthdr pfl_righthdr">
-                                 <a href="#">Edit Password</a>
-                                 <a href="#">Edit Profile</a>
+                                 <a href="{{('/edit-password')}}">Edit Password</a>
+                                 <a href="{{('/edit-profile')}}">Edit Profile</a>
                               </div>
                            </div>
                            <div class="profilecont">
                               <div class="row">
                                  <div class="col-md-5 prof_info">
                                     <span>Address</span>
-                                    <p>303 Frederick Street, CA, California</p>
+                                    <p>{{ $user->address }}</p>
                                  </div>
                                  <div class="col-md-4 prof_info">
                                     <span>Post Code</span>
-                                    <p>95814</p>
+                                    <p>{{ $user->post_code }}</p>
                                  </div>
                                  <div class="col-md-3 prof_info">
                                     <span>City</span>
-                                    <p>Sacramento</p>
+                                    <p>{{ $user->city }}</p>
                                  </div>
                                  <div class="col-md-5 prof_info">
                                     <span>Telefoon</span>
-                                    <p><a href="tel:0612345678">0612345678</a></p>
+                                    <p><a href="tel:{{ $user->mobile_number }}">{{ $user->mobile_number }}</a></p>
                                  </div>
                                  <div class="col-md-4 prof_info">
                                     <span>E-mail</span>
-                                    <p><a href="mailto:email@outlook.com">email@outlook.com</a></p>
+                                    <p><a href="mailto:{{ $user->email }}">{{ $user->email }}</a></p>
                                  </div>
                               </div>
                            </div>
@@ -138,7 +167,7 @@
                </div>
             </div>
          </div>
-      </main>
+		 <script src="{{ url('frontend/js/custom.js')}}" type="text/javascript"></script>
 		<script type="text/javascript">
          $(document).on('ready', function() {
          $('.center').slick({

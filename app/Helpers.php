@@ -4,6 +4,9 @@
 //namespace App\Http\Middleware;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Coupons;
+use App\Models\Payment;
+use App\Models\Kitchens;
 use App\Models\RolesPermission;
 use App\Models\PermissionList;
 use App\Models\Setting;
@@ -16,7 +19,6 @@ use App\Models\CityLists;
 use App\Models\Company;
 use App\Models\Plan;
 use Carbon\Carbon;
-
 
 function banner_photo($user_id){
 	
@@ -50,11 +52,98 @@ function user_id(){
 	return $user->id;
 }
 
+function get_store_kitchen($store_id){
+	$get_kitchen = User::where('id',$store_id)->first();
+	if(isset($get_kitchen) && $get_kitchen != "" && $get_kitchen->restaurant_kitchens != ""){
+		$explode = explode(",", $get_kitchen->restaurant_kitchens);
+		$name_kitchen = array();
+		foreach ($explode as $key => $value) {
+			$kitchn_name = get_kitchen_name($value);
+			if($kitchn_name != ""){
+				$name_kitchen[] = 	$kitchn_name;
+			}
+		}
+		if(!empty($name_kitchen)){
+			$kitchens = implode(",", $name_kitchen);	
+		}else{
+			$kitchens = "No Kitchen found.";
+		}
+	}else{
+		$kitchens = "No Kitchen found.";
+	}
+	return $kitchens;
+}
+
+function get_kitchen_name($kitchen_id){
+	$kitchens = Kitchens::where('id',$kitchen_id)->first();
+	if(isset($kitchens) && !empty($kitchens)){
+		return $kitchens->name;	
+	}else{
+		return '';
+	}
+}
+
 /* Get User data by ID  */
 function user_data_by_id($id){
 	$userData = User::where('id',$id)->get();
 	return $userData[0];
 }
+
+function affilate_count($user_id){
+	$user = User::where('id',$user_id)->first();
+		$affilate_user = User::where('affilate_id',$user->customer_id)->get();
+		$count = 0;
+		foreach($affilate_user as $val){
+			$check_payment = Payment::where('user_id',$val->id)->first();
+			if(isset($check_payment) && !empty($check_payment)){
+				$count++;
+			}
+		}
+		return $count;
+}
+
+/* Function to check user is subscribed or not  */
+function user_subscription_status(){
+	$user = \Auth::user();
+	$payment = Payment::where('user_id',$user->id)
+					->first();
+	if(isset($payment) && !empty($payment)){
+		if($payment->amount == "12.00"){
+			$expire = $payment->updated_at->addYear()->format('d F Y');
+		}else{
+			$expire = $payment->updated_at->addMonth()->format('d F Y');
+		}
+		$timestamp = strtotime($expire);
+		if($timestamp > time()){
+			return 1;
+		}else{
+			return 0;
+		}
+		
+	}else{
+		return 0;
+	}
+} 
+
+
+/* Function to get the user subscribed plan  */
+function subscribed_plan($user_id){
+	$payment = Payment::where('user_id',$user_id)->first();
+	$array   = array();
+	if(isset($payment) && !empty($payment)){
+		if($payment->amount == "12.00"){
+			$array['expire'] = $payment->updated_at->addYear()->format('d F Y');
+			$array['plan']   = "Yearly";
+		}else{
+			$array['expire'] = $payment->updated_at->addMonth()->format('d F Y');
+			$array['plan']   = "Monthly";
+		}
+	}else{
+		$array['expire'] = '';
+		$array['plan']   = '';
+	}
+	return $array;
+} 
 
 /* Explode by  */
 function explodeTo($sign,$data){
@@ -113,6 +202,29 @@ function profile_photo($user_id){
 
 }
 
+function coupon_image($coupon_id){
+	   
+	  $user_data = Coupons::where('id',$coupon_id)->get();
+
+	  $profile_photo =  url('/uploads/coupons').'/'. $user_data[0]->user_id .'/'. $user_data[0]->coupon_image;
+	  return $profile_photo ;
+
+}
+
+function get_coupon($coupon_id){
+	  $coupon_data = Coupons::where('id',$coupon_id)->first();
+	  return $coupon_data ;
+}
+
+function store_menu($user_id){
+	   
+	  $user_data = User::where('id',$user_id)->get();
+
+	  $menus =  url('/uploads/menus').'/'.  $user_data[0]->menu_file;
+	  return $menus ;
+
+}
+
 function check_role_access($permission_slug){
 	
 	$user = \Auth::user();
@@ -127,6 +239,7 @@ function check_role_access($permission_slug){
 		 $slug = PermissionList::where('id',$permission->permission_id)->select('slug')->first();
 		 $permission_array[] = $slug->slug;
 	}
+	
 	
 	if(in_array($permission_slug,$permission_array)){
 		return true;

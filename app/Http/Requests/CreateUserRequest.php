@@ -15,13 +15,13 @@ class createUserRequest extends FormRequest
     public function rules()
     {
         return [
-             'first_name'     => [
-                'required',
-            ],
-			'last_name'     => [
-                'required',
-            ], 
-			'email*' => [
+             // 'first_name'     => [
+                // 'required',
+            // ],
+			// 'last_name'     => [
+                // 'required',
+            // ], 
+			'email' => [
 				'required','email','unique:users'
 			],
 			
@@ -31,6 +31,9 @@ class createUserRequest extends FormRequest
 			'password_confirmation'   => [
                 'required','same:password',
             ] ,
+			'user_type' => [
+				'required'
+			],
 			'terms_condition'   => [
                 'required',
             ] 

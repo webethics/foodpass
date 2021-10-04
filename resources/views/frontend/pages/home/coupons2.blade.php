@@ -2,35 +2,80 @@
 @section('pageTitle','Coupons')
 @section('content')
 
- <main class="site-content">
+<?php
+   if(isset($_GET['coupon_filters']) && $_GET['coupon_filters'] != ""){
+      $explode = explode(",",$_GET['coupon_filters']);
+      
+      $coupon_first = in_array("1", $explode) ? "checked" : '';
+      $coupon_two = in_array("2", $explode) ? "checked" : '';
+      $coupon_three = in_array("3", $explode) ? "checked" : '';
+      $coupon_four = in_array("4", $explode) ? "checked" : '';
+      $coupon_five = in_array("5", $explode) ? "checked" : '';
+   
+   }else{	
+      $coupon_first = "";
+      $coupon_two = "";
+      $coupon_three = "";
+      $coupon_four = "";
+      $coupon_five = "";
+   }
+   ?>
+
          <div class="container innercontainer storecontainer">
             <div class="row">
+			<div class="loader"></div>
                <div class="col leftsidebarsec desktop_sidebar">
                   <div class="sidebar_cont">
                      <h4>Filter By</h4>
                      <div class="sidebar_switches">
                         <ul id="switch1" class="swithes">
-                           <li class="ui-selected current"><span class="bgadded"></span><a href="#">Stores</a></li>
-                           <li><span class="bgadded"></span><a href="#">Coupons</a></li>
+                           <li data-id="1"><span class="bgadded"></span><a  href= "{{ url('store') }}" class = "cursor">Stores</a></li>
+                           <li data-id="2" class="ui-selected current"><span class="bgadded"></span><a href= "{{ url('coupons-store') }}" class = "cursor">Coupons</a></li>
                         </ul>
                      </div>
-                     <div class="sidebar_switches">
+					 @if(isset($_GET['deliver_pick']) && !empty($_GET['deliver_pick']))
+						 @if($_GET['deliver_pick'] == 1)
+						 <div class="sidebar_switches">
+							<ul id="switch2" class="swithes">
+							   <li data-id="1" class="ui-selected current"><span class="bgadded"></span><a class="cursor">Delivery</a></li>
+							   <li data-id="2"><span class="bgadded"></span><a class="cursor">Pick Up</a></li>
+							</ul>
+						 </div>
+						 @else
+						<div class="sidebar_switches">
+							<ul id="switch2" class="swithes">
+							   <li data-id="1"><span class="bgadded"></span><a class="cursor">Delivery</a></li>
+							   <li data-id="2" class="ui-selected current"><span class="bgadded"></span><a class="cursor">Pick Up</a></li>
+							</ul>
+						 </div>
+						 @endif
+					 @else
+					 <div class="sidebar_switches">
                         <ul id="switch2" class="swithes">
-                           <li class="ui-selected current"><span class="bgadded"></span><a href="#">Delivery</a></li>
-                           <li><span class="bgadded"></span><a href="#">Pick Up</a></li>
+                           <li data-id="1" class="ui-selected current"><span class="bgadded"></span><a class="cursor">Delivery</a></li>
+                           <li data-id="2"><span class="bgadded"></span><a class="cursor">Pick Up</a></li>
                         </ul>
                      </div>
+					 @endif
+                     
+					 <input type= "hidden" name="store_coupon" id="store_coupon" value= "2">
+					 <input type= "hidden" name="deliver_pick" id="deliver_pick" value= "">
+					 <input type= "hidden" name="sorting_key"  id="sorting_key"  value= "">
+					 <input type= "hidden" name="coupon_filter"  id="coupon_filter"  value= "">
+					 <input type= "hidden" name="deliver_pick" id="deliver_pick" value= <?php if(isset($_GET['deliver_pick']))echo $_GET['deliver_pick'] ?>>
+					 <input type= "hidden" name="deliver_cost" id="deliver_cost" value= <?php if(isset($_GET['delivery_Cost']) && $_GET['delivery_Cost'])echo $_GET['delivery_Cost'] ?>>
+					 <input type= "hidden" name="order_amount" id="order_amount" value= "<?php if(isset($_GET['order_amount']) && $_GET['order_amount'] == 10) echo $_GET['order_amount'];?>">
                   </div>
                   <div class="sidebar_cont">
                      <h4>Min. Order Amount</h4>
                      <div class="sidebar_checkboxes">
                         <div class="checkblox_list">
                            <div class="custom-control custom-checkbox mb-3">
-                              <input type="checkbox" class="custom-control-input" id="customCheck" name="example1">
+                              <input type="checkbox" class="custom-control-input order_amount" id="customCheck" name="order_amount" value="10" <?php if(isset($_GET['order_amount']) && $_GET['order_amount'] == 10)echo "checked"?>>
                               <label class="custom-control-label" for="customCheck"><span>< $10.00</span></label>
                            </div>
                            <div class="custom-control custom-checkbox mb-3">
-                              <input type="checkbox" class="custom-control-input" id="customCheck1" name="example1">
+                              <input type="checkbox" class="custom-control-input order_amount" id="customCheck1" name="order_amount" value="15" <?php if(isset($_GET['order_amount']) && $_GET['order_amount'] == 15)echo "checked"?>>
                               <label class="custom-control-label" for="customCheck1"><span>< $15.00</span></label>
                            </div>
                         </div>
@@ -41,11 +86,11 @@
                      <div class="sidebar_checkboxes">
                         <div class="checkblox_list">
                            <div class="custom-control custom-checkbox mb-3">
-                              <input type="checkbox" class="custom-control-input" id="customCheck2" name="example1">
+                              <input type="checkbox" class="custom-control-input delivery_Cost" id="customCheck2" name="delivery_Cost" value="1.5" <?php if(isset($_GET['delivery_Cost']) && $_GET['delivery_Cost'] == 1.5)echo "checked"?>>
                               <label class="custom-control-label" for="customCheck2"><span>< $1.50</span></label>
                            </div>
                            <div class="custom-control custom-checkbox mb-3">
-                              <input type="checkbox" class="custom-control-input" id="customCheck3" name="example1">
+                              <input type="checkbox" class="custom-control-input delivery_Cost" id="customCheck3" name="delivery_Cost" value="2.5" <?php if(isset($_GET['delivery_Cost']) && $_GET['delivery_Cost'] == 2.5)echo "checked"?>>
                               <label class="custom-control-label" for="customCheck3"><span>< $2.50</span></label>
                            </div>
                         </div>
@@ -53,26 +98,27 @@
                   </div>
                   <div class="sidebar_cont">
                      <h4>Coupon</h4>
+					 
                      <div class="sidebar_checkboxes">
                         <div class="checkblox_list">
                            <div class="custom-control custom-checkbox mb-3">
-                              <input type="checkbox" class="custom-control-input" id="customCheck4" name="example1">
+                              <input type="checkbox" value="1" class="custom-control-input" id="customCheck4" name="coupon_filters" <?=$coupon_first;?>/>
                               <label class="custom-control-label" for="customCheck4"><span>Pre Order</span></label>
                            </div>
                            <div class="custom-control custom-checkbox mb-3">
-                              <input type="checkbox" class="custom-control-input" id="customCheck5" name="example1">
+                              <input type="checkbox" value="2" class="custom-control-input" id="customCheck5" name="coupon_filters" <?=$coupon_two?>/>
                               <label class="custom-control-label" for="customCheck5"><span>Ontbijt & Lunch</span></label>
                            </div>
                            <div class="custom-control custom-checkbox mb-3">
-                              <input type="checkbox" class="custom-control-input" id="customCheck6" name="example1">
+                              <input type="checkbox" value="3" class="custom-control-input" id="customCheck6" name="coupon_filters" <?=$coupon_three?> />
                               <label class="custom-control-label" for="customCheck6"><span>Dinner</span></label>
                            </div>
                            <div class="custom-control custom-checkbox mb-3">
-                              <input type="checkbox" class="custom-control-input" id="customCheck7" name="example1">
+                              <input type="checkbox" value="4" class="custom-control-input" id="customCheck7" name="coupon_filters" <?=$coupon_four?> />
                               <label class="custom-control-label" for="customCheck7"><span>Late Night Snack</span></label>
                            </div>
                            <div class="custom-control custom-checkbox mb-3">
-                              <input type="checkbox" class="custom-control-input" id="customCheck8" name="example1">
+                              <input type="checkbox" value="5" class="custom-control-input" id="customCheck8" name="coupon_filters"<?=$coupon_five?>  />
                               <label class="custom-control-label" for="customCheck8"><span>Special Deals</span></label>
                            </div>
                         </div>
@@ -82,30 +128,56 @@
                <div class="col leftsidebarsec mobile_sidebar">
                   <div class="mobile_sidebarcont" id="mobfiltercontent">
                      <div class="sidebar_cont">
-                        <h4>Filter By <img src="{{asset('/frontend/images/cancel.svg')}}" class="closebtn" /></h4>
-                        <div class="sidebar_switches">
-                           <ul id="switch1" class="swithes">
-                              <li class="ui-selected current"><span class="bgadded"></span><a href="#">Stores</a></li>
-                              <li><span class="bgadded"></span><a href="#">Coupons</a></li>
-                           </ul>
-                        </div>
-                        <div class="sidebar_switches">
-                           <ul id="switch2" class="swithes">
-                              <li class="ui-selected current"><span class="bgadded"></span><a href="#">Delivery</a></li>
-                              <li><span class="bgadded"></span><a href="#">Pick Up</a></li>
-                           </ul>
-                        </div>
+                           <h4>Filter By</h4>
+                           <div class="sidebar_switches">
+                              <ul id="switch1" class="swithes">
+                                 <li data-id="1"><span class="bgadded"></span><a  href= "{{ url('store') }}" class = "cursor">Stores</a></li>
+                                 <li data-id="2" class="ui-selected current"><span class="bgadded"></span><a href= "{{ url('coupons-store') }}" class = "cursor">Coupons</a></li>
+                              </ul>
+                           </div>
+                           @if(isset($_GET['deliver_pick']) && !empty($_GET['deliver_pick']))
+                              @if($_GET['deliver_pick'] == 1)
+                              <div class="sidebar_switches">
+                                 <ul id="switch2" class="swithes">
+                                    <li data-id="1" class="ui-selected current"><span class="bgadded"></span><a class="cursor">Delivery</a></li>
+                                    <li data-id="2"><span class="bgadded"></span><a class="cursor">Pick Up</a></li>
+                                 </ul>
+                              </div>
+                              @else
+                              <div class="sidebar_switches">
+                                 <ul id="switch2" class="swithes">
+                                    <li data-id="1"><span class="bgadded"></span><a class="cursor">Delivery</a></li>
+                                    <li data-id="2" class="ui-selected current"><span class="bgadded"></span><a class="cursor">Pick Up</a></li>
+                                 </ul>
+                              </div>
+                              @endif
+                           @else
+                           <div class="sidebar_switches">
+                                    <ul id="switch2" class="swithes">
+                                       <li data-id="1" class="ui-selected current"><span class="bgadded"></span><a class="cursor">Delivery</a></li>
+                                       <li data-id="2"><span class="bgadded"></span><a class="cursor">Pick Up</a></li>
+                                    </ul>
+                                 </div>
+                           @endif
+                                 
+                           <input type= "hidden" name="store_coupon" id="store_coupon" value= "2">
+                           <input type= "hidden" name="deliver_pick" id="deliver_pick" value= "">
+                           <input type= "hidden" name="sorting_key"  id="sorting_key"  value= "">
+                           <input type= "hidden" name="coupon_filter"  id="coupon_filter"  value= "">
+                           <input type= "hidden" name="deliver_pick" id="deliver_pick" value= <?php if(isset($_GET['deliver_pick']))echo $_GET['deliver_pick'] ?>>
+                           <input type= "hidden" name="deliver_cost" id="deliver_cost" value= <?php if(isset($_GET['delivery_Cost']) && $_GET['delivery_Cost'])echo $_GET['delivery_Cost'] ?>>
+                           <input type= "hidden" name="order_amount" id="order_amount" value= "<?php if(isset($_GET['order_amount']) && $_GET['order_amount'] == 10) echo $_GET['order_amount'];?>">
                      </div>
                      <div class="sidebar_cont">
                         <h4>Min. Order Amount</h4>
                         <div class="sidebar_checkboxes">
                            <div class="checkblox_list">
                               <div class="custom-control custom-checkbox mb-3">
-                                 <input type="checkbox" class="custom-control-input" id="mobcustomCheck" name="example1">
+                                 <input type="checkbox" class="custom-control-input order_amount" id="mobcustomCheck" name="order_amount"  name="order_amount" value="15" <?php if(isset($_GET['order_amount']) && $_GET['order_amount'] == 10 )echo "checked"?> >
                                  <label class="custom-control-label" for="mobcustomCheck"><span>€10.00 or less</span></label>
                               </div>
                               <div class="custom-control custom-checkbox mb-3">
-                                 <input type="checkbox" class="custom-control-input" id="mobcustomCheck1" name="example1">
+                                 <input type="checkbox" class="custom-control-input order_amount" id="mobcustomCheck1" name="order_amount" value="15" <?php if(isset($_GET['order_amount']) && $_GET['order_amount'] == 15)echo "checked"?> >
                                  <label class="custom-control-label" for="mobcustomCheck1"><span>€15.00 or less</span></label>
                               </div>
                            </div>
@@ -116,11 +188,11 @@
                         <div class="sidebar_checkboxes">
                            <div class="checkblox_list">
                               <div class="custom-control custom-checkbox mb-3">
-                                 <input type="checkbox" class="custom-control-input" id="mobcustomCheck2" name="example1">
+                                 <input type="checkbox" class="custom-control-input delivery_Cost" id="mobcustomCheck2" name="delivery_Cost" value="1.5" <?php if(isset($_GET['delivery_Cost']) && $_GET['delivery_Cost'] == 1.5)echo "checked"?> >
                                  <label class="custom-control-label" for="mobcustomCheck2"><span>€1.50 or less</span></label>
                               </div>
                               <div class="custom-control custom-checkbox mb-3">
-                                 <input type="checkbox" class="custom-control-input" id="mobcustomCheck3" name="example1">
+                                 <input type="checkbox" class="custom-control-input delivery_Cost" id="mobcustomCheck3" name="delivery_Cost" value="1.5" <?php if(isset($_GET['delivery_Cost']) && $_GET['delivery_Cost'] == 2.5)echo "checked"?>>
                                  <label class="custom-control-label" for="mobcustomCheck3"><span>€2.50 or less</span></label>
                               </div>
                            </div>
@@ -131,23 +203,23 @@
                         <div class="sidebar_checkboxes">
                            <div class="checkblox_list">
                               <div class="custom-control custom-checkbox mb-3">
-                                 <input type="checkbox" class="custom-control-input" id="mobcustomCheck4" name="example1">
+                                 <input type="checkbox" value="1" class="custom-control-input" id="mobcustomCheck4" name="coupon_filters" <?=$coupon_first;?> >
                                  <label class="custom-control-label" for="mobcustomCheck4"><span>Pre Order</span></label>
                               </div>
                               <div class="custom-control custom-checkbox mb-3">
-                                 <input type="checkbox" class="custom-control-input" id="mobcustomCheck5" name="example1">
+                                 <input type="checkbox" value="2" class="custom-control-input" id="mobcustomCheck5" name="coupon_filters" <?=$coupon_two;?>>
                                  <label class="custom-control-label" for="mobcustomCheck5"><span>Ontbijt & Lunch</span></label>
                               </div>
                               <div class="custom-control custom-checkbox mb-3">
-                                 <input type="checkbox" class="custom-control-input" id="mobcustomCheck6" name="example1">
+                                 <input type="checkbox" value="3" class="custom-control-input" id="mobcustomCheck6" name="coupon_filters" <?=$coupon_three;?>>
                                  <label class="custom-control-label" for="mobcustomCheck6"><span>Dinner</span></label>
                               </div>
                               <div class="custom-control custom-checkbox mb-3">
-                                 <input type="checkbox" class="custom-control-input" id="mobcustomCheck7" name="example1">
+                                 <input type="checkbox" value="4" class="custom-control-input" id="mobcustomCheck7" name="coupon_filters" <?=$coupon_four;?>>
                                  <label class="custom-control-label" for="mobcustomCheck7"><span>Late Night Snack</span></label>
                               </div>
                               <div class="custom-control custom-checkbox mb-3">
-                                 <input type="checkbox" class="custom-control-input" id="mobcustomCheck8" name="example1">
+                                 <input type="checkbox" value="5" class="custom-control-input" id="mobcustomCheck8" name="coupon_filters" <?=$coupon_five;?>>
                                  <label class="custom-control-label" for="mobcustomCheck8"><span>Special Deals</span></label>
                               </div>
                            </div>
@@ -168,7 +240,7 @@
                         <div id="mobsearchcontent">
                            <form class="searchbarform">
                               <div class="form-group">
-                                 <img src="{{asset('/frontend/images/socialicon.png')}}" /><input type="text" class="form-control" placeholder="Search by restaurant name" /> 
+                                 <img src="{{asset('/frontend/images/socialicon.png')}}" /><input type="text" id="search_coupon" class="form-control" placeholder="Search by restaurant name" /> 
                               </div>
                            </form>
                         </div>
@@ -179,151 +251,113 @@
                   <section class="storeslider_sec innersection">
                      <div class="container">
                         <div class="storeslider center slider mt-5" id="switch3">
-                           <div class="storesliderblk ui-selectable ui-selected">
+                           <div data-id="00000" class="storesliderblk">
                               <div class="storeslider_blkdiv">
                                  <h4>Show all</h4>
                               </div>
                            </div>
-                           <div class="storesliderblk">
+                           @foreach($Kitchens as $val)
+                              <div data-id="{{$val->id}}" class="storesliderblk">
+                                 <div class="storeslider_blkdiv">
+                                    <h4>{{$val->name}}</h4>
+                                 </div>
+                              </div>
+                           @endforeach
+                           <!--<div data-id="1" class="storesliderblk">
                               <div class="storeslider_blkdiv">
                                  <h4>Fish</h4>
                               </div>
                            </div>
-                           <div class="storesliderblk">
+                           <div data-id="2" class="storesliderblk">
                               <div class="storeslider_blkdiv">
                                  <h4>Burger</h4>
                               </div>
                            </div>
-                           <div class="storesliderblk">
+                           <div data-id="3" class="storesliderblk">
                               <div class="storeslider_blkdiv">
                                  <h4>Pizza</h4>
                               </div>
                            </div>
-                           <div class="storesliderblk">
-                              <div class="storeslider_blkdiv">
-                                 <h4>Fish</h4>
-                              </div>
-                           </div>
-                           <div class="storesliderblk">
+                           <div data-id="4" class="storesliderblk">
                               <div class="storeslider_blkdiv">
                                  <h4>Sushi</h4>
                               </div>
                            </div>
-                           <div class="storesliderblk">
+                           <div data-id="5" class="storesliderblk">
                               <div class="storeslider_blkdiv">
                                  <h4>Chicken</h4>
                               </div>
                            </div>
-                           <div class="storesliderblk">
+                           <div data-id="6" class="storesliderblk">
                               <div class="storeslider_blkdiv">
-                                 <h4>Fish</h4>
+                                 <h4>Afghan</h4>
                               </div>
                            </div>
-                           <div class="storesliderblk">
+						   <div data-id="7" class="storesliderblk">
                               <div class="storeslider_blkdiv">
-                                 <h4>Sushi</h4>
+                                 <h4>American</h4>
                               </div>
                            </div>
-                           <div class="storesliderblk">
+						   <div data-id="8" class="storesliderblk">
                               <div class="storeslider_blkdiv">
-                                 <h4>Chicken</h4>
+                                 <h4>100% Halal</h4>
                               </div>
                            </div>
-                           <div class="storesliderblk">
+						   <div data-id="9" class="storesliderblk">
                               <div class="storeslider_blkdiv">
-                                 <h4>Fish</h4>
+                                 <h4>Argentinian</h4>
                               </div>
                            </div>
-                           <div class="storesliderblk">
+						   <div data-id="10" class="storesliderblk">
                               <div class="storeslider_blkdiv">
-                                 <h4>Burger</h4>
+                                 <h4>Sandwiches</h4>
                               </div>
                            </div>
-                           <div class="storesliderblk">
+						   <div data-id="11" class="storesliderblk">
                               <div class="storeslider_blkdiv">
-                                 <h4>Pizza</h4>
+                                 <h4>Burgers</h4>
                               </div>
                            </div>
-                           <div class="storesliderblk">
+						   <div data-id="12" class="storesliderblk">
                               <div class="storeslider_blkdiv">
-                                 <h4>Fish</h4>
+                                 <h4>Chinese</h4>
                               </div>
                            </div>
-                           <div class="storesliderblk">
+						   <div data-id="13" class="storesliderblk">
                               <div class="storeslider_blkdiv">
-                                 <h4>Sushi</h4>
+                                 <h4>Drinks</h4>
                               </div>
                            </div>
-                           <div class="storesliderblk">
+						   <div data-id="14" class="storesliderblk">
                               <div class="storeslider_blkdiv">
-                                 <h4>Chicken</h4>
+                                 <h4>Doner</h4>
                               </div>
                            </div>
-                           <div class="storesliderblk">
+						   <div data-id="15" class="storesliderblk">
                               <div class="storeslider_blkdiv">
-                                 <h4>Fish</h4>
+                                 <h4>Egyptian</h4>
                               </div>
                            </div>
-                           <div class="storesliderblk">
+						   <div data-id="16" class="storesliderblk">
                               <div class="storeslider_blkdiv">
-                                 <h4>Sushi</h4>
+                                 <h4>Falafel</h4>
                               </div>
                            </div>
-                           <div class="storesliderblk">
+						   <div data-id="17" class="storesliderblk">
                               <div class="storeslider_blkdiv">
-                                 <h4>Chicken</h4>
+                                 <h4>French</h4>
                               </div>
                            </div>
-                           <div class="storesliderblk">
+						   <div data-id="18" class="storesliderblk">
                               <div class="storeslider_blkdiv">
-                                 <h4>Fish</h4>
+                                 <h4>Pasta</h4>
                               </div>
-                           </div>
-                           <div class="storesliderblk">
-                              <div class="storeslider_blkdiv">
-                                 <h4>Burger</h4>
-                              </div>
-                           </div>
-                           <div class="storesliderblk">
-                              <div class="storeslider_blkdiv">
-                                 <h4>Pizza</h4>
-                              </div>
-                           </div>
-                           <div class="storesliderblk">
-                              <div class="storeslider_blkdiv">
-                                 <h4>Fish</h4>
-                              </div>
-                           </div>
-                           <div class="storesliderblk">
-                              <div class="storeslider_blkdiv">
-                                 <h4>Sushi</h4>
-                              </div>
-                           </div>
-                           <div class="storesliderblk">
-                              <div class="storeslider_blkdiv">
-                                 <h4>Chicken</h4>
-                              </div>
-                           </div>
-                           <div class="storesliderblk">
-                              <div class="storeslider_blkdiv">
-                                 <h4>Fish</h4>
-                              </div>
-                           </div>
-                           <div class="storesliderblk">
-                              <div class="storeslider_blkdiv">
-                                 <h4>Sushi</h4>
-                              </div>
-                           </div>
-                           <div class="storesliderblk">
-                              <div class="storeslider_blkdiv">
-                                 <h4>Chicken</h4>
-                              </div>
-                           </div>
+                           </div>-->
                         </div>
                         <div class="morelink">
-                           <a href="#" data-toggle="modal" data-target="#kitchendal">
+                           <!--<a href="#" data-toggle="modal" data-target="#kitchendal">
                            More kitchens
-                           </a>
+                           </a>-->
                            <!-- The Modal -->
                            <div class="modal kitchendal" id="kitchendal">
                               <div class="modal-dialog kitchendal_div">
@@ -407,12 +441,13 @@
                      <h2>
                         Coupons
                         <span class="sortselblk">
-                           Sort By
+                           <i class="fa fa-spinner fa-spin" style="font-size:18px" id="processing_sort_icon"></i>Sort By
                            <div class="select-data sortselect">
-                              <select class="selectpicker">
-                                 <option>Name</option>
-                                 <option>Name 1</option>
-                                 <option>Name 2</option>
+							  <select class="selectpicker" id="coupon_sorting">
+                                 <option value="1">Name</option>
+                                 <option value="2">Delivery costs</option>
+                                 <option value="3">Order Amount</option>
+                                 <option value="4">Distance</option>
                               </select>
                            </div>
                         </span>
@@ -420,49 +455,106 @@
                      <div class="searchbar_div">
                         <form class="form-inline">
                            <div class="searchbardiv">
-                              <i class="fa fa-search"></i><input class="form-control" type="search" placeholder="Search" aria-label="Search">
+                              <i class="fa fa-search" id="search_icon"></i>
+							  <i class="fa fa-spinner fa-spin" style="font-size:18px" id="processing_icon"></i>
+							  <input class="form-control" type="search" id="search_coupon" placeholder="Search" aria-label="Search">
                            </div>
                         </form>
                      </div>
                      <div class="select-kitchens">
                         <div class="select-data sortselect">
-                           <select class="selectpicker">
-                              <option>All kitchens</option>
-                              <option>100% Halal</option>
-                              <option>Afghan</option>
-                              <option>American</option>
-                              <option>Argentinian</option>
-                              <option>Sandwiches</option>
-                              <option>Burgers</option>
-                              <option>Chinese</option>
-                              <option>Drinks</option>
-                              <option>Doner</option>
-                              <option>Egyptian</option>
+                           <select class="selectpicker kitchen_mobile_selector">
+                              <option data-id="00000" value="00000" class="storesliderblk">All kitchens</option>
+                              @foreach($Kitchens as $val)
+                                 <option data-id="{{$val->id}}" value="{{$val->id}}" class="storesliderblk">{{$val->name}}</option>
+                              @endforeach
                            </select>
                         </div>
                      </div>
-                     <div class="row">
-                        <div class="col-md-4 featured_blk">
-                           <div class="featured_blkdiv">
-                              <div class="featured_img">
-                                 <img src="{{asset('/frontend/images/featuredimg.png')}}" class="img-fluid" />
+                     <div class="row" id = "coupon_listing">
+							
+							@if(isset($restaurant) && !empty($restaurant))
+								@foreach($restaurant as $coupon)
+								@php
+									$photo =  coupon_image($coupon->id);
+									$pickup_delivery = $coupon->coupon_pickup_delivery == 1 ? "Pickup" : "Deliver";
+									$expire_date = date("d M, Y",$coupon->coupon_end_time);
+                           $expire_time = date("h:i a",$coupon->coupon_end_time);
+                           $to_time = strtotime("now");
+                           $minutes =  round(abs($coupon->coupon_end_time - $to_time) / 60,2);
+                           $days = floor ($minutes / 1440);
+                           $hours = floor (($minutes - $days * 1440) / 60);
+                           $min = $minutes - ($days * 1440) - ($hours * 60);
+                           $typeArr = array();
+                           $typeArr = explode(',', $coupon->coupon_display);
+                           $arrCheck = [1, 2];
+								@endphp 
+								<div class="col-md-4 featured_blk">
+								<div class="featured_blkdiv">
+								  <div class="featured_img">
+                           <div class="image_tags">
+                                 @if($coupon->coupon_pickup_delivery == 1)
+                                    <span class="status_tag pickup">OPEN</span>
+                                 @else($coupon->coupon_pickup_delivery == 2)
+                                    <span class="status_tag delivery">DICHT</span>
+                                 @endif
+                                 @if(in_array("3", $typeArr))
+                                    <span class="premium_tag"><img src="{{asset('frontend/images/premium.png')}}" /></span>
+                                 @else
+                                    <span class="status_tag empty"></span>
+                                 @endif
+                                 @if($coupon->coupon_pickup_delivery != '')
+                                    <span class="discount_tag">{{$coupon->discount_1}}%</span>
+                                 @else
+                                    <span class="status_tag empty"></span>
+                                 @endif
+                                 @if (array_intersect($arrCheck, $typeArr))
+                                    <span class="free_tag">FREE</span>
+                                 @else
+                                    <span class="status_tag empty"></span>
+                                 @endif
                               </div>
-                              <div class="featured_blkcontsec">
-                                 <span class="offer_tag">20%<br/><span class="lightweight">Off</span></span>
-                                 <h4>Free Sauce on Fries</h4>
-                                 <span class="date">Valid Till : 25 Oct, 2020</span>
-                                 <div class="borderdiv">
-                                    <span class="borderleft"></span>
-                                    <span class="borderright"></span>
-                                 </div>
-                                 <div class="featured_blkcont">
-                                    <h5>Johnny's Burgers</h5>
-                                    <a href="#" data-toggle="modal" data-target="#couponmodal"  class="couponbutton">GET coupon</a>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                        <div class="col-md-4 featured_blk">
+									   <img src="{{$photo}}" class="img-fluid" />
+								  </div>
+								  <div class="featured_blkcontsec">
+									 <span class="offer_tag">{{$coupon->discount_1}}%<br/><span class="lightweight">Off</span></span>
+									 <h4>{{$coupon->product_name}}</h4>
+									 <span class="date">Expires in: 
+                              <span class="home-coupon-expire" style="display:block;">
+                                 <b>
+                                 @php if($days){
+                                    echo $days.' days ';
+                                 } if($hours){
+                                    echo $hours.' hours '; 
+                                 } if($min){
+                                    echo floor($min).' minutes'; 
+                                 } 
+                                 @endphp
+                                 </b>
+                                 </span>
+                           </span>
+									 <div class="borderdiv">
+										<span class="borderleft"></span>
+										<span class="borderright"></span>
+									 </div>
+									 <div class="featured_blkcont">
+										<h5>{{$coupon->details}}</h5>
+										@if(Auth::user())
+											<a href="#"  class = "view_coupon" data-id="{{$coupon->id}}">GET coupon</a>
+										@else
+											<a href="#" data-toggle="modal" data-target="#formmodal">GET coupon</a>
+										@endif
+										
+									 </div>
+								  </div>
+							   </div>
+							   </div>
+								@endforeach
+								@else
+								<div class="storeblk">No Records Found.</div>
+							@endif
+                        
+                        <!--<div class="col-md-4 featured_blk">
                            <div class="featured_blkdiv">
                               <div class="featured_img">
                                  <img src="{{asset('/frontend/images/featuredimg.png')}}" class="img-fluid" />
@@ -501,15 +593,16 @@
                                  </div>
                               </div>
                            </div>
-                        </div>
+                        </div>-->
                      </div>
                   </section>
                </div>
             </div>
          </div>
-      </main>
 	  
-		<script src="{{ url('/frontend/js/jquery-2.2.0.min.js')}}" type="text/javascript"></script>
+		<script src="{{ url('frontend/js/coupon.js')}}" type="text/javascript"></script>
+		<script src="{{ url('frontend/js/selectable.js')}}" type="text/javascript"></script>
+		<script src="{{ url('frontend/js/custom.js')}}"></script>
 	  <script type="text/javascript">
          $(document).on('ready', function() {
          $('.storeslider').slick({
@@ -604,18 +697,19 @@
       </script>
    </body>
    <!-- The Modal -->
-   <div class="modal getcpn_modal couponmodal1" id="couponmodal">
+   <div class="modal getcpn_modal" id="couponmodal">
       <div class="modal-dialog">
          <div class="modal-content">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
             <!-- Modal body -->
             <div class="modal-body">
-               <img src="{{asset('/frontend/images/elcarne.png')}}" />
-               <h4>Elcarne <img src="{{asset('/frontend/images/information.svg')}}" class="infoicon" /></h4>
+               <img id="coupon_view_image" src="{{asset('frontend/images/elcarne.png')}}" />
+               <h4 id="coupon_view_name">Elcarne <img src="{{asset('frontend/images/information.svg')}}" class="infoicon" /></h4>
                <h5>Buy 2 Burgers, get 1 free!</h5>
-               <p>Bestel twee burgers en ontvang de derde gratis!</p>
-               <p>Expires on 31/10/2020 at 23:59</p>
-               <a href="" id="getcpnbtn1" data-toggle="modal" data-target="#couponmodal2" class="getcpnbtn">Get Coupon</a>
+               <p id="coupon_view_details">Bestel twee burgers en ontvang de derde gratis!</p>
+               <p id="coupon_view_expire">Expires on 31/10/2020 at 23:59</p>
+               <a href="#" class="getcpnbtn" id="couponorder">Get Coupon</a>
+               <!--<a href="#getcpnbtn1" data-toggle="modal" data-target="#couponmodal2" class="getcpnbtn">Get Coupon</a>-->
             </div>
          </div>
       </div>

@@ -2,22 +2,30 @@
 @section('pageTitle','Menucart')
 @section('content')
 
-<main class="site-content">
          <div class="container innercontainer">
             <div class="row">
                <div class="col leftsidebarsec profileftsidebar mobsidebar">
                   <div class="sidebar_cont profilesidebar">
                      <div class="userinfo">
                         <div class="userimage">
-                           <img src="{{asset('frontend/images/userimage.png')}}" />
+							@if($user->profile_photo==NULL)
+							  <img src="{{asset('frontend/images/userimage.png')}}">
+							@else
+								
+							@php
+								$photo =  profile_photo($user->id);
+							@endphp
+								<img src="{{timthumb($photo,80,80)}}">
+							@endif
+                           
                         </div>
-                        <h4>KFC</h4>
-                        <a href="#">www.kfc.com</a>
-                        <a href="tel:023 544 05 43">023 544 05 43</a>
+                        <h4>{{ $user->restaurant_name }}</h4>
+                        <a href="{{ $user->website }}">{{ $user->website }}</a>
+                        <a href="tel:{{ $user->mobile_number }}">{{ $user->mobile_number }}</a>
                      </div>
                      <ul class="accordion profilelist" id="accordion">
                         <li class="nav-link dropdown-toggle couponlink">
-                           <a href="coupons.html">
+                           <a href="/coupons/{{$user->id}}">
                               <div class="link">
                                  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
                                     <defs>
@@ -31,7 +39,7 @@
                            </a>
                         </li>
                         <li class="nav-link dropdown-toggle menukartlink active">
-                           <a href="menukaart.html">
+                           <a href="/menukaart/{{$user->id}}">
                               <div class="link">
                                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                                     <defs>
@@ -59,7 +67,7 @@
                            </a>
                         </li>
                         <li class="nav-link dropdown-toggle infolink">
-                           <a href="info.html">
+                           <a href="/info/{{$user->id}}">
                               <div class="link">
                                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                                     <defs>
@@ -78,11 +86,18 @@
                <div class="col rightcontentsec">
                   <section class="storesection innersection menukaartsec">
                      <h2>Menukaart</h2>
-                     <p>Click to see restaurant menu!</p>
+                     @if($user->menu_file != "" && $user->menu_file != Null)
+					   @php
+						$menu_url =  store_menu($user->id);
+					   @endphp   
+					   <a class="see_menukart" target="_blank" href = "{{$menu_url}}"><p>BEKIJK MENU KAART</p></a>
+					   <a class="download_menukart" href = "{{$menu_url}}" download><p>Download</p></a>
+					 @else
+						No Menu Found! 
+				     @endif
                   </section>
                </div>
             </div>
          </div>
-      </main>
  
 @endsection

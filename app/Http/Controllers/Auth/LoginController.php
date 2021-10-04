@@ -61,6 +61,10 @@ class LoginController extends Controller
 		if ($validator->fails())
 		{
 			//EVENT FAILED
+			// return Response::json(array(
+			// 				  'success'=>false,
+			// 				  'message'=> 'Please enter correct credentials.'
+			// 				 ), 200);
 			return redirect('login')->withErrors($validator)->withInput($request->except('password'));
 		}else
 		{
@@ -74,20 +78,32 @@ class LoginController extends Controller
 					//EVENT FAILED
 					//create_failed_attemp_log($input['email'],$input['password']);
 					Auth::logout();
-					return redirect('/login')->with('error', 'Please be sure to check your junk mail as well - sometimes it ends up there sadly!');
+					return Response::json(array(
+							  'success'=>false,
+							  'message'=> 'Please be sure to check your junk mail as well - sometimes it ends up there sadly!'
+							 ), 200);
+					// return redirect('/login')->with('error', 'Please be sure to check your junk mail as well - sometimes it ends up there sadly!');
 				}else if(Auth::check() && Auth::user()->status == 0){ 
 					//IF STATUS IS NOT ACTIVE 
 					//EVENT FAILED
 					//create_failed_attemp_log($input['email'],$input['password']);
 					Auth::logout();
-					return redirect('/login')->with('error', 'Your account is deactivated.');
+					return Response::json(array(
+							  'success'=>false,
+							  'message'=> 'Your account is deactivated.'
+							 ), 200);
+					// return redirect('/login')->with('error', 'Your account is deactivated.');
 				
 				}else if(Auth::check() && Auth::user()->role_id == 1){ 
 					//IF STATUS IS NOT ACTIVE 
 					//EVENT FAILED
 					//create_failed_attemp_log($input['email'],$input['password']);
 					Auth::logout();
-					return redirect('/login')->with('error', 'Please enter correct credentials.');
+					// return redirect('/login')->with('error', 'Please enter correct credentials.');
+					return Response::json(array(
+							  'success'=>false,
+							  'message'=> 'Please enter correct credentials.'
+							 ), 200);
 				}
 				
 				
@@ -113,26 +129,26 @@ class LoginController extends Controller
 					  }else{
 						  return Response::json(array(
 							  'success'=>true,
-							  'url'=>'profile',
+							  'url'=>'/',
 							  'message'=> ''
 							 ), 200);
-						//return redirect('user-profile');
+						// return redirect('profile');
 					  }
 				}else if(Auth::check() && Auth::user()->role_id == 3){ 
 					  $user = auth()->user();
 					  $role_id =  $user->role_id;
 					  Session::put('is_admin_login', '');
 					   Session::put('admin_user_id', '');
-					  if( $request->session()->get('store-profile')){
-						  if(strpos($request->session()->get('store-profile'), '/u') !== false)
-						   return redirect( $request->session()->get('store-profile'));
+					  if( $request->session()->get('booking')){
+						  if(strpos($request->session()->get('booking'), '/u') !== false)
+						   return redirect( $request->session()->get('booking'));
 					  }else{
 						  return Response::json(array(
 							  'success'=>true,
-							  'url'=>'store-profile',
+							  'url'=>'booking',
 							  'message'=> ''
 							 ), 200);
-						//return redirect('user-profile');
+						// return redirect('store-profile');
 					  }
 				}else{
 					Auth::logout();
@@ -142,10 +158,14 @@ class LoginController extends Controller
 			
 			}
 			else{
+				return Response::json(array(
+							  'success'=>false,
+							  'message'=> 'You have entered wrong details.'
+							 ), 200);
 				//EVENT FAILED
 				//create_failed_attemp_log($input['email'],$input['password']);
-				return redirect()->route('login')
-					->with('error','You have entered wrong details.');
+				// return redirect()->route('login')
+					// ->with('error','You have entered wrong details.');
 			}
 		}
 

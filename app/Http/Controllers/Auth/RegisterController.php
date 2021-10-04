@@ -87,35 +87,57 @@ class RegisterController extends Controller
 	
 	 protected function register(CreateUserRequest $request)
     {
-		
+		// $digits = 5;
+		// $customer_id = str_pad(rand(0, pow(10, $digits)-1), $digits, '0', STR_PAD_LEFT);
+		$customer_id = $this->generateclient_id();
+			if (Session::has('affilate_id'))
+			{
+				$affilate_value = Session::get('affilate_id');
+				Session::forget('affilate_id');
+			}else{
+				$affilate_value = '';
+			}
 		    $token = getToken();
-		    User::create([
-			   // 'name' => $data['name'],
-				'first_name' => $request->first_name,
-				'last_name' => $request->last_name,
-				'email' => $request->email,
-				'role_id' => 2,
-				'status' => 1,
-				'password' => Hash::make($request->password),
-				'verify_token' => $token,
-			]); 
+			if($request->user_type == 2){
+				User::create([
+					'email' => $request->email,
+					'role_id' => $request->user_type,
+					'status' => 1,
+					'password' => Hash::make($request->password),
+					'customer_id' => $customer_id,
+					'affilate_id' => $affilate_value,
+					'verify_token' => $token,
+				]); 
+			}else{
+				User::create([
+					'email' => $request->email,
+					'role_id' => $request->user_type,
+					'status' => 1,
+					'admin_verify_status' => 0,
+					'password' => Hash::make($request->password),
+					'customer_id' => $customer_id,
+					'affilate_id' => $affilate_value,
+					'verify_token' => $token,
+				]); 
+			}
+		    
 		
 		  //SEND EMAIL TO REGISTER USER.
-			$uname = $request->first_name .' '.$request->last_name;
-			//$token = getToken();
+			// $uname = $request->first_name .' '.$request->last_name;
+			$uname = $request->email;
 			$logo = url('/frontend/images/logo.png');
 			$link= url('verify/account/'.$token);
 			$to = $request->email;
 			//EMAIL REGISTER EMAIL TEMPLATE 
-			$result = EmailTemplate::where('id',1)->get();
+			$result = EmailTemplate::where('id',2)->get();
 			$subject = $result[0]->subject;
       		$message_body = $result[0]->content;
       		
       		$list = Array
               ( 
                  '[NAME]' => $uname,
-				 //'[USERNAME]' => $request->email,
-				// '[PASSWORD]' => $request->password,
+				 '[USERNAME]' => $request->email,
+				 '[PASSWORD]' => $request->password,
                  '[LINK]' => $link,
                  '[LOGO]' => $logo,
               );
@@ -126,11 +148,33 @@ class RegisterController extends Controller
 			
 			//$mail = send_email($to, $subject, $message, $from, $fromname);
 			
-			//$mail = send_email($to, $subject, $message);
+			$mail = send_email($to, $subject, $message);
+			if($request->user_type == 3){
+				 return Response::json(array(
+				  'success'=>true,
+				  'message'=> 'Your account is under verification process.Thank you for signin up, you will receive confirmation within 48 hours.Please <a id="confirmation_popup" href="#">Sign In </a> to your account and
+				  setup your store profile.'
+				 ), 200);
+			}else{
+				return Response::json(array(
+				  'success'=>true,
+				  'message'=> '<h4>Your account is created successfully.</h4> <p>Please <a id="confirmation_popup" href="#">Sign In </a> to your account.</p>'
+				 ), 200);
+			}
 			
-			return redirect('/confirmation');
-			
-			
+	}
+
+
+	//Generate unique client id
+	public function generateclient_id(){
+		$digits = 5;
+		$customer_id = str_pad(rand(0, pow(10, $digits)-1), $digits, '0', STR_PAD_LEFT);
+		$get_user = User::where('customer_id',$customer_id)->first();
+		if(isset($get_user) && !empty($get_user)){
+			 $this->generateclient_id(); // should work better
+		}else{
+			return $customer_id;
+		}
 	}
 	
 	//VERIFY ACCOUNT  
@@ -148,11 +192,10 @@ class RegisterController extends Controller
 		//$notwork =true;  
 		//Session::flash('success', 'Your Account has been verified.');
 	  //  return redirect('login');
-		return redirect()->route('login')
-					->with('success','Your Account has been verified.');
+		return redirect('/')->with('success','Your Account has been verified.');
 			//return view('auth.passwords.reset',compact('token','notwork','url_post'));	
 		}else{
-			 return redirect('login')->with('error','Your link is not correct.');	;
+			 return redirect('/')->with('error','Your link is not correct.');	;
 		}
 		
 		

@@ -88,6 +88,8 @@ class SettingsController extends Controller
 			$data =array();
 			
 			$data['site_title']			= $request->site_title;
+			$data['how_it_works']		= $request->how_it_works;
+			$data['affilate']		    = $request->affilate;
 			$data['double_authentication'] = ($request->two_factor_authentication)? 1 : 0;
 			/* Below commented code is for future user */
 			//$data['message_api_name']	= $request->api_name;

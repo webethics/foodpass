@@ -23,7 +23,7 @@ class CmsController extends Controller
 	*/
     public function index()
     {
-		access_denied_user('cms_pages_listing');
+		// access_denied_user('cms_pages_listing');
 		$CmsPage =  CmsPage::all();
         return view('admin.cms.index',compact('CmsPage'));
     }
@@ -44,7 +44,7 @@ class CmsController extends Controller
 	}
 
 	public function cms_page_update(CreatePageRequest $request){
-		access_denied_user('cms_pages_create');
+		// access_denied_user('cms_pages_create');
 	    $title = $request->input('title');
 	    $slug = $request->input('slug');
 	    $content = $request->input('content');

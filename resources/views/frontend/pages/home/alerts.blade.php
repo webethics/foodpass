@@ -2,22 +2,30 @@
 @section('pageTitle','Alerts')
 @section('content')
 
-<main class="site-content">
          <div class="container innercontainer">
             <div class="row">
-               <div class="col leftsidebarsec profileftsidebar mobsidebar">
-                  <div class="sidebar_cont profilesidebar">
+               <div class="col leftsidebarsec profileftsidebar mobsidebar userProfile">
+                  <!--mobsidebar-->
+                  <div class="sidebar_cont profilesidebar ">
                      <div class="userinfo">
                         <div class="userimage">
-                           <img src="{{asset('frontend/images/userimage1.png')}}" />
-                        </div>
-                        <h4>Selena Gomez</h4>
-                        <a href="#">+1 85658 89562</a>
-                        <a href="#">selenagomez@gmail.com</a>
+							@if(auth::user()->profile_photo==NULL)
+							   <img class="updated_profile_pic" src="{{asset('frontend/images/default_user.jpg')}}" />
+							@else
+								
+							@php
+								$photo =  profile_photo(auth::user()->id);
+							@endphp
+								<img class="updated_profile_pic" src="{{timthumb($photo,80,80)}}">
+							@endif
+						</div>
+                        <h4>{{ $user->first_name }} {{ $user->last_name }}</h4>
+                        <a href="tel:{{ $user->mobile_number }}">{{ $user->mobile_number }}</a>
+                        <a href="mailto:{{ $user->email }}">{{ $user->email }}</a>
                      </div>
                      <ul class="accordion profilelist" id="accordion">
                         <li class="nav-link dropdown-toggle couponlink">
-                           <a href="profile.html">
+                           <a href="{{url('profile')}}">
                               <div class="link">
                                  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
                                     <defs>
@@ -31,7 +39,7 @@
                            </a>
                         </li>
                         <li class="nav-link dropdown-toggle menukartlink">
-                           <a href="my-coupon.html">
+                           <a href="{{url('my-coupon')}}">
                               <div class="link">
                                  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
                                     <defs>
@@ -45,7 +53,7 @@
                            </a>
                         </li>
                         <li class="nav-link dropdown-toggle alertlink active">
-                           <a href="alerts.html">
+                           <a href="{{url('alerts')}}">
                               <div class="link">
                                  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
                                     <defs>
@@ -59,7 +67,7 @@
                            </a>
                         </li>
                         <li class="nav-link dropdown-toggle afiliatelink">
-                           <a href="affiliate.html">
+                           <a href="{{url('affiliate')}}">
                               <div class="link">
                                  <svg xmlns="http://www.w3.org/2000/svg" width="22.3" height="22.3" viewBox="0 0 22.3 22.3">
                                     <defs>
@@ -73,8 +81,22 @@
                               </div>
                            </a>
                         </li>
-                        <li class="nav-link dropdown-toggle infolink d-none">
-                           <a href="#">
+						<li class="nav-link dropdown-toggle infolink">
+                           <a href="{{('/subscription')}}">
+                              <div class="link">
+                                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+                                    <defs>
+                                       <style>.a{fill:none;}</style>
+                                    </defs>
+                                    <path class="a" d="M0,0H22V22H0Z"/>
+                                    <path d="M5,20a.954.954,0,0,1-1-.9V2.9A.954.954,0,0,1,5,2H19a.954.954,0,0,1,1,.9V5.6H18V3.8H6V18.2H18V16.4h2v2.7a.954.954,0,0,1-1,.9Zm13-5.4V11.9H11V10.1h7V7.4L23,11Z" transform="translate(-2)"/>
+                                 </svg>
+                                 Become VIP
+                              </div>
+                           </a>
+                        </li>
+                        <li class="nav-link dropdown-toggle infolink">
+                           <a href="{{('/logout')}}">
                               <div class="link">
                                  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
                                     <defs>
@@ -94,30 +116,80 @@
                   <section class="storesection innersection profilearea">
                      <div class="row">
                         <div class="col-md-9 alertcol">
-                           <h2>Alerts<a href="#"><i class="fa fa-cog"></i></a></h2>
+                           <h2>Alerts<a href="{{('/alert')}}"><i class="fa fa-cog"></i></a></h2>
                         </div>
                      </div>
                      <div class="row">
                         <div class="col-md-9 alertcol">
-                           <div class="alertsection">
-                              <div class="alertinfo">
-                                 <div class="alertimg">
-                                    <div class="alertimgbg">
-                                       <img src="{{asset('frontend/images/kitchencategory1.png')}}" />
-                                    </div>
-                                 </div>
-                                 <div class="alertcont">
-                                    <h3>Exclusive : 20% off in first order<i class="fa fa-share-alt"></i></h3>
-                                    <div class="alerttextarea">
-                                       <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.<span>Valid till 5 Jan, 2020 23:59</span></p>
-                                       <div class="alertcpnbtn">
-                                          <a href="#" data-toggle="modal" data-target="#couponmodal">Get Coupon</a>
-                                       </div>
-                                    </div>
-                                 </div>
-                              </div>
+							@if(isset($alerts) && !empty($alerts) && $alerts->total() > 0)
+								@foreach($alerts as $val)
+								@php
+								$coupon = get_coupon($val->coupon_id);
+								$image  = coupon_image($val->coupon_id);
+								$expire_date = date("d M, Y",$coupon->coupon_end_time);
+								$expire_time = date("h:i a",$coupon->coupon_end_time);
+								@endphp
+								<div class="alertsection">
+								  <div class="alertinfo">
+									 <div class="alertimg">
+										<div class="alertimgbg">
+										   <img src="{{ $image }}" />
+										</div>
+									 </div>
+									 <div class="alertcont">
+										<h3>{{ $coupon->product_name }}</h3>
+										<div class="alerttextarea">
+										   <p>{{ $coupon->details }}.<span>Valid till {{$expire_date}} {{$expire_time}}</span></p>
+										   <div class="alertcpnbtn">
+                                 @if(Auth::user())
+                                    <i class="fa fa-times" aria-hidden="true" id="delete_alert" data-id="{{$val->id}}"></i>
+												<a href="#"  class = "view_coupon" data-id="{{$coupon->id}}">GET coupon</a>
+											@else
+												<a href="#" data-toggle="modal" data-target="#formmodal">GET coupon</a>
+											@endif
+											<!--  <a href="#" data-toggle="modal" data-target="#couponmodal">Get Coupon</a>-->
+										   </div>
+										</div>
+									 </div>
+								  </div>
+							   </div>
+								@endforeach
+							@else
+							<div>No Result Found</div>
+							@endif
+							
+							
+							@if($alerts->total() > $alerts->perPage())
+                           <div class="paginationdiv">
+						     @php
+							 $ceil = ceil($alerts->total()/$alerts->perPage());
+							 @endphp
+                              <ul class="pagination">
+                                 <li class="page-item">
+                                    <a class="page-link" href="{!! $alerts->previousPageUrl() !!}" aria-label="Previous">
+                                    <span aria-hidden="true"><i class="fa fa-arrow-left"></i></span>
+                                    <span class="sr-only">Previous</span>
+                                    </a>
+                                 </li>
+								 <?php
+									for($i = 1; $i <= $ceil; $i++){
+										?>
+										 <li class="page-item <?php if($alerts->currentPage() == $i) echo "active"; ?>"><a class="page-link" href="{!! $alerts->url($i) !!}">{{ $i }}</a></li>
+										<?php
+									}
+									
+								 ?>
+                                 <li class="page-item">
+                                    <a class="page-link" href="{!! $alerts->nextPageUrl() !!}" aria-label="Next">
+                                    <span aria-hidden="true"><i class="fa fa-arrow-right"></i></span>
+                                    <span class="sr-only">Next</span>
+                                    </a>
+                                 </li>
+                              </ul>
                            </div>
-                           <div class="alertsection">
+						   @endif
+                           
+                           <!--<div class="alertsection">
                               <div class="alertinfo">
                                  <div class="alertimg">
                                     <div class="alertimgbg">
@@ -170,15 +242,14 @@
                                     </div>
                                  </div>
                               </div>
-                           </div>
+                           </div>-->
                         </div>
                      </div>
                   </section>
                </div>
             </div>
          </div>
-      </main>
-	  
+	  <script src="{{ url('frontend/js/coupon.js')}}" type="text/javascript"></script>
 	  <script type="text/javascript">
            $(document).on('ready', function() {
            $('.center').slick({
@@ -297,27 +368,28 @@
       </script>
       <!-- The Modal -->
       <div class="modal getcpn_modal" id="couponmodal">
-         <div class="modal-dialog">
-            <div class="modal-content">
-               <button type="button" class="close" data-dismiss="modal">&times;</button>
-               <!-- Modal body -->
-               <div class="modal-body">
-                  <img src="{{asset('frontend/images/elcarne.png')}}" />
-                  <h4>Elcarne <img src="{{asset('frontend/images/information.svg')}}" class="infoicon" /></h4>
-                  <h5>Buy 2 Burgers, get 1 free!</h5>
-                  <p>Bestel twee burgers en ontvang de derde gratis!</p>
-                  <p>Expires on 31/10/2020 at 23:59</p>
-                  <a href="#getcpnbtn1" data-toggle="modal" data-target="#couponmodal2" class="getcpnbtn">Get Coupon</a>
-               </div>
-            </div>
-         </div>
-      </div>
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<!-- Modal body -->
+				<div class="modal-body">
+				<img id="coupon_view_image" src="{{asset('frontend/images/elcarne.png')}}" />
+				<h4 id="coupon_view_name">Elcarne <img src="{{asset('frontend/images/information.svg')}}" class="infoicon" /></h4>
+				<h5>Buy 2 Burgers, get 1 free!</h5>
+				<p id="coupon_view_details">Bestel twee burgers en ontvang de derde gratis!</p>
+				<p id="coupon_view_expire">Expires on 31/10/2020 at 23:59</p>
+				<a href="#" class="getcpnbtn" id="couponorder">Get Coupon</a>
+				<!--<a href="#getcpnbtn1" data-toggle="modal" data-target="#couponmodal2" class="getcpnbtn">Get Coupon</a>-->
+				</div>
+			</div>
+		</div>
+	</div>
       <!-- The Modal -->
-      <div class="modal getcpn_modal getcpn_modal2" id="couponmodal2">
+      <!--<div class="modal getcpn_modal getcpn_modal2" id="couponmodal2">
          <div class="modal-dialog">
             <div class="modal-content">
                <button type="button" class="close" data-dismiss="modal">&times;</button>
-               <!-- Modal body -->
+               
                <div class="modal-body">
                   <img src="{{asset('frontend/images/elcarne.png')}}" />
                   <h4>Elcarne <img src="{{asset('frontend/images/information.svg')}}" class="infoicon" /></h4>
@@ -343,6 +415,6 @@
                </div>
             </div>
          </div>
-      </div>
+      </div>-->
  
 @endsection

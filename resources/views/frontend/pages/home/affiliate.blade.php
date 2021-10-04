@@ -2,7 +2,6 @@
 @section('pageTitle','Affiliate')
 @section('content')
 
-<main class="site-content">
          <section class="innerbannersection affiliatebannersection">
             <div class="container">
                <div class="innerbanner_cont">
@@ -18,22 +17,28 @@
                <div class="container">
                   <div class="row">
                      <div class="aff_innercont">
-                        <span class="remark_span"><span class="remark">15</span>/20</span>
-                        <h4>Total Earned :¢15</h4>
+                        <span class="remark_span"><span class="remark">{{$count}}</span>/20</span>
+                        <h4>Total Earned :&euro;{{$count}}</h4>
                         <h3>Refer friends. Get rewards</h3>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod </p>
                         <div class="form-group aff_input">
-                           <input type="text" class="form-control" placeholder="https://www.foodpass.com/ref/referral=#12343?">
-                           <i class="fa fa-copy"></i>
+                           <input type="text" value="{{URL::to('/')}}/referral/{{$user->customer_id}}" class="form-control" placeholder="https://www.foodpass.com/ref/referral=#12343?" id="affilate_link">
+                           <i class="fa fa-copy" onclick="copyFunction()" style="cursor:pointer;"></i>
                         </div>
                         <div class="sharebtn">
-                           <a href="#" class="getstarted">Share</a>
+                          <!-- <a href="#" class="getstarted">Share</a>-->
                         </div>
                      </div>
                   </div>
                </div>
             </div>
          </section>
-      </main>
- 
+ <script>
+ function copyFunction() {
+  var copyText = document.getElementById("affilate_link");
+  copyText.select();
+  copyText.setSelectionRange(0, 99999)
+  document.execCommand("copy");
+}
+ </script>
 @endsection

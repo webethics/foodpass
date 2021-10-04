@@ -1,14 +1,14 @@
 @extends('frontend.creaters.landing.landing')
 @section('pageTitle','Addcoupon')
 @section('content')
-<main class="site-content">
+<link rel="stylesheet" href="{{ url('frontend/css/coupon.css')}}" type="text/css" />
          <div class="container-fluid innercontainer">
             <div class="row">
                <div class="col leftsidebarsec dashboardsidebar mt-0">
                   <div class="sidebar_cont profilesidebar">
                      <ul class="accordion profilelist" id="accordion">
                         <li class="nav-link dropdown-toggle couponlink">
-                           <a href="booking.html">
+                           <a href="{{url('booking')}}">
                               <div class="link">
                                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                                     <defs></defs>
@@ -19,8 +19,8 @@
                               </div>
                            </a>
                         </li>
-                        <li class="nav-link dropdown-toggle couponlink">
-                           <a href="makecoupon.html">
+                        <li class="nav-link dropdown-toggle couponlink active">
+                           <a href="{{url('makecoupon')}}">
                               <div class="link">
                                  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
                                     <defs>
@@ -33,8 +33,8 @@
                               </div>
                            </a>
                         </li>
-                        <li class="nav-link dropdown-toggle couponlink active">
-                           <a href="store-profile.html">
+                        <li class="nav-link dropdown-toggle couponlink">
+                           <a href="{{url('store-profile')}}">
                               <div class="link">
                                  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
                                     <defs>
@@ -47,6 +47,21 @@
                               </div>
                            </a>
                         </li>
+                        <li class="nav-link dropdown-toggle afiliatelink">
+                              <a href="{{url('affiliate')}}">
+                                 <div class="link">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="22.3" height="22.3" viewBox="0 0 22.3 22.3">
+                                       <defs>
+                                          <style>.afiliatelink .a{stroke:#000;}</style>
+                                       </defs>
+                                       <g transform="translate(0.15 0.15)">
+                                          <path class="a" d="M20.066,9.066a1.937,1.937,0,0,0-1.823,1.289H16.765A5.774,5.774,0,0,0,15.53,7.381l1.017-1.017a1.932,1.932,0,1,0-.912-.911L14.619,6.47a5.774,5.774,0,0,0-2.974-1.235V3.756a1.934,1.934,0,1,0-1.289,0V5.235A5.774,5.774,0,0,0,7.381,6.47L6.365,5.453a1.935,1.935,0,1,0-.912.911L6.47,7.381a5.774,5.774,0,0,0-1.235,2.974H3.756a1.934,1.934,0,1,0,0,1.289H5.235A5.774,5.774,0,0,0,6.47,14.619L5.453,15.636a1.932,1.932,0,1,0,.912.911L7.381,15.53a5.774,5.774,0,0,0,2.974,1.235v1.479a1.934,1.934,0,1,0,1.289,0V16.765a5.773,5.773,0,0,0,2.974-1.235l1.016,1.016a1.935,1.935,0,1,0,.912-.911L15.53,14.619a5.773,5.773,0,0,0,1.235-2.974h1.479a1.933,1.933,0,1,0,1.823-2.578Zm-3.142-4.9a.645.645,0,1,1,0,.911A.645.645,0,0,1,16.925,4.164Zm-11.85.911a.645.645,0,1,1,0-.911A.645.645,0,0,1,5.075,5.075ZM1.934,11.645A.645.645,0,1,1,2.578,11,.645.645,0,0,1,1.934,11.645Zm3.142,6.192a.645.645,0,1,1,0-.911A.645.645,0,0,1,5.075,17.836Zm11.85-.911a.645.645,0,1,1,0,.911A.645.645,0,0,1,16.925,16.925ZM11,1.289a.645.645,0,1,1-.645.645A.645.645,0,0,1,11,1.289Zm0,19.422a.645.645,0,1,1,.645-.645A.645.645,0,0,1,11,20.711Zm0-5.2a4.49,4.49,0,0,1-2.791-.969,3.224,3.224,0,0,1,5.581,0A4.489,4.489,0,0,1,11,15.512ZM9.711,10.355A1.289,1.289,0,1,1,11,11.645,1.291,1.291,0,0,1,9.711,10.355ZM14.7,13.575a4.484,4.484,0,0,0-1.781-1.5,2.578,2.578,0,1,0-3.844,0,4.484,4.484,0,0,0-1.78,1.5,4.512,4.512,0,1,1,7.406,0Zm5.364-1.93A.645.645,0,1,1,20.711,11,.645.645,0,0,1,20.066,11.645Z"/>
+                                       </g>
+                                    </svg>
+                                    Afiliate
+                                 </div>
+                              </a>
+                           </li>
                      </ul>
                   </div>
                </div>
@@ -59,85 +74,105 @@
                               <div class="col-md-4 addcpn_image">
                                  <h4>Select product</h4>
                                  <div class="uploadimage_blk">
-                                    <div class="circle">
-                                       <!-- User Profile Image -->
-                                       <img class="profile-pic" src="">
-                                       <!-- Default Image -->
-                                       <!-- <i class="fa fa-user fa-5x"></i> -->
-                                    </div>
-                                    <div class="p-image">
-                                       <div class="upload-button">
-                                          <img src="{{asset('frontend/images/picture.svg')}}" />
-                                          <span class="selpdtlabel">Select Product</span>
-                                       </div>
-                                       <input class="file-upload" type="file" accept="image/*"/>
-                                    </div>
+									<a href="javascript:void(0)" data-toggle="modal" data-target=".upload_photo_modal" class="show_image"  >
+										<div class="circle">
+										   <img class="profile-pic" src="{{asset('frontend/images/default_user.jpg')}}">
+										</div>
+										<div class="p-image">
+										   <div class="upload-button">
+											   
+												  <img src="{{asset('frontend/images/picture.svg')}}" />
+												  <span class="selpdtlabel">Select Product</span>
+											  
+										   </div>
+										   <input class="file-upload" type="file" accept="image/*"/>
+										   
+										</div>
+									 </a>
                                  </div>
                               </div>
                               <div class="col-md-8 addcpm_form">
-                                 <form class="forumform addcouponform">
+                                 <form class="forumform addcouponform" action = "{{ route('user.savecoupon') }}" method="post" enctype="multipart/form-data" id="add_coupon_form">
+								 {{ csrf_field() }}
+								 
                                     <div class="row">
                                        <div class="col-md-6 form-group">
                                           <label>Product Name</label>
-                                          <input type="text" class="form-control" placeholder="Enter Product Name" value="">
+                                          <input type="text" name="product_name" class="form-control" placeholder="Enter Product Name" value="" id="product_name">
                                        </div>
                                        <div class="col-md-6 form-group">
                                           <label>Expire time and date</label>
                                           <div class="row expirerow">
                                              <div class="col-md-6 expireinput">
-                                                <input id="datepicker1" class="form-control" placeholder="From" />
+                                                <input id="datepicker1" name="coupon_start_time" class="form-control" placeholder="From" />
                                              </div>
                                              <div class="col-md-6 expireinput">
-                                                <input id="datepicker2" class="form-control" placeholder="Until" /> 
+                                                <input id="datepicker2" name="coupon_end_time" class="form-control" placeholder="Until" /> 
                                              </div>
                                           </div>
                                        </div>
                                     </div>
+
                                     <div class="row">
-                                       <div class="col-md-6 form-group">
-                                          <label>Current Price</label>
-                                          <input type="text" class="form-control" placeholder="Current Price" value="">
+                                       <div class="col-md-6 form-group deliverY-block">
+                                          <label>Range(KM)</label>
+                                          <input type="text" name="delivery_range" id="delivery_range" class="form-control" placeholder="Range" value="">
                                        </div>
-                                       <div class="col-md-6 form-group">
-                                          <label>Min. Order Price</label>
-                                          <input type="text" class="form-control" placeholder="Enter min Order Price" value="">
-                                       </div>
-                                    </div>
-                                    <div class="row">
                                        <div class="col-md-6 form-group">
                                           <label>Pickup/Delivery</label>
-                                          <div class="select-data sortselect">
-                                             <select class="selectpicker">
-                                                <option>Select Pickup/Delivery</option>
-                                                <option>Delivery 1</option>
-                                                <option>Delivery 2</option>
-                                             </select>
+                                          <div class="div-pickup-delivery">
+                                             <input class="pickup_delivery" type="radio" id="toggle-on" name="coupon_pickup_delivery" value=1>
+                                             <label class="pickup_delivery toggle-pickup" for="toggle-on">Pickup</label>
+                                             <input class="pickup_delivery" type="radio" id="toggle-off" name="coupon_pickup_delivery" value=2>
+                                             <label class="pickup_delivery toggle-delivery" for="toggle-off">Delivery</label>
                                           </div>
-                                       </div>
-                                       <div class="col-md-6 form-group">
-                                          <label>Delivery Costs</label>
-                                          <input type="text" class="form-control" placeholder="Enter delivery costs" value="">
+                                          <!--div class="select-data sortselect">
+                                             <select class="selectpicker" name="coupon_pickup_delivery" id="coupon_pickup_delivery">
+                                                <option>Select Pickup/Delivery</option>
+                                                <option value = "1">Pickup</option>
+                                                <option value = "2">Delivery</option>
+                                             </select>
+                                          </div-->
                                        </div>
                                     </div>
-                                    <div class="row">
+                                    <div class="row bordered_row">
                                        <div class="col-md-12 form-group">
                                           <div class="cpntype_div">
+                                             <div class="row" style="margin:0">
+                                                <div class="col-md-6 form-group" style="padding-left:0;">
+                                                   <label class="current_price">Current Price</label>
+                                                   <input type="text" name="coupon_price" id="coupon_price" class="form-control" placeholder="Current Price" value="">
+                                                </div>
+                                                <div class="col-md-6 form-group" style="padding-left:0;">
+                                                   <label class="discount_code">Discount Code</label>
+                                                   <input type="text" name="discount_code" id="discount_code" class="form-control" placeholder="Discount Code" value="">
+                                                </div>
+                                             </div>
                                              <div class="cpntype_hdr">
                                                 <label>Select Coupon type</label>
                                                 <div class="cpntype_btns">
-                                                   <span class="active">€</span>
-                                                   <span>%</span>
-                                                   <span class="active">Free</span>
+												   <input type = "hidden" id="coupon_type" name="coupon_type" />
+												   <input type = "hidden" id="free_coupon_type" name="free_coupon_type" />
+                                                   <span class = "coupon_type cursor" data-id="1">€</span>
+                                                   <span class = "coupon_type cursor" data-id="2">%</span>
+                                                   <span class = "coupon_type_free cursor" data-id="3">Free</span>
                                                 </div>
                                              </div>
-                                             <div class="cpntype_input">
+                                             <div class="cpntype_input" id="euro_precent" style="display:none;">
+                                                <label class="coupon_discount_label">Hoeveel € korting wil je geven?</label>
                                                 <div class="cpntype_formgroup">
-                                                   <input type="text" class="form-control" placeholder="Discount €" value="" />
-                                                   <input type="text" class="form-control" placeholder="New Price" value="" />
+                                                   <input type="text" name="discount_1" id="discount_1" class="form-control" placeholder="Discount" value="" />
+                                                   <input type="text"  name="new_price_1" id="new_price_1" class="form-control" placeholder="New Price" value="" readonly />
                                                 </div>
-                                                <div class="cpntype_formgroup">
-                                                   <input type="text" class="form-control" placeholder="Discount €" value="" />
-                                                   <input type="text" class="form-control" placeholder="New Price" value="" />
+                                                <!--<div class="cpntype_formgroup">
+                                                   <input type="text" name="discount_2" id="discount_2" class="form-control" placeholder="Discount €" value="" />
+                                                   <input type="text" name="new_price_2" id="new_price_2" class="form-control" placeholder="New Price" value="" />
+                                                </div>-->
+                                             </div>
+                                  <div class="cpntype_input" id="free_product" style="display:none;">
+                                     <label class="coupon_discount_label">Naam product (Bijv. Gratis Cola of Gratis bezorging)</label>
+												<div class="cpntype_formgroup">
+                                                   <input type="text" name="free_product" id="free_product_input" class="form-control" placeholder="Product Name" value="" />
                                                 </div>
                                              </div>
                                           </div>
@@ -146,12 +181,13 @@
                                     <div class="row">
                                        <div class="col-md-12 form-group">
                                           <label>Details</label>
-                                          <textarea class="form-control" rows="3"></textarea>
+										  <input type = "hidden" name="coupon_image" value = "" id="coupon_image"> 
+                                          <textarea class="form-control" rows="3" id="details" name="details"></textarea>
                                        </div>
                                     </div>
                                     <div class="row">
                                        <div class="col-md-12 submitbtn">
-                                          <button type="submit" class="btn text-uppercase">Save Coupon</button>
+                                          <button type="submit" onclick="submiBtnClick(event);" class="btn text-uppercase">Save Coupon</button>
                                        </div>
                                     </div>
                                  </form>
@@ -163,161 +199,53 @@
                </div>
             </div>
          </div>
-      </main>
-	  
-	  
-	  <script>
-         // Selectable
-         
-         const list1 = document.getElementById("switch1");
-         
-         const selectable1 = new Selectable({
-         filter: list1.children,
-         appendTo: list1
-         });
-         
-         const list2 = document.getElementById("switch2");
-         
-         const selectable2 = new Selectable({
-         filter: list2.children,
-         appendTo: list2
-         });
-         
-      </script>
+		 
+		 <!--Cropper MOdal Start-->
+		  <!--Image cropper model-->
+	
+						
+<div class="modal fade upload_photo_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg subs-modal profile_photo_modal">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLongTitle">Upload Photo</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+			</div>
+			<div class="modal-body text-center">
+				<div id="upload-demo"></div>
+				<h6>Choose image to crop:</h6>
+				<!--input type="file" id="image_file"--> 
+				<input type="file" id="upload_profile_file" name="upload_profile_file" class="upload_input" accept="image/*" onchange="validate(this.value)">
+				<label for="upload_profile_file"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="0 0 20 17"><path d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"></path></svg> <span>Choose a file…</span></label>
+				<p class="upload_profile_file_error error"></p>
+				<button class="btn upload-image mt-0" disabled="disabled" style="margin-top:2%">Upload Image</button>
+				<div class="alert alert-success" id="upload-success" style="display: none;margin-top:10px;"></div>
+			</div>
+		</div>
+	</div>
+</div>
+		 <!--Cropper MOdal END-->
+		 
+		 <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+		 <script src="{{ url('frontend/js/croppie.js')}}" type="text/javascript"></script>
+		  <script src="{{ url('frontend/js/coupon.js')}}" type="text/javascript"></script>
       <script>
-         $(function() {
-         	var Accordion = function(el, multiple) {
-         		this.el = el || {};
-         		this.multiple = multiple || false;
-         
-         		// Variables privadas
-         		var links = this.el.find('.link');
-         		// Evento
-         		links.on('click', {el: this.el, multiple: this.multiple}, this.dropdown)
-         	}
-         
-         	Accordion.prototype.dropdown = function(e) {
-         		var $el = e.data.el;
-         			$this = $(this),
-         			$next = $this.next();
-         
-         		$next.slideToggle();
-         		$this.parent().toggleClass('open');
-         
-         
-         	}	
-         
-         	var accordion = new Accordion($('#accordion'), false);
-         });
-      </script>
-      <script>
-         $('#datepicker1').datetimepicker({ footer: true});
-         $('#datepicker2').datetimepicker({ footer: true});
+         $('#datepicker1').datetimepicker({
+			 datepicker: { 
+				 disableDates:  function (date) {
+					 const currentDate = new Date().setHours(0,0,0,0);
+					return date.setHours(0,0,0,0) >= currentDate ? true : false;
+				}
+			},footer: true,format: 'dd-mm-yyyy HH:MM'});
+			
+         $('#datepicker2').datetimepicker({ datepicker: { 
+				 disableDates:  function (date) {
+					 const currentDate = new Date().setHours(0,0,0,0);
+					return date.setHours(0,0,0,0) >= currentDate ? true : false;
+				}
+			},footer: true,format: 'dd-mm-yyyy HH:MM'});
       </script>
    </body>
-   <!-- The Modal -->
-   <div class="modal getcpn_modal" id="couponmodal">
-      <div class="modal-dialog">
-         <div class="modal-content">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <!-- Modal body -->
-            <div class="modal-body">
-               <img src="{{asset('frontend/images/elcarne.png')}}" />
-               <h4>Elcarne <img src="{{asset('frontend/images/information.svg')}}" class="infoicon" /></h4>
-               <h5>Buy 2 Burgers, get 1 free!</h5>
-               <p>Bestel twee burgers en ontvang de derde gratis!</p>
-               <p>Expires on 31/10/2020 at 23:59</p>
-               <a href="#getcpnbtn1" data-toggle="modal" data-target="#couponmodal2" class="getcpnbtn">Get Coupon</a>
-            </div>
-         </div>
-      </div>
-   </div>
-   <!-- The Modal -->
-   <div class="modal getcpn_modal getcpn_modal2" id="couponmodal2">
-      <div class="modal-dialog">
-         <div class="modal-content">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <!-- Modal body -->
-            <div class="modal-body">
-               <img src="{{asset('frontend/images/elcarne.png')}}" />
-               <h4>Elcarne <img src="{{asset('frontend/images/information.svg')}}" class="infoicon" /></h4>
-               <h5>Buy 2 Burgers, get 1 free!</h5>
-               <p>Bestel twee burgers en ontvang de derde gratis!</p>
-               <p class="mb-0">Expires on 31/10/2020 at 23:59</p>
-               <p class="mb-0">Client no : 54567</p>
-               <h3>Ordernumber : 596 5543</h3>
-               <div class="coupon_code">
-                  <div class="row">
-                     <div class="col-md-8">
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetng industry. Lorem Ipsum has been the industry's standard dummy text ever..</p>
-                     </div>
-                     <div class="col-md-4 scannerimg">
-                        <img src="{{asset('frontend/images/scanner.png')}}" />
-                     </div>
-                  </div>
-               </div>
-               <a href="#" data-dismiss="modal">Get Coupon</a>
-            </div>
-         </div>
-      </div>
-   </div>
-   <!-- The Modal -->
-   <div class="modal getcpn_modal couponmodal1" id="couponmodal">
-      <div class="modal-dialog">
-         <div class="modal-content">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <!-- Modal body -->
-            <div class="modal-body">
-               <img src="{{asset('frontend/images/elcarne.png')}}" />
-               <h4>Elcarne <img src="{{asset('frontend/images/information.svg')}}" class="infoicon" /></h4>
-               <h5>Buy 2 Burgers, get 1 free!</h5>
-               <p>Bestel twee burgers en ontvang de derde gratis!</p>
-               <p>Expires on 31/10/2020 at 23:59</p>
-               <a href="" id="getcpnbtn1" data-toggle="modal" data-target="#couponmodal2" class="getcpnbtn">Get Coupon</a>
-            </div>
-         </div>
-      </div>
-   </div>
-   <!-- The Modal -->
-   <div class="modal getcpn_modal getcpn_modal2" id="couponmodal2">
-      <div class="modal-dialog">
-         <div class="modal-content">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <!-- Modal body -->
-            <div class="modal-body">
-               <img src="{{asset('frontend/images/elcarne.png')}}" />
-               <h4>Elcarne <img src="{{asset('frontend/images/information.svg')}}" class="infoicon" /></h4>
-               <h5>Buy 2 Burgers, get 1 free!</h5>
-               <p>Bestel twee burgers en ontvang de derde gratis!</p>
-               <p class="mb-0">Expires on 31/10/2020 at 23:59</p>
-               <p class="mb-0">Client no : 54567</p>
-               <h3>Ordernumber : 596 5543</h3>
-               <div class="coupon_code">
-                  <div class="row">
-                     <div class="col-md-8">
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetng industry. Lorem Ipsum has been the industry's standard dummy text ever..</p>
-                     </div>
-                     <div class="col-md-4 scannerimg">
-                        <img src="{{asset('frontend/images/scanner.png')}}" />
-                     </div>
-                  </div>
-               </div>
-               <div class="couponbtns">
-                  <a href="#" class="orderbtn">Order Online</a>
-                  <a href="#" class="storebtn">Call Store</a>
-               </div>
-            </div>
-         </div>
-      </div>
-   </div>
-   <script>
-      $(document).ready(function(){
-          $( '.getcpnbtn' ).click(function() {
-      		$( '.modal.getcpn_modal2' ).css('background-color', 'rgba(0,0,0,0.2)');
-          });	
-      });
-      
-      
-   </script>
- 
 @endsection

@@ -13,6 +13,7 @@
 	<link rel="stylesheet" href="{{ asset('css/vendor/bootstrap-datepicker3.min.css')}}" />
 	<link rel="stylesheet" href="{{ asset('css/vendor/bootstrap-colorpicker.min.css')}}" />
 	<link rel="stylesheet" href="{{ asset('css/vendor/select2.min.css')}}" />
+	<link rel="stylesheet" href="{{ url('frontend/css/toastr.min.css')}}" type="text/css" />
 	<link rel="stylesheet" href="{{ asset('css/vendor/select2-bootstrap.min.css')}}" />
 	
     <link rel="stylesheet" href="{{ asset('css/vendor/perfect-scrollbar.css')}}" />
@@ -25,8 +26,9 @@
 	
     <link rel="stylesheet" href="{{ asset('css/main.css')}}" />
 	<link href="{{ asset('css/custom.css') }}" rel="stylesheet" />
+	<script src="{{ asset('js/vendor/jquery-3.3.1.min.js')}}"></script>
 	@yield('additionalCss')
-	<link rel="shortcut icon" href="{{ asset('img/favicon.ico')}}">
+	<link rel="shortcut icon" href="{{ asset('img/favicon.png')}}">
 	<script> 
 	 base_url ="{{ url('/admin') }}";
 	 site_url ="{{ url('/') }}";
@@ -38,10 +40,11 @@
       @include('admin.partials.menu')
         <main class="main">
 			<div class="container-fluid">
+				@include('flash-message')
                 @yield('content')
 			</div>
         </main>  
-<script src="{{ asset('js/vendor/jquery-3.3.1.min.js')}}"></script>
+
 <script src="{{ asset('js/vendor/bootstrap.bundle.min.js')}}"></script>
 <script src="{{ asset('js/vendor/bootstrap-colorpicker.min.js')}}"></script>
 <script src="{{ asset('js/vendor/perfect-scrollbar.min.js')}}"></script>
@@ -56,6 +59,7 @@
 <script src="{{ asset('js/vendor/notifications.js')}}"></script>		
 <script src="{{ asset('js/scripts.single.theme.js')}}"></script>		
 <script src="{{ asset('js/custom.js')}}"></script>
+<script src="{{ url('frontend/js/toastr.min.js')}}"></script>	
 
 <!--  Add js For Add/edit/listing request page --> 	
 @yield('addEditRequestjs')

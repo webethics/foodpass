@@ -1,8 +1,11 @@
 <?php
-namespace App\Http\Controllers;use Illuminate\Http\Request;
+namespace App\Http\Controllers;
+use Illuminate\Http\Request;
 use Socialite;
-use App\Services\SocialGoogleAccountService;class SocialAuthGoogleController extends Controller
+use App\Services\SocialGoogleAccountService;
+class SocialAuthGoogleController extends Controller
 {
+	
   /**
    * Create a redirect method to google api.
    *
@@ -19,10 +22,13 @@ use App\Services\SocialGoogleAccountService;class SocialAuthGoogleController ext
      */
     public function callback(SocialGoogleAccountService $service)
     {
+		  
         $user = $service->createOrGetUser(Socialite::driver('google')->user());
-        auth()->login($user);?>
+        
+        auth()->login($user);
+    ?>
 		<script>
-				    window.opener.location = '/home';
+				    window.opener.location = '/profile';
 				    window.close();
 			</script>
 	<?php	

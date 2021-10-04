@@ -1,23 +1,32 @@
 @extends('frontend.creaters.landing.landing')
 @section('pageTitle','My Coupon')
 @section('content')
-
- <main class="site-content">
+<script src="{{ url('frontend/js/selectable.js')}}"></script>
+<link rel="stylesheet" href="{{ url('frontend/css/coupon.css')}}" type="text/css" />
+		<div class="loader"></div>
          <div class="container innercontainer storecontainer">
             <div class="row">
-               <div class="col leftsidebarsec profileftsidebar">
+               <div class="col leftsidebarsec profileftsidebar mobsidebar userProfile">
                   <div class="sidebar_cont profilesidebar">
                      <div class="userinfo">
                         <div class="userimage">
-                           <img src="{{asset('frontend/images/userimage1.png')}}" />
+                          @if(auth::user()->profile_photo==NULL)
+							   <img class="updated_profile_pic" src="{{asset('frontend/images/default_user.jpg')}}" />
+							@else
+								
+							@php
+								$photo =  profile_photo(auth::user()->id);
+							@endphp
+								<img class="updated_profile_pic" src="{{timthumb($photo,80,80)}}">
+							@endif
                         </div>
-                        <h4>Selena Gomez</h4>
-                        <a href="#">+1 85658 89562</a>
-                        <a href="#">selenagomez@gmail.com</a>
+                        <h4>{{ $user->first_name }} {{ $user->last_name }}</h4>
+                        <a href="tel:{{ $user->mobile_number }}">{{ $user->mobile_number }}</a>
+                        <a href="mailto:{{ $user->email }}">{{ $user->email }}</a>
                      </div>
                      <ul class="accordion profilelist" id="accordion">
                         <li class="nav-link dropdown-toggle couponlink">
-                           <a href="profile.html">
+                           <a href="{{url('profile')}}">
                               <div class="link">
                                  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
                                     <defs>
@@ -31,7 +40,7 @@
                            </a>
                         </li>
                         <li class="nav-link dropdown-toggle menukartlink active">
-                           <a href="my-coupon.html">
+                           <a href="{{url('my-coupon')}}">
                               <div class="link">
                                  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
                                     <defs>
@@ -45,7 +54,7 @@
                            </a>
                         </li>
                         <li class="nav-link dropdown-toggle alertlink">
-                           <a href="alerts.html">
+                           <a href="{{url('alerts')}}">
                               <div class="link">
                                  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
                                     <defs>
@@ -59,7 +68,7 @@
                            </a>
                         </li>
                         <li class="nav-link dropdown-toggle afiliatelink">
-                           <a href="affiliate.html">
+                           <a href="{{url('affiliate')}}">
                               <div class="link">
                                  <svg xmlns="http://www.w3.org/2000/svg" width="22.3" height="22.3" viewBox="0 0 22.3 22.3">
                                     <defs>
@@ -74,7 +83,21 @@
                            </a>
                         </li>
                         <li class="nav-link dropdown-toggle infolink">
-                           <a href="#">
+                           <a href="{{('/subscription')}}">
+                              <div class="link">
+                                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+                                    <defs>
+                                       <style>.a{fill:none;}</style>
+                                    </defs>
+                                    <path class="a" d="M0,0H22V22H0Z"/>
+                                    <path d="M5,20a.954.954,0,0,1-1-.9V2.9A.954.954,0,0,1,5,2H19a.954.954,0,0,1,1,.9V5.6H18V3.8H6V18.2H18V16.4h2v2.7a.954.954,0,0,1-1,.9Zm13-5.4V11.9H11V10.1h7V7.4L23,11Z" transform="translate(-2)"/>
+                                 </svg>
+                                 Become VIP
+                              </div>
+                           </a>
+                        </li>
+						<li class="nav-link dropdown-toggle infolink">
+                           <a href="{{('/logout')}}">
                               <div class="link">
                                  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
                                     <defs>
@@ -97,83 +120,155 @@
                         <span class="sortselblk">
                            Sort By
                            <div class="select-data sortselect">
-                              <select class="selectpicker">
-                                 <option>Name</option>
-                                 <option>Name 1</option>
-                                 <option>Name 2</option>
+                              <select class="selectpicker" id="my_coupon_sorting">
+                                 <option value = "1">Name</option>
+                                 <option value = "2">Date picked</option>
                               </select>
                            </div>
                         </span>
                      </h2>
-                     <div class="row mt-3 pt-3">
-                        <div class="col-md-4 featured_blk">
+                     <div class="tab">
+                        <button class="tablinks active" onclick="openTab(event, 'Beschikbaar')">Beschikbaar</button>
+                        <button class="tablinks" onclick="openTab(event, 'Verlopen')">Verlopen</button>
+                     </div>
+                     <div class="row mt-3 pt-3 tabcontent my_coupon_div" id="Beschikbaar" style="display:flex;">
+                           @php 
+                              $total = $coupons->total();
+                              $currentTime = strtotime('now');
+                              
+                           @endphp
+                           @if(isset($coupons) && !empty($coupons) && $total > 0)
+                              @foreach($coupons as $coupon)
+                              @php
+                                 $typeArr = array();
+                                 $typeArr = explode(',', $coupon->mycoupons->coupon_display);
+                                 $arrCheck = [1, 2];
+                              @endphp
+                           @if(isset($coupon->mycoupons->id) && $coupon->mycoupons->id != "" && $coupon->mycoupons->coupon_end_time >= $currentTime )
+                           @php
+                              $photo =  coupon_image($coupon->mycoupons->id);
+                              $pickup_delivery = $coupon->mycoupons->coupon_pickup_delivery == 1 ? "Pickup" : "Deliver";
+                              $expire_date = date("d M, Y",$coupon->mycoupons->coupon_end_time);
+                              $expire_time = date("h:i a",$coupon->mycoupons->coupon_end_time);
+                           @endphp 
+                        <div class="col-md-6 featured_blk">
                            <div class="featured_blkdiv">
-                              <div class="featured_img">
-                                 <img src="{{asset('frontend/images/featuredimg.png')}}" class="img-fluid" />
-                              </div>
-                              <div class="featured_blkcontsec">
-                                 <span class="offer_tag">20%<br/><span class="lightweight">Off</span></span>
-                                 <h4>Free Sauce on Fries</h4>
-                                 <span class="date">Valid Till : 25 Oct, 2020</span>
-                                 <div class="borderdiv">
-                                    <span class="borderleft"></span>
-                                    <span class="borderright"></span>
+                                <div class="row pt-3">
+                                 <div class="col-md-7 mt-3 my_coupons_featured_blk">
+                                  <div class="image_tags my_coupons">
+                                       @if(in_array("3", $typeArr))
+                                          <span class="premium_tag"><img src="{{asset('frontend/images/premium.png')}}" /></span>
+                                       @endif
+                                       @if($coupon->mycoupons->discount_1 != '')
+                                          <span class="discount_tag">{{$coupon->mycoupons->discount_1}}%</span>
+                                       @endif
+                                       @if (array_intersect($arrCheck, $typeArr))
+                                          <span class="free_tag">FREE</span>
+                                       @endif
+                                    </div>
+                                   <h4>{{$coupon->mycoupons->product_name}}</h4>
+                                   <span class="date">Valid Till : {{$expire_date}} </span>
+                                   
                                  </div>
-                                 <div class="featured_blkcont">
-                                    <h5>Johnny's Burgers</h5>
-                                    <a href="#" data-toggle="modal" data-target="#couponmodal">Get Coupon</a>
+                                 <div class="col-md-5 my_coupons_featured_blk">
+                                     <div class="featured_img"><img src="{{$photo}}" class="img-fluid" /></div>
                                  </div>
-                              </div>
+                                </div>
+                                <div class="borderdiv my_coupon"></div>
+                                <div class="row mb-3 section_bottom">
+                                       <div class="col-md-9 my_coupons_featured_blk">
+                                          <h5>{{$coupon->store->first_name." ".$coupon->store->last_name }}</h5>
+                                       </div>
+                                    <div class="col-md-3 my_coupons_featured_blk">
+                                       @if(Auth::user())
+                                             <a href="#"  id="purchase_coupon" data-id="{{$coupon->id}}" class="my_coupon_purchase">View</a>
+                                       @else
+                                             <a href="#" data-toggle="modal" data-target="#formmodal" class="my_coupon_purchase">View</a>
+                                       @endif
+                                    </div>
+                                 </div>
                            </div>
                         </div>
-                        <div class="col-md-4 featured_blk">
-                           <div class="featured_blkdiv">
-                              <div class="featured_img">
-                                 <img src="{{asset('frontend/images/featuredimg.png')}}" class="img-fluid" />
-                              </div>
-                              <div class="featured_blkcontsec">
-                                 <span class="offer_tag">20%<br/><span class="lightweight">Off</span></span>
-                                 <h4>Free Sauce on Fries</h4>
-                                 <span class="date">Valid Till : 25 Oct, 2020</span>
-                                 <div class="borderdiv">
-                                    <span class="borderleft"></span>
-                                    <span class="borderright"></span>
+                         @endif
+                        @endforeach
+                        
+                        @else
+                        
+                        <div class="storeblk" style="width:100%">No result found.</div>
+                        @endif
+                     </div>
+                     <div class="row mt-3 pt-3 tabcontent my_coupon_div" id="Verlopen" style="display:none;">
+                           @php 
+                              $total = $coupons->total();
+                           @endphp
+                           @if(isset($coupons) && !empty($coupons) && $total > 0)
+                              @foreach($coupons as $coupon)
+                              @php
+                                 $typeArr = array();
+                                 $typeArr = explode(',', $coupon->coupon_display);
+                                 $arrCheck = [1, 2];
+                              @endphp
+                           @if(isset($coupon->mycoupons->id) && $coupon->mycoupons->id != "" && $coupon->mycoupons->coupon_end_time < $currentTime)
+                           @php
+                              $photo =  coupon_image($coupon->mycoupons->id);
+                              $pickup_delivery = $coupon->mycoupons->coupon_pickup_delivery == 1 ? "Pickup" : "Deliver";
+                              $expire_date = date("d M, Y",$coupon->mycoupons->coupon_end_time);
+                              $expire_time = date("h:i a",$coupon->mycoupons->coupon_end_time);
+                           @endphp 
+                           
+                           <div class="col-md-6 featured_blk">
+                              <div class="featured_blkdiv expired">
+                                 <div class="row pt-3">
+                                    <div class="col-md-7 mt-3 my_coupons_featured_blk">
+                                    <div class="image_tags my_coupons">
+                                          @if(in_array("3", $typeArr))
+                                             <span class="premium_tag"><img src="{{asset('frontend/images/premium.png')}}" /></span>
+                                          @endif
+                                          @if($coupon->mycoupons->discount_1 != '')
+                                             <span class="discount_tag">{{$coupon->mycoupons->discount_1}}%</span>
+                                          @endif
+                                          @if (array_intersect($arrCheck, $typeArr))
+                                             <span class="free_tag">FREE</span>
+                                          @endif
+                                       </div>
+                                    <h4>{{$coupon->mycoupons->product_name}}</h4>
+                                    <span class="expired_coupon_date">EXPIRED</span>
+                                    
+                                    </div>
+                                    <div class="col-md-5 my_coupons_featured_blk">
+                                       <div class="featured_img"><img src="{{$photo}}" class="img-fluid" /></div>
+                                    </div>
                                  </div>
-                                 <div class="featured_blkcont">
-                                    <h5>Johnny's Burgers</h5>
-                                    <a href="#" data-toggle="modal" data-target="#couponmodal">Get Coupon</a>
-                                 </div>
+                                 <div class="borderdiv my_coupon"></div>
+                                 <div class="row mb-3 section_bottom">
+                                       <div class="col-md-9 my_coupons_featured_blk">
+                                          <h5>{{$coupon->store->first_name." ".$coupon->store->last_name }}</h5>
+                                       </div>
+                                       <div class="col-md-3 my_coupons_featured_blk">
+                                          @if(Auth::user())
+                                                <a href="#"  id="purchase_coupon" data-id="{{$coupon->id}}" class="my_coupon_purchase">View</a>
+                                          @else
+                                                <a href="#" data-toggle="modal" data-target="#formmodal" class="my_coupon_purchase">View</a>
+                                          @endif
+                                       </div>
+                                    </div>
                               </div>
+                              <div id="expired_overlay"></div>
                            </div>
-                        </div>
-                        <div class="col-md-4 featured_blk">
-                           <div class="featured_blkdiv">
-                              <div class="featured_img">
-                                 <img src="{{asset('frontend/images/featuredimg.png')}}" class="img-fluid" />
-                              </div>
-                              <div class="featured_blkcontsec">
-                                 <span class="offer_tag freecoupon">Free</span>
-                                 <h4>Free Sauce on Fries</h4>
-                                 <span class="date">Valid Till : 25 Oct, 2020</span>
-                                 <div class="borderdiv">
-                                    <span class="borderleft"></span>
-                                    <span class="borderright"></span>
-                                 </div>
-                                 <div class="featured_blkcont">
-                                    <h5>Johnny's Burgers</h5>
-                                    <a href="#" data-toggle="modal" data-target="#couponmodal">Get Coupon</a>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
+                   
+                         @endif
+                        @endforeach
+                        
+                        @else
+                        
+                        <div class="storeblk" style="width:100%">No result found.</div>
+                        @endif
                      </div>
                   </section>
                </div>
             </div>
          </div>
-      </main>
-	  
-	  
+	  <script src="{{ url('frontend/js/coupon.js')}}" type="text/javascript"></script>
 	  <script type="text/javascript">
          $(document).on('ready', function() {
          $('.center').slick({
@@ -282,11 +377,11 @@
          });
       </script>
       <!-- The Modal -->
-      <div class="modal getcpn_modal" id="couponmodal">
+      <!--<div class="modal getcpn_modal" id="couponmodal">
          <div class="modal-dialog">
             <div class="modal-content">
                <button type="button" class="close" data-dismiss="modal">&times;</button>
-               <!-- Modal body -->
+               
                <div class="modal-body">
                   <img src="{{asset('frontend/images/elcarne.png')}}" />
                   <h4>Elcarne <img src="{{asset('frontend/images/information.svg')}}" class="infoicon" /></h4>
@@ -297,34 +392,44 @@
                </div>
             </div>
          </div>
-      </div>
+      </div>-->
       <!-- The Modal -->
-      <div class="modal getcpn_modal getcpn_modal2" id="couponmodal2">
+      <div class="modal getcpn_modal getcpn_modal2" id="purchasemodel">
          <div class="modal-dialog">
             <div class="modal-content">
                <button type="button" class="close" data-dismiss="modal">&times;</button>
                <!-- Modal body -->
                <div class="modal-body">
-                  <img src="{{asset('frontend/images/elcarne.png')}}" />
-                  <h4>Elcarne <img src="{{asset('frontend/images/information.svg')}}" class="infoicon" /></h4>
+                  <img id="purchase_coupon_view_image" src="{{asset('frontend/images/elcarne.png')}}" />
+                  <h4 id="purchase_coupon_view_name">Elcarne <img src="{{asset('frontend/images/information.svg')}}" class="infoicon" /></h4>
                   <h5>Buy 2 Burgers, get 1 free!</h5>
-                  <p>Bestel twee burgers en ontvang de derde gratis!</p>
-                  <p class="mb-0">Expires on 31/10/2020 at 23:59</p>
-                  <p class="mb-0">Client no : 54567</p>
-                  <h3>Ordernumber : 596 5543</h3>
+                  <p id="purchase_coupon_view_details">Bestel twee burgers en ontvang de derde gratis!</p>
+                  <p id="purchase_coupon_view_expire" class="mb-0">Expires on 31/10/2020 at 23:59</p>
+                        
                   <div class="coupon_code">
-                     <div class="row">
-                        <div class="col-md-8">
-                           <p>Lorem Ipsum is simply dummy text of the printing and typesetng industry. Lorem Ipsum has been the industry's standard dummy text ever..</p>
-                        </div>
-                        <div class="col-md-4 scannerimg">
-                           <img src="{{asset('frontend/images/scanner.png')}}" />
-                        </div>
+                     <p id="purchase_coupon_client_id" class="mb-0">Client no : 54567</p>
+                     <h3 id="purchase_coupon_order_no">Ordernumber : 596 5543</h3>
+                         <h3 class="purchase_coupon description_head more">Bestsellen</h3>
+                        <h3 class="purchase_coupon description_head">Online</h3>
+                        <p class="purchase_coupon description">Gebruik de kortingscode <b>‘FOODPASS’</b> en vermeld jouw unieke <b>ORDERNUMMER</b> in de omschrijving van je bestelling. </p>
+                        <h3 class="purchase_coupon description_head">Telefonisch bestellen of via WhatsApp</h3>
+                        <p class="purchase_coupon description">Geef jouw unieke ORDERNUMMER door tijdens het plaatsen van je bestelling.</p>
+                     <!--div class="row">
+                     <div class="col-md-8">
+                        <p>Lorem Ipsum is simply dummy text of the printing and typesetng industry. Lorem Ipsum has been the industry's standard dummy text ever..</p>
                      </div>
+                     <div class="col-md-4 scannerimg">
+                        <img id="purchase_coupon_qr_image" src="{{asset('frontend/images/scanner.png')}}" />
+                     </div-->
                   </div>
-                  <div class="couponbtns">
-                     <a href="#" class="orderbtn">Order Online</a>
-                     <a href="#" class="storebtn">Call Store</a>
+                  <h5 class="view_coup_head">Voorwaarden</h5>
+                  <h6 class="coup_sub_head"><b>Delivery</b> <span class="delivery_type">Alleen afhalen</span></h6>
+                  <h6 class="coup_sub_head sub"><b>Betaalopties</a> iDeal, Betaalverzoek(tikkie), Contant</h6>
+                  </div>
+                  <div class="couponbtns" id="order_buttons">
+                     <a id="order_on" href="#" target = "_blank" class="orderbtn">Order Online</a>
+                     <a id="order_on_call" href="#" class="storebtn">Call Store</a>
+                     <!--a id="order_on_whatsapp" href="#" class="storebtn">Whatsapp</a-->
                   </div>
                </div>
             </div>
@@ -335,8 +440,21 @@
              $( '.getcpnbtn' ).click(function() {
          		$( '.modal.getcpn_modal2' ).css('background-color', 'rgba(0,0,0,0.2)');
              });	
+             
          });
-         
+         function openTab(evt, status) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+               tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+               tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(status).style.display = "flex";
+            evt.currentTarget.className += " active";
+         }
          
       </script>
 @endsection

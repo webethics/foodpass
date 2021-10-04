@@ -5,7 +5,6 @@
 
 @stop
 
-<main class="site-content">
 	 <section class="innersection innerbannersection">
 		<div class="container">
 		   <div class="row align-items-center">
@@ -43,5 +42,4 @@
 			
 			</section>
 
-  </main>
 @endsection

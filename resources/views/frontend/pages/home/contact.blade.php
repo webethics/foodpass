@@ -2,7 +2,6 @@
 @section('pageTitle','About Us')
 @section('content')
 
- <main class="site-content">
          <section class="innerbannersection">
             <div class="container">
                <div class="innerbanner_cont">
@@ -25,5 +24,4 @@
                
             </div>
          </section>
-      </main>
 @endsection

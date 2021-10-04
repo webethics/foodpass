@@ -3,6 +3,11 @@
 @section('profilepageJsCss')
 <script src="{{ asset('js/module/jquery.account.js')}}"></script>
 @stop
+<style>
+	.form-group.mb-0 {
+	    height: 110px;
+	}
+</style>
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-12">
@@ -89,6 +94,22 @@
 							<label class="col-form-label">Site Title</label>
 							<div class="d-flex control-group">
 								<input type="text"  name="site_title" id="site_title" value="{{$settings->site_title}}" class="form-control">
+							</div>
+							<div class="site_title_error errors"></div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-form-label">How it works (%)</label>
+							<div class="d-flex control-group">
+								<input type="text"  name="how_it_works" id="how_it_works" value="{{$settings->how_it_works}}" class="form-control">
+							</div>
+							<div class="site_title_error errors"></div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-form-label">Affilate</label>
+							<div class="d-flex control-group">
+								<input type="text"  name="affilate" id="affilate" value="{{$settings->affilate}}" class="form-control">
 							</div>
 							<div class="site_title_error errors"></div>
 						</div>

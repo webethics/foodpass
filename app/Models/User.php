@@ -41,6 +41,23 @@ class User extends Authenticatable
 		'remember_token',
 		'verify_token' ,
 		'gender',
+		'address',
+		'post_code',
+		'city',
+		'website',
+		'instagram',
+		'facebook',
+		'delivery_cost',
+		'order_amount',
+		'restaurant_name',
+		'admin_verify_status',
+		'dilevery_range',
+		'menu_file',
+		'restaurant_kitchens',
+		'customer_id',
+		'order_options',
+        'affilate_id',
+        'is_store_coupons_enabled_from_admin',
     ];
 
     protected $appends = ['full_name'];
@@ -71,6 +88,32 @@ class User extends Authenticatable
 	public function role() {
         return $this->belongsTo(App\Models\Role, 'role_id');
     }
+	
+	public function coupons() {
+		 return $this->hasMany('App\Models\Coupons', 'user_id');
+    }
+	
+	public function verifiedcoupons() {
+		 return $this->hasMany('App\Models\Coupons', 'user_id')->where('is_varified',1);
+    }
+	
+	
+	
+	public function storetimings() {
+		 return $this->hasOne('App\Models\StoreTimings', 'user_id');
+    }
+	
+	public function subscription() {
+		 return $this->hasOne('App\Models\Payment', 'user_id');
+    }
+	
+	public function storepostcodes() {
+		 return $this->hasMany('App\Models\StorePostcode', 'user_id');
+    }
+
+    public function paymentoptions() {
+        return $this->hasMany('App\Models\PaymentOptions', 'user_id');
+   }
 
     public function tempRequestUser() {
         return $this->hasMany('App\Models\TempRequestUser','user_id');

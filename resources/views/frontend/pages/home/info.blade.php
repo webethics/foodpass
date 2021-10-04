@@ -2,22 +2,30 @@
 @section('pageTitle','Info')
 @section('content')
 
-<main class="site-content">
          <div class="container innercontainer">
             <div class="row">
                <div class="col leftsidebarsec profileftsidebar mobsidebar">
                   <div class="sidebar_cont profilesidebar">
                      <div class="userinfo">
                         <div class="userimage">
-                           <img src="{{asset('frontend/images/userimage.png')}}">
+							@if($user->profile_photo==NULL)
+							  <img src="{{asset('frontend/images/userimage.png')}}">
+							@else
+								
+							@php
+								$photo =  profile_photo($user->id);
+							@endphp
+								<img src="{{timthumb($photo,80,80)}}">
+							@endif
+                           
                         </div>
-                        <h4>KFC</h4>
-                        <a href="#">www.kfc.com</a>
-                        <a href="tel:023 544 05 43">023 544 05 43</a>
+                        <h4>{{ $user->restaurant_name }}</h4>
+                        <a href="{{ $user->website }}">{{ $user->website }}</a>
+                        <a href="tel:{{ $user->mobile_number }}">{{ $user->mobile_number }}</a>
                      </div>
                      <ul class="accordion profilelist" id="accordion">
                         <li class="nav-link dropdown-toggle couponlink">
-                           <a href="coupons.html">
+                           <a href="/coupons/{{$user->id}}">
                               <div class="link">
                                  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
                                     <defs>
@@ -31,7 +39,7 @@
                            </a>
                         </li>
                         <li class="nav-link dropdown-toggle menukartlink">
-                           <a href="menukaart.html">
+                           <a href="/menukaart/{{$user->id}}">
                               <div class="link">
                                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                                     <defs>
@@ -59,7 +67,7 @@
                            </a>
                         </li>
                         <li class="nav-link dropdown-toggle infolink active">
-                           <a href="info.html">
+                           <a href="/info/{{$user->id}}">
                               <div class="link">
                                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                                     <defs>
@@ -84,23 +92,23 @@
                               <div class="profileinfo infosection">
                                  <div class="infocont_sec">
                                     <div class="infohdr">
-                                       <h3>KFC</h3>
-                                       <a href="tel:023 544 05 43">023 544 05 43</a>
-                                       <a href="mailto:johndoe@gmail.com">johndoe@gmail.com</a>
+                                       <h3>{{ $user->restaurant_name }}</h3>
+                                       <a href="tel:{{ $user->mobile_number }}">{{ $user->mobile_number }}</a>
+                                       <a href="mailto:{{ $user->email }}">{{ $user->email }}</a>
                                     </div>
                                     <div class="profilecont infocont">
                                        <div class="row">
                                           <div class="col-md-6 prof_info">
                                              <span>Address</span>
-                                             <p>303 Frederick Street, CA, California</p>
+                                             <p>{{ $user->address }}</p>
                                           </div>
                                           <div class="col-md-3 prof_info">
                                              <span>Post Code</span>
-                                             <p>95814</p>
+                                             <p>{{ $user->post_code }}</p>
                                           </div>
                                           <div class="col-md-3 prof_info">
                                              <span>City</span>
-                                             <p>Sacramento</p>
+                                             <p>{{ $user->city }}</p>
                                           </div>
                                        </div>
                                     </div>
@@ -111,32 +119,102 @@
                                        <div class="row">
                                           <div class="col-md-6 prof_info social_info">
                                              <img src="{{asset('frontend/images/socialicon1.svg')}}" />
-                                             <p><span>Website </span><a href="#">https://www.mystore.com/</a></p>
+                                             <p><span>Website </span><a href="{{ $user->website }}">{{ $user->website }}</a></p>
                                           </div>
                                           <div class="col-md-6 prof_info social_info">
                                              <img src="{{asset('frontend/images/socialicon3.svg')}}" />
-                                             <p><span>Instagram </span><a href="#">https://www.instagram.com/mystore.com/</a></p>
+                                             <p><span>Instagram </span><a href="{{ $user->instagram }}">{{ $user->instagram }}</a></p>
                                           </div>
                                           <div class="col-md-6 prof_info social_info">
                                              <img src="{{asset('frontend/images/socialicon2.svg')}}" />
-                                             <p><span>Facebook </span><a href="#">https://www.facebook.com/mystore.com/</a></p>
+                                             <p><span>Facebook </span><a href="{{ $user->facebook }}">{{ $user->facebook }}</a></p>
                                           </div>
                                        </div>
                                     </div>
                                  </div>
                               </div>
+                              
+                              <!--div class="tablerow" style="margin: 6% 0;">
+                                    <div class="tablediv">
+                                       <table>
+                                          <thead>
+                                             <tr>
+                                                <th>Range</th>
+                                                <th>Delivery Costs</th>
+                                                <th>Minimum order amount</th>
+                                             </tr>
+                                          </thead>
+                                          <tbody>
+                                 <?php //echo "<pre>";print_r($user->storepostcodes);die("here13"); ?>
+                                 @if(isset($user->storepostcodes) && !empty($user->storepostcodes) && count($user->storepostcodes) > 0)
+                                    
+                                    @foreach($user->storepostcodes as $postval)
+                                    <tr>
+                                                <td>> {{$postval->delivery_range}} km</td>
+                                                <td>${{$postval->delivery_cost}}</td>
+                                                <td>${{$postval->order_amount}}</td>
+                                    </tr>
+                                    @endforeach
+                                 @else
+                                    <tr><td>No Results</td></tr>
+                                 @endif
+                                          </tbody>
+                                       </table>
+                                    </div>
+                                 </div-->
+                                 <div class="tablerow mt-5">
+                                    <div class="tablediv">
+                                       <table>
+                                          <thead>
+                                             <tr>
+                                                <th width="33%">Range</th>
+                                                <th  width="33%">Delivery Costs</th>
+                                                <th width="33%" >Minimum order amount</th>
+                                             </tr>
+                                          </thead>
+                                          <tbody>
+                                 
+                                    @if(isset($user->storepostcodes) && !empty($user->storepostcodes) && count($user->storepostcodes) > 0)
+                                    @foreach($user->storepostcodes as $postval) 
+                                    <tr>
+                                                <td>> {{$postval->delivery_range}} km</td>
+                                                <td>${{$postval->delivery_cost}}</td>
+                                                <td>${{$postval->order_amount}}</td>
+                                    </tr>
+                                    @endforeach
+                                    @else
+                                    <tr><td>No Results</td></tr>
+                                    @endif
+                                          </tbody>
+                                       </table>
+                                    </div>
+                                 </div>
                            </div>
+                               
                         </div>
-                        <div class="col-md-3 infosection_div storetimingcol">
-                           <ul class="timingsec">
+                             
+                        <div class="col infosection_div storetiming_sec storetimingcol">
+                           <ul class="timingsec" style="height:unset;">
                               <h3>Open/Close times</h3>
-                              <li class="timings opentime"><span class="weakday">Monday</span><span class="weaktimings">9:00 AM - 06:00 PM</span></li>
-                              <li class="timings opentime"><span class="weakday">Tuesday</span><span class="weaktimings">9:00 AM - 06:00 PM</span></li>
-                              <li class="timings opentime"><span class="weakday">Wednesday</span><span class="weaktimings">9:00 AM - 06:00 PM</span></li>
-                              <li class="timings opentime"><span class="weakday">Thursday</span><span class="weaktimings">9:00 AM - 06:00 PM</span></li>
-                              <li class="timings opentime"><span class="weakday">Friday</span><span class="weaktimings">9:00 AM - 06:00 PM</span></li>
-                              <li class="timings opentime"><span class="weakday">Saturday</span><span class="weaktimings">9:00 AM - 06:00 PM</span></li>
-                              <li class="timings closetime"><span class="weakday">Sunday</span><span class="weaktimings">Closed</span></li>
+							  @if(isset($user->storetimings) && !empty($user->storetimings))
+								  <li class="timings opentime"><span class="weakday">Monday</span><span class="weaktimings">{{ $user->storetimings['mon_start'] }} - {{ $user->storetimings['mon_end'] }}</span></li>
+								  <li class="timings opentime"><span class="weakday">Tuesday</span><span class="weaktimings">{{ $user->storetimings['tue_start'] }} - {{ $user->storetimings['tue_end'] }}</span></li>
+								  <li class="timings opentime"><span class="weakday">Wednesday</span><span class="weaktimings">{{ $user->storetimings['wed_start'] }} - {{ $user->storetimings['wed_end'] }}</span></li>
+								  <li class="timings opentime"><span class="weakday">Thursday</span><span class="weaktimings">{{ $user->storetimings['thu_start'] }} - {{ $user->storetimings['thu_end'] }}</span></li>
+								  <li class="timings opentime"><span class="weakday">Friday</span><span class="weaktimings">{{ $user->storetimings['fri_start'] }} - {{ $user->storetimings['fri_end'] }}</span></li>
+								  <li class="timings opentime"><span class="weakday">Saturday</span><span class="weaktimings">{{ $user->storetimings['sat_start'] }} - {{ $user->storetimings['sat_end'] }}</span></li>
+								  <li class="timings closetime"><span class="weakday">Sunday</span><span class="weaktimings">{{ $user->storetimings['sun_start'] }} - {{ $user->storetimings['sun_end'] }}</span></li>
+							  @else
+								<li class="timings opentime"><span class="weakday">Monday</span><span class="weaktimings">Not Set</span></li>
+								  <li class="timings opentime"><span class="weakday">Tuesday</span><span class="weaktimings">Not Set</span></li>
+								  <li class="timings opentime"><span class="weakday">Wednesday</span><span class="weaktimings">Not Set</span></li>
+								  <li class="timings opentime"><span class="weakday">Thursday</span><span class="weaktimings">Not Set</span></li>
+								  <li class="timings opentime"><span class="weakday">Friday</span><span class="weaktimings">Not Set</span></li>
+								  <li class="timings opentime"><span class="weakday">Saturday</span><span class="weaktimings">Not Set</span></li>
+								  <li class="timings closetime"><span class="weakday">Sunday</span><span class="weaktimings">Closed</span></li>
+
+							  @endif
+                              
                            </ul>
                         </div>
                      </div>
@@ -145,7 +223,6 @@
             </div>
          </div>
          </div>
-      </main>
  <script type="text/javascript">
          $(document).on('ready', function() {
          $('.center').slick({
